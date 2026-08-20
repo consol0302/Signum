@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "signum-perception"
-version = "0.0.1"
-description = "CPU-first deterministic video sampling for multimodal AI"
+version = "0.0.2"
+description = "CPU-first video event gating for Codex computer-use perception"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }

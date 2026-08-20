@@ -37,7 +37,8 @@ def analyze_video(
     started = time.perf_counter()
     metadata = probe_video(Path(source))
     indices = candidate_indices(metadata, config.candidate_hz)
-    candidates = analyze_candidates(metadata, indices, config)
+    analysis = analyze_candidates(metadata, indices, config)
+    candidates = analysis.candidates
     selected = select_candidates(candidates, config)
     analysis_seconds = time.perf_counter() - started
 
@@ -68,6 +69,9 @@ def analyze_video(
         "counts": {
             "source_frames": metadata.frame_count,
             "analyzed_candidates": len(candidates),
+            "scheduled_candidates": analysis.scheduled_candidate_count,
+            "coarse_scanned_frames": analysis.coarse_scanned_frames,
+            "promoted_spikes": analysis.promoted_spike_count,
             "selected_observations": len(selected),
         },
         "timing_seconds": {

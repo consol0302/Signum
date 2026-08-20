@@ -56,25 +56,32 @@ def iter_candidate_frames(
 ) -> Iterator[tuple[int, np.ndarray]]:
     """Decode sequentially, yielding only requested frames."""
 
-    wanted = iter(indices)
-    target = next(wanted, None)
+    wanted = set(indices)
+    for frame_index, frame in iter_frames(metadata):
+        if frame_index in wanted:
+            yield frame_index, frame
+
+
+def iter_frames(metadata: VideoMetadata) -> Iterator[tuple[int, np.ndarray]]:
+    """Decode every source frame in display order."""
+
     capture = cv2.VideoCapture(str(metadata.path))
     if not capture.isOpened():
         raise VideoError(f"OpenCV could not open video: {metadata.path}")
     try:
         frame_index = 0
-        while target is not None:
+        while True:
             ok, frame = capture.read()
             if not ok:
                 break
-            if frame_index == target:
-                yield frame_index, frame
-                target = next(wanted, None)
+            yield frame_index, frame
             frame_index += 1
     finally:
         capture.release()
-    if target is not None:
-        raise VideoError(f"decode stopped before requested frame {target}")
+    if frame_index < metadata.frame_count:
+        raise VideoError(
+            f"decode stopped at frame {frame_index} of {metadata.frame_count}"
+        )
 
 
 def resized_gray(frame: np.ndarray, max_width: int) -> np.ndarray:

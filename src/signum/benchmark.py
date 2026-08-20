@@ -57,10 +57,13 @@ def _method_result(
     case: SyntheticCase,
     candidates: list[Candidate],
     config: SamplerConfig,
-    strategy: str,
+    selector_strategy: str,
     analysis_seconds: float,
+    scheduled_candidates: int,
+    coarse_scanned_frames: int,
+    promoted_spikes: int,
 ) -> dict[str, Any]:
-    method_config = replace(config, budget=case.budget, strategy=strategy)
+    method_config = replace(config, budget=case.budget, strategy=selector_strategy)
     started = time.perf_counter()
     selected = select_candidates(candidates, method_config)
     selection_seconds = time.perf_counter() - started
@@ -70,8 +73,18 @@ def _method_result(
         "temporal_coverage": temporal_coverage(selected, case.duration, case.budget),
         "selected_count": len(selected),
         "selected_timestamps": [item.timestamp for item in selected],
-        "analyzed_frames": 0 if strategy == "uniform" else len(candidates),
-        "analysis_seconds": 0.0 if strategy == "uniform" else analysis_seconds,
+        "full_analysis_candidates": (
+            0 if selector_strategy == "uniform" else scheduled_candidates
+        ),
+        "coarse_scanned_frames": (
+            0 if selector_strategy == "uniform" else coarse_scanned_frames
+        ),
+        "promoted_spikes": (
+            0 if selector_strategy == "uniform" else promoted_spikes
+        ),
+        "analysis_seconds": (
+            0.0 if selector_strategy == "uniform" else analysis_seconds
+        ),
         "selection_seconds": selection_seconds,
     }
 
@@ -84,26 +97,73 @@ def run_benchmark(output_dir: Path, config: SamplerConfig | None = None) -> dict
     for case, video_path in generate_suite(media_dir):
         metadata = probe_video(video_path)
         indices = candidate_indices(metadata, base_config.candidate_hz)
+        previous_config = replace(base_config, spike_guard=False)
+        previous_started = time.perf_counter()
+        previous_analysis = analyze_candidates(metadata, indices, previous_config)
+        previous_seconds = time.perf_counter() - previous_started
+
         analysis_started = time.perf_counter()
-        candidates = analyze_candidates(metadata, indices, base_config)
+        analysis = analyze_candidates(metadata, indices, base_config)
         analysis_seconds = time.perf_counter() - analysis_started
+
         methods = {
-            strategy: _method_result(
-                case, candidates, base_config, strategy, analysis_seconds
-            )
-            for strategy in ("uniform", "score_only", "hybrid")
+            "uniform": _method_result(
+                case,
+                previous_analysis.candidates,
+                previous_config,
+                "uniform",
+                0.0,
+                previous_analysis.scheduled_candidate_count,
+                0,
+                0,
+            ),
+            "score_only": _method_result(
+                case,
+                analysis.candidates,
+                base_config,
+                "score_only",
+                analysis_seconds,
+                analysis.scheduled_candidate_count,
+                analysis.coarse_scanned_frames,
+                analysis.promoted_spike_count,
+            ),
+            "hybrid_no_spike_guard": _method_result(
+                case,
+                previous_analysis.candidates,
+                previous_config,
+                "hybrid",
+                previous_seconds,
+                previous_analysis.scheduled_candidate_count,
+                previous_analysis.coarse_scanned_frames,
+                previous_analysis.promoted_spike_count,
+            ),
+            "hybrid": _method_result(
+                case,
+                analysis.candidates,
+                base_config,
+                "hybrid",
+                analysis_seconds,
+                analysis.scheduled_candidate_count,
+                analysis.coarse_scanned_frames,
+                analysis.promoted_spike_count,
+            ),
         }
         cases_payload.append(
             {
                 "case": case.to_dict(),
                 "video": str(video_path.resolve()),
-                "candidate_count": len(candidates),
+                "candidate_count": len(analysis.candidates),
                 "methods": methods,
             }
         )
 
     aggregate: dict[str, dict[str, float]] = {}
-    for strategy in ("uniform", "score_only", "hybrid"):
+    for strategy in (
+        "uniform",
+        "score_only",
+        "hybrid_no_spike_guard",
+        "hybrid",
+    ):
         method_rows = [row["methods"][strategy] for row in cases_payload]
         aggregate[strategy] = {
             metric: sum(float(row[metric]) for row in method_rows) / len(method_rows)
@@ -111,7 +171,9 @@ def run_benchmark(output_dir: Path, config: SamplerConfig | None = None) -> dict
                 "event_recall",
                 "redundancy",
                 "temporal_coverage",
-                "analyzed_frames",
+                "full_analysis_candidates",
+                "coarse_scanned_frames",
+                "promoted_spikes",
                 "analysis_seconds",
                 "selection_seconds",
             )

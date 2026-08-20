@@ -41,6 +41,32 @@ Result: hybrid coverage increased to 0.643 while mean event recall remained 0.85
 - Redundancy remained high in static, slow-change, and repetitive fixtures because the budget invariant forces six outputs even when six distinct observations do not exist. The report exposes this instead of silently shrinking the result.
 - These synthetic fixtures make timing and selection behavior measurable. They do not validate semantic importance, downstream VLM accuracy, token cost, or real-video generalization.
 
+## 0.0.2 spike-guard experiment
+
+Observed failure: the 4 Hz schedule never inspected the one-frame flash at 2.60 seconds, so every selector had zero recall on that case.
+
+Hypothesis: the decoder already visits every frame, so calculating a 16×9 grayscale difference during that pass can promote abrupt between-sample events without an additional decode pass.
+
+The guard recovered the flash and did not change recall in the other six cases:
+
+| Method | Event recall | Redundancy | Temporal coverage | Full candidates | Coarse frames |
+|---|---:|---:|---:|---:|---:|
+| Hybrid, guard off | 0.857 | 0.429 | 0.643 | 25 | 0 |
+| Hybrid, guard on | 1.000 | 0.405 | 0.667 | 25 | 120 |
+
+Ten repeated suite runs produced median analysis times of 6.89 ms with the guard off and 12.24 ms with it on: a 5.35 ms absolute increase and a 1.78× ratio on these tiny fixtures. The percentage is large because the videos and baseline work are deliberately small. Real-video throughput remains unmeasured.
+
+Only the full-screen flash crossed the conservative 0.35 threshold. The continuous-motion, camera-pan, and repetitive-motion cases produced no promoted false candidates in this suite. The change is kept as the default because it fixes the observed failure without a recall regression, records its extra work explicitly, and can be disabled with `--no-spike-guard`.
+
+## Codex gateway regression fixtures
+
+Two deterministic failures are now covered separately from the sampler benchmark:
+
+- A 12×12 change on a 1920×1080 screen is below the default 0.002 global area threshold. The 768-pixel local connected-component guard detects it and records `local_component` as its discovery path.
+- An action followed by an identical screen previously produced no event. `verify_after_action` now attaches explicit before/after frames and emits a forced observation with zero change so Codex can return `not_confirmed` or `uncertain` instead of silently assuming success.
+
+These are regression fixtures, not real-world success measurements. Local component size, compression noise, false calls from cursor motion, and semantic verification accuracy still require labeled screen recordings.
+
 ## Next experiment
 
 Build a small, manually labeled real-video corpus containing UI changes, surveillance-like static scenes, handheld camera motion, and screen recordings. Re-run the unchanged defaults before adding another signal. The most important unresolved risk is that pixel-level novelty may not correlate with semantic importance on real media.

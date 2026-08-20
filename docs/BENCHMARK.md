@@ -4,7 +4,7 @@
 
 At the same frame budget, does Signum capture more known events than uniform temporal sampling, and what CPU/decode cost does that require?
 
-The benchmark also compares `score_only` (the initial implementation) with `hybrid` (one improvement: reserve temporal coverage anchors). This makes the improvement falsifiable instead of silently replacing the reference behavior.
+The benchmark compares `score_only`, `hybrid_no_spike_guard`, and the current `hybrid`. Keeping the previous hybrid path makes the per-frame spike guard falsifiable instead of silently replacing the reference behavior.
 
 ## Synthetic suite
 
@@ -26,7 +26,7 @@ These fixtures test timing and selection behavior. They are not evidence of real
 - **Redundancy:** fraction of selected observations after the first whose compact signature is near-identical to an earlier selected observation.
 - **Temporal coverage:** fraction of equal temporal bins containing at least one selection. Bin count equals the frame budget (capped by available candidates).
 - **Processing time:** wall-clock analysis and selection time. Treat small runs as indicative, not stable performance claims.
-- **Analyzed frames:** candidates decoded for signal analysis. Export decoding is reported separately.
+- **Analysis cost:** full-resolution candidates and 16×9 coarse-scanned frames are reported separately. Export decoding is reported separately.
 - **Frame budget:** identical within each case and method.
 
 Uniform sampling does not need to analyze visual content, so it should normally be much cheaper. Signum must justify its extra CPU work through recall or a later downstream metric.

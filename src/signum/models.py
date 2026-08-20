@@ -42,6 +42,7 @@ class Candidate:
     motion_score: float = 0.0
     scene_change: bool = False
     importance: float = 0.0
+    discovery: str = "scheduled"
     signature: np.ndarray = field(
         default_factory=lambda: np.empty((0, 0), dtype=np.uint8), repr=False
     )
@@ -52,6 +53,7 @@ class Candidate:
             "timestamp": self.timestamp,
             "source_interval": [self.source_start, self.source_end],
             "importance": self.importance,
+            "discovery": self.discovery,
             "signals": {
                 "frame_difference": self.frame_difference,
                 "histogram_difference": self.histogram_difference,

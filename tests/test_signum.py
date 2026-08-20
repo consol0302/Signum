@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import tempfile
 import unittest
+from dataclasses import replace
 from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
@@ -14,7 +15,9 @@ from signum.config import SamplerConfig
 from signum.models import Candidate
 from signum.pipeline import analyze_video
 from signum.selector import hybrid_select
+from signum.signals import analyze_candidates
 from signum.synthetic import generate_suite
+from signum.video import candidate_indices, probe_video
 
 
 def candidate(index: int, timestamp: float, value: int, importance: float) -> Candidate:
@@ -61,7 +64,8 @@ class PipelineTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.temp_context = tempfile.TemporaryDirectory()
         cls.root = Path(cls.temp_context.name)
-        cls.case, cls.video = generate_suite(cls.root / "media")[0]
+        cls.generated = generate_suite(cls.root / "media")
+        cls.case, cls.video = cls.generated[0]
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -81,6 +85,9 @@ class PipelineTests(unittest.TestCase):
             self.assertTrue((output / observation["frame_file"]).is_file())
         self.assertTrue((output / "timeline.json").is_file())
         self.assertTrue((output / "report.json").is_file())
+        counts = result["report"]["counts"]
+        self.assertEqual(counts["source_frames"], counts["coarse_scanned_frames"])
+        self.assertLessEqual(counts["scheduled_candidates"], counts["analyzed_candidates"])
 
     def test_pipeline_deterministic_indices(self) -> None:
         config = SamplerConfig(budget=6)
@@ -111,6 +118,37 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(0, exit_code)
         summary = json.loads(stdout.getvalue())
         self.assertEqual(4, summary["selected"])
+
+    def test_spike_guard_recovers_between_sample_flash(self) -> None:
+        flash_case, flash_video = self.generated[3]
+        metadata = probe_video(flash_video)
+        config = SamplerConfig(budget=flash_case.budget)
+        indices = candidate_indices(metadata, config.candidate_hz)
+        guarded = analyze_candidates(metadata, indices, config)
+        unguarded = analyze_candidates(
+            metadata, indices, replace(config, spike_guard=False)
+        )
+
+        guarded_selected = hybrid_select(guarded.candidates, config)
+        unguarded_selected = hybrid_select(unguarded.candidates, config)
+
+        def captured(selected: list[Candidate]) -> bool:
+            event = flash_case.events[0]
+            return any(
+                event.start - event.tolerance
+                <= item.timestamp
+                <= event.end + event.tolerance
+                for item in selected
+            )
+
+        self.assertEqual(1, guarded.promoted_spike_count)
+        self.assertEqual("spike_guard", next(
+            item.discovery
+            for item in guarded.candidates
+            if item.frame_index == 52
+        ))
+        self.assertTrue(captured(guarded_selected))
+        self.assertFalse(captured(unguarded_selected))
 
 
 if __name__ == "__main__":

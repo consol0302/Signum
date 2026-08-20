@@ -1,11 +1,21 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import cv2
 import numpy as np
 
 from .config import SamplerConfig
 from .models import Candidate, VideoMetadata
-from .video import iter_candidate_frames, resized_gray
+from .video import iter_frames, resized_gray
+
+
+@dataclass(frozen=True)
+class CandidateAnalysis:
+    candidates: list[Candidate]
+    scheduled_candidate_count: int
+    coarse_scanned_frames: int
+    promoted_spike_count: int
 
 
 def _histogram(gray: np.ndarray) -> np.ndarray:
@@ -15,13 +25,36 @@ def _histogram(gray: np.ndarray) -> np.ndarray:
 
 def analyze_candidates(
     metadata: VideoMetadata, indices: list[int], config: SamplerConfig
-) -> list[Candidate]:
+) -> CandidateAnalysis:
     candidates: list[Candidate] = []
+    scheduled = set(indices)
     previous_gray: np.ndarray | None = None
     previous_hist: np.ndarray | None = None
+    previous_tiny: np.ndarray | None = None
+    coarse_records: list[tuple[int, float, float, np.ndarray]] = []
     half_step = 0.5 / config.candidate_hz
 
-    for frame_index, frame in iter_candidate_frames(metadata, indices):
+    for frame_index, frame in iter_frames(metadata):
+        tiny: np.ndarray | None = None
+        if config.spike_guard:
+            tiny = _tiny_gray(frame)
+            coarse_difference = 0.0
+            coarse_motion = 0.0
+            if previous_tiny is not None:
+                tiny_delta = cv2.absdiff(tiny, previous_tiny)
+                coarse_difference = float(np.mean(tiny_delta) / 255.0)
+                coarse_motion = float(
+                    np.mean(tiny_delta >= config.motion_pixel_threshold)
+                )
+            coarse_records.append(
+                (frame_index, coarse_difference, coarse_motion, tiny.copy())
+            )
+            previous_tiny = tiny
+
+        if frame_index not in scheduled:
+            continue
+        if tiny is None:
+            tiny = _tiny_gray(frame)
         gray = resized_gray(frame, config.analysis_width)
         hist = _histogram(gray)
         timestamp = frame_index / metadata.fps
@@ -30,7 +63,7 @@ def analyze_candidates(
             timestamp=timestamp,
             source_start=max(0.0, timestamp - half_step),
             source_end=min(metadata.duration_seconds, timestamp + half_step),
-            signature=cv2.resize(gray, (16, 9), interpolation=cv2.INTER_AREA),
+            signature=tiny.copy(),
         )
         if previous_gray is not None and previous_hist is not None:
             difference = cv2.absdiff(gray, previous_gray)
@@ -45,8 +78,63 @@ def analyze_candidates(
         previous_gray = gray
         previous_hist = hist
 
+    promoted = (
+        _promote_spikes(metadata, coarse_records, scheduled, config)
+        if config.spike_guard
+        else []
+    )
+    candidates.extend(promoted)
+    candidates.sort(key=lambda item: item.frame_index)
     _score_candidates(candidates, config)
-    return candidates
+    return CandidateAnalysis(
+        candidates=candidates,
+        scheduled_candidate_count=len(indices),
+        coarse_scanned_frames=len(coarse_records),
+        promoted_spike_count=len(promoted),
+    )
+
+
+def _tiny_gray(frame: np.ndarray) -> np.ndarray:
+    tiny = cv2.resize(frame, (16, 9), interpolation=cv2.INTER_AREA)
+    return cv2.cvtColor(tiny, cv2.COLOR_BGR2GRAY)
+
+
+def _promote_spikes(
+    metadata: VideoMetadata,
+    records: list[tuple[int, float, float, np.ndarray]],
+    scheduled: set[int],
+    config: SamplerConfig,
+) -> list[Candidate]:
+    """Promote the first frame of each abrupt full-frame change run.
+
+    Consecutive above-threshold frames are treated as one transition. Choosing
+    the first frame keeps a one-frame flash rather than its return to the
+    unchanged background.
+    """
+
+    promoted: list[Candidate] = []
+    previous_above = False
+    frame_half_width = 0.5 / metadata.fps
+    for frame_index, difference, motion, signature in records:
+        above = difference >= config.spike_threshold
+        if above and not previous_above and frame_index not in scheduled:
+            timestamp = frame_index / metadata.fps
+            promoted.append(
+                Candidate(
+                    frame_index=frame_index,
+                    timestamp=timestamp,
+                    source_start=max(0.0, timestamp - frame_half_width),
+                    source_end=min(
+                        metadata.duration_seconds, timestamp + frame_half_width
+                    ),
+                    frame_difference=difference,
+                    motion_score=motion,
+                    signature=signature,
+                    discovery="spike_guard",
+                )
+            )
+        previous_above = above
+    return promoted
 
 
 def _robust_scale(values: np.ndarray) -> np.ndarray:

@@ -6,6 +6,9 @@ import sys
 from pathlib import Path
 
 from .config import SamplerConfig
+from .gateway import GatewayConfig
+from .interpreters import CodexExecInterpreter, InterpreterError
+from .observe import observe_video
 from .pipeline import analyze_video
 from .video import VideoError
 
@@ -24,21 +27,55 @@ def build_parser() -> argparse.ArgumentParser:
     analyze.add_argument("--min-distance", type=float, default=0.5)
     analyze.add_argument("--coverage-fraction", type=float, default=0.25)
     analyze.add_argument(
+        "--no-spike-guard",
+        action="store_true",
+        help="disable the per-frame low-resolution abrupt-change guard",
+    )
+    analyze.add_argument(
         "--strategy", choices=("hybrid", "score_only", "uniform"), default="hybrid"
     )
+    observe = subparsers.add_parser(
+        "observe",
+        help="gate semantic screen observations for a computer-use workflow",
+    )
+    observe.add_argument("input", type=Path)
+    observe.add_argument("--goal", required=True)
+    observe.add_argument("--output", type=Path, default=Path("observe-output"))
+    observe.add_argument(
+        "--codex-command",
+        default="codex",
+        help="Codex CLI executable or absolute path (default: codex)",
+    )
+    observe.add_argument(
+        "--model",
+        help="optional Codex model override; defaults to the Codex runtime model",
+    )
+    observe.add_argument("--codex-timeout", type=float, default=120.0)
+    observe.add_argument("--analysis-width", type=int, default=192)
+    observe.add_argument("--local-analysis-width", type=int, default=768)
+    observe.add_argument("--min-local-component-pixels", type=int, default=12)
+    observe.add_argument("--min-change-fraction", type=float, default=0.002)
+    observe.add_argument("--stable-frames", type=int, default=2)
+    observe.add_argument("--min-event-interval", type=float, default=0.5)
+    observe.add_argument("--max-active-seconds", type=float, default=5.0)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    if args.command != "analyze":
-        return 2
+    if args.command == "observe":
+        return _observe_command(args)
+    return _analyze_command(args)
+
+
+def _analyze_command(args: argparse.Namespace) -> int:
     config = SamplerConfig(
         budget=args.budget,
         candidate_hz=args.candidate_hz,
         analysis_width=args.analysis_width,
         min_distance_seconds=args.min_distance,
         coverage_fraction=args.coverage_fraction,
+        spike_guard=not args.no_spike_guard,
         strategy=args.strategy,
     )
     try:
@@ -51,6 +88,43 @@ def main(argv: list[str] | None = None) -> int:
         "selected": result["report"]["counts"]["selected_observations"],
         "analyzed": result["report"]["counts"]["analyzed_candidates"],
         "total_seconds": result["report"]["timing_seconds"]["total"],
+    }
+    print(json.dumps(summary, sort_keys=True))
+    return 0
+
+
+def _observe_command(args: argparse.Namespace) -> int:
+    config = GatewayConfig(
+        analysis_width=args.analysis_width,
+        local_analysis_width=args.local_analysis_width,
+        min_local_component_pixels=args.min_local_component_pixels,
+        min_changed_fraction=args.min_change_fraction,
+        stable_frames=args.stable_frames,
+        min_event_interval_seconds=args.min_event_interval,
+        max_active_seconds=args.max_active_seconds,
+    )
+    interpreter = CodexExecInterpreter(
+        command=args.codex_command,
+        model=args.model,
+        timeout_seconds=args.codex_timeout,
+    )
+    try:
+        result = observe_video(
+            args.input,
+            args.output,
+            goal=args.goal,
+            config=config,
+            interpreter=interpreter,
+        )
+    except (ValueError, VideoError, InterpreterError) as error:
+        print(f"signum: error: {error}", file=sys.stderr)
+        return 2
+    summary = {
+        "output": str(args.output.resolve()),
+        "frames_seen": result["stats"]["frames_seen"],
+        "perception_events": result["stats"]["events_emitted"],
+        "ai_calls": result["stats"]["ai_calls"],
+        "transmitted_image_bytes": result["stats"]["transmitted_image_bytes"],
     }
     print(json.dumps(summary, sort_keys=True))
     return 0

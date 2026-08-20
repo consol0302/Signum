@@ -4,4 +4,4 @@ from .config import SamplerConfig
 from .pipeline import analyze_video
 
 __all__ = ["SamplerConfig", "analyze_video"]
-__version__ = "0.0.1"
+__version__ = "0.0.2"

@@ -27,6 +27,8 @@ class SamplerConfig:
     motion_weight: float = 0.35
     scene_threshold: float = 0.45
     scene_boost: float = 0.25
+    spike_guard: bool = True
+    spike_threshold: float = 0.35
     strategy: Strategy = "hybrid"
 
     def validate(self) -> None:
@@ -48,6 +50,8 @@ class SamplerConfig:
             raise ValueError("signal weights cannot be negative")
         if self.frame_weight + self.histogram_weight + self.motion_weight <= 0:
             raise ValueError("at least one signal weight must be positive")
+        if not 0 <= self.spike_threshold <= 1:
+            raise ValueError("spike_threshold must be between 0 and 1")
         if self.strategy not in ("hybrid", "score_only", "uniform"):
             raise ValueError(f"unknown strategy: {self.strategy}")
 
