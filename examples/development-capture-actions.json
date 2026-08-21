@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "case_id": "development-selenium-dynamic",
+  "actions": [
+    {
+      "id": "request-red-box",
+      "at_seconds": 1.0,
+      "type": "click",
+      "locator": {
+        "by": "role",
+        "role": "button",
+        "name": "Add a box!",
+        "exact": true
+      },
+      "expected_outcome": "success",
+      "expected_result": "a red box becomes visible",
+      "required": true
+    },
+    {
+      "id": "wait-red-box",
+      "at_seconds": 1.1,
+      "type": "wait_for",
+      "locator": {
+        "by": "css",
+        "value": ".redbox"
+      },
+      "state": "visible",
+      "timeout_ms": 3000,
+      "expected_outcome": "success",
+      "expected_result": "the red box is visible",
+      "required": true
+    },
+    {
+      "id": "request-input",
+      "at_seconds": 3.0,
+      "type": "click",
+      "locator": {
+        "by": "role",
+        "role": "button",
+        "name": "Reveal a new input",
+        "exact": true
+      },
+      "expected_outcome": "success",
+      "expected_result": "a text input becomes visible",
+      "required": true
+    },
+    {
+      "id": "wait-input",
+      "at_seconds": 3.1,
+      "type": "wait_for",
+      "locator": {
+        "by": "css",
+        "value": "#revealed"
+      },
+      "state": "visible",
+      "timeout_ms": 3000,
+      "expected_outcome": "success",
+      "expected_result": "the revealed input is visible",
+      "required": true
+    },
+    {
+      "id": "fill-input",
+      "at_seconds": 5.0,
+      "type": "fill",
+      "locator": {
+        "by": "css",
+        "value": "#revealed"
+      },
+      "value": "development capture",
+      "expected_outcome": "success",
+      "expected_result": "the input contains development capture",
+      "required": true
+    }
+  ]
+}

@@ -35,6 +35,10 @@ copies are ineligible.
    code and protocol. Commit and push the plan.
 5. Run `signum preregister-heldout PLAN --output PREREGISTRATION`.
 6. Commit and push the preregistration lock before opening the first workflow.
+7. Validate the collector on a non-held-out development page, then commit and
+   push that exact collector implementation and all 30 action JSON files before
+   opening a preregistered workflow. Follow
+   [Timestamped browser capture](CAPTURE_PROTOCOL.md).
 
 The tool hashes the plan. It rejects a placeholder revision, a non-HTTPS
 repository, fewer than 30 unique case ids, changed category targets, or missing

@@ -331,6 +331,7 @@ publication threshold is documented in
 - [Pilot 60 local measurement](docs/PILOT60_RESULTS.md)
 - [Comparative claim protocol](docs/CLAIM_PROTOCOL.md)
 - [Held-out 180 collection](docs/HELDOUT180.md)
+- [Timestamped browser capture](docs/CAPTURE_PROTOCOL.md)
 - [Streaming perception runtime](docs/STREAMING.md)
 - [Measuring live Codex perception](docs/CODEX_LIVE_MEASUREMENT.md)
 
