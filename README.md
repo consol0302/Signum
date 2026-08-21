@@ -128,6 +128,12 @@ Both frozen first candidates have non-identical 0.3-second before/after pixels
 without crossing a following action. Mechanical anchor audit
 `0f8e982e0828ec214eb9e4567d6750ffcd3f1881081a9560b29332ea09530e77`
 passes, but human activation remains false until the V4 blind review finishes.
+The two inactive reserve events have inventory id
+`7d305b1858460bc7ccc31d90a7d9e4250eb35713d33ed7cf4b71e70884fb0b38`
+and a separate method-blind review packet
+`775e6d6b770fffc3d6d550acd744de75fe10f0959d8aedc98a9a810743c2de94`.
+Review lock `45787ece30c5ad3e584f36f910c01126564ddeec2901300f2991a06675b7aeec`
+binds its four images and two reviewer templates.
 
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 

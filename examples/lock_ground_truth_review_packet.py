@@ -34,15 +34,19 @@ def build_lock(packet_root: Path) -> dict[str, Any]:
     if (
         packet.get("kind") != "signum_ground_truth_review_packet"
         or packet.get("method_outputs_included") is not False
-        or packet.get("item_count") != 180
+        or not isinstance(packet.get("item_count"), int)
+        or packet.get("item_count") < 1
     ):
         raise RuntimeError("review packet is not a method-blind Claim 180 packet")
     if mapping.get("packet_id") != packet.get("packet_id"):
         raise RuntimeError("coordinator mapping belongs to a different packet")
     evidence_root = packet_root / "evidence"
     evidence_paths = sorted(evidence_root.glob("*.png"), key=lambda path: path.name)
-    if len(evidence_paths) != 360:
-        raise RuntimeError("review packet must contain 360 evidence images")
+    expected_evidence_count = packet["item_count"] * 2
+    if len(evidence_paths) != expected_evidence_count:
+        raise RuntimeError(
+            f"review packet must contain {expected_evidence_count} evidence images"
+        )
     expected_evidence = {
         item[key]
         for item in packet.get("items", [])

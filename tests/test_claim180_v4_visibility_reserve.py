@@ -106,6 +106,29 @@ class Claim180V4VisibilityReserveTests(unittest.TestCase):
         self.assertFalse(anchor_audit["human_activation_confirmed"])
         self.assertFalse(anchor_audit["method_outputs_seen"])
         self.assertTrue(all(not row["identical"] for row in anchor_audit["rows"]))
+        inventory = json.loads(
+            (ROOT / "benchmark-protocol" / "claim180-v4-visibility-reserve-event-inventory-v2.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(2, inventory["eligible_events"])
+        self.assertEqual(0, inventory["currently_active_events"])
+        self.assertFalse(inventory["model_outputs_seen"])
+        self.assertTrue(
+            all(
+                event["conditional_reserve"] and not event["real_world_eligible"]
+                for case in inventory["cases"]
+                for event in case["events"]
+            )
+        )
+        packet_lock = json.loads(
+            (ROOT / "benchmark-protocol" / "claim180-v4-visibility-reserve-review-packet-lock-v2.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(2, packet_lock["item_count"])
+        self.assertEqual(4, packet_lock["evidence"]["file_count"])
+        self.assertFalse(packet_lock["method_outputs_included"])
 
     def test_plan_and_preregistration_freeze_conditional_activation(self) -> None:
         plan_path = (

@@ -349,3 +349,11 @@ action. Anchor audit
 passes mechanically. `human_activation_confirmed` remains false, so these two
 events are still conditional reserve evidence rather than members of the final
 suite.
+
+The selected reserve events remain explicitly ineligible in inventory
+`7d305b1858460bc7ccc31d90a7d9e4250eb35713d33ed7cf4b71e70884fb0b38`.
+Their separate two-item method-blind review packet has id
+`775e6d6b770fffc3d6d550acd744de75fe10f0959d8aedc98a9a810743c2de94`
+and lock `45787ece30c5ad3e584f36f910c01126564ddeec2901300f2991a06675b7aeec`.
+Activation therefore requires both the original V4 review decision and a
+positive independent review of the proposed reserve pixels.

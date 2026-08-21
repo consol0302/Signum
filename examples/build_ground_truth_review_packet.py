@@ -57,6 +57,7 @@ def build_packet(
     output_root: Path,
     *,
     seed: str,
+    expected_items: int = 180,
 ) -> dict[str, Any]:
     if output_root.exists() and any(output_root.iterdir()):
         raise RuntimeError(f"refusing to overwrite non-empty review root: {output_root}")
@@ -64,8 +65,10 @@ def build_packet(
     evidence_root = output_root / "evidence"
     evidence_root.mkdir()
     inventory = read_object(inventory_path)
-    if inventory.get("eligible_events") != 180:
-        raise RuntimeError("ground-truth packet requires an exact 180-event inventory")
+    if inventory.get("eligible_events") != expected_items:
+        raise RuntimeError(
+            f"ground-truth packet requires exactly {expected_items} inventory events"
+        )
     rows = []
     for case in inventory.get("cases", []):
         origin = case.get("evidence_collection")
@@ -93,8 +96,8 @@ def build_packet(
                     "after_source": roots[origin] / case["id"] / after["file"],
                 }
             )
-    if len(rows) != 180:
-        raise RuntimeError("inventory did not expand to 180 review rows")
+    if len(rows) != expected_items:
+        raise RuntimeError(f"inventory did not expand to {expected_items} review rows")
     randomizer = random.Random(seed)
     randomizer.shuffle(rows)
     public_rows = []
@@ -204,6 +207,8 @@ def main() -> None:
     parser.add_argument("--v3-root", type=Path)
     parser.add_argument("--supplement-root", type=Path)
     parser.add_argument("--v4-root", type=Path)
+    parser.add_argument("--reserve-v2-root", type=Path)
+    parser.add_argument("--expected-items", type=int, default=180)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--seed", required=True)
     args = parser.parse_args()
@@ -213,6 +218,7 @@ def main() -> None:
             "v3": args.v3_root,
             "supplement": args.supplement_root,
             "v4": args.v4_root,
+            "v4_visibility_reserve_v2": args.reserve_v2_root,
         }.items()
         if path is not None
     }
@@ -223,6 +229,7 @@ def main() -> None:
         roots,
         args.output.resolve(),
         seed=args.seed,
+        expected_items=args.expected_items,
     )
     print(
         json.dumps(

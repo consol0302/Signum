@@ -1,0 +1,51 @@
+{
+  "coordinator_mapping": {
+    "bytes": 823,
+    "path": "mapping.json",
+    "sha256": "aef633cf98ffd8fc46b1838705801f2cb3823515442a4be700d4f970e91028c4"
+  },
+  "evidence": {
+    "file_count": 4,
+    "manifest_sha256": "3785254d5b1eae79b788447d92bf2ce9593de75957183411ccc7566a46038681",
+    "total_bytes": 236454
+  },
+  "item_count": 2,
+  "kind": "signum_ground_truth_review_packet_lock",
+  "lock_id": "45787ece30c5ad3e584f36f910c01126564ddeec2901300f2991a06675b7aeec",
+  "method_outputs_included": false,
+  "packet": {
+    "bytes": 1588,
+    "path": "packet.json",
+    "sha256": "05a159d351d0920bfa7cd4dfe985da067ccb095d54d088fcf6facda6a52694f9"
+  },
+  "packet_id": "775e6d6b770fffc3d6d550acd744de75fe10f0959d8aedc98a9a810743c2de94",
+  "reviewer_templates": [
+    {
+      "html": {
+        "bytes": 5564,
+        "path": "reviewer-a.html",
+        "sha256": "4cbf00589a93bf455f83e1a58ba6ebe8f4b846d82cfbab293be27c26c069b0aa"
+      },
+      "json": {
+        "bytes": 1095,
+        "path": "reviewer-a.json",
+        "sha256": "16b7e6f0c7f91cc1d9c96cf4554fe3ef71b66f67d1b34bcc89b89cc59d47a7cc"
+      },
+      "reviewer_slot": "reviewer-a"
+    },
+    {
+      "html": {
+        "bytes": 5564,
+        "path": "reviewer-b.html",
+        "sha256": "4cbf00589a93bf455f83e1a58ba6ebe8f4b846d82cfbab293be27c26c069b0aa"
+      },
+      "json": {
+        "bytes": 1095,
+        "path": "reviewer-b.json",
+        "sha256": "16b7e6f0c7f91cc1d9c96cf4554fe3ef71b66f67d1b34bcc89b89cc59d47a7cc"
+      },
+      "reviewer_slot": "reviewer-b"
+    }
+  ],
+  "schema_version": 1
+}
