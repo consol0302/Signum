@@ -80,6 +80,23 @@ class Claim180V4VisibilityReserveTests(unittest.TestCase):
         self.assertEqual(2, sources["reserve_round"])
         self.assertTrue(all(case_id.startswith("v4r2-") for case_id in sources["case_ids"]))
         self.assertEqual(8, manifest["candidate_count"])
+        plan_path = ROOT / "benchmark-protocol" / "claim180-v4-visibility-reserve-plan-v2.json"
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        rebuilt_plan = PLAN_MODULE.build_plan(
+            ROOT / "benchmark-protocol", plan["protocol_revision"], 2
+        )
+        self.assertEqual(plan, rebuilt_plan)
+        self.assertEqual(
+            failure["collection_id"],
+            plan["base_evidence"]["failed_reserve_v1"]["identity"],
+        )
+        preregistration = json.loads(
+            (ROOT / "benchmark-protocol" / "claim180-v4-visibility-reserve-preregistration-v2.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(plan["case_ids"], preregistration["case_ids"])
+        self.assertEqual(2, plan["reserve_round"])
 
     def test_plan_and_preregistration_freeze_conditional_activation(self) -> None:
         plan_path = (

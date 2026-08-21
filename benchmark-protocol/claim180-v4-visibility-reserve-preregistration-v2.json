@@ -1,0 +1,78 @@
+{
+  "actions_manifest": {
+    "bytes": 2477,
+    "case_count": 8,
+    "collector_revision": "b6025b84d4498c682a76273e8540c63032d8e83e",
+    "path": "claim180-v4-visibility-reserve-actions-manifest-v2.json",
+    "sha256": "219eb60a2f3457e664afe8ba003e93099e71661e59cc379c3e02ce75b040d5b1"
+  },
+  "activation": {
+    "adjudication_required": true,
+    "criterion": "both independent reviews and adjudication mark transition_visible false",
+    "method_outputs_forbidden_before_activation": true,
+    "required_v4_event_keys": [
+      "v4-09a-testpages/15-hover-calculation-control",
+      "v4-27a-testpages/15-hover-calculation-control"
+    ],
+    "reserve_use_forbidden_before_confirmation": true,
+    "review_packet_id": "341033d585d5279c4286bac7251dfcca48a38b1c9cbd3ee836f341f444f66e5d",
+    "reviewer_count": 2,
+    "status": "conditional_ineligible_reserve"
+  },
+  "anchor_policy": {
+    "exact_before_after_png_identity_allowed": false,
+    "next_action_crossing_allowed": false,
+    "post_action_settle_seconds": 0.3
+  },
+  "case_ids": [
+    "v4r2-01a-qah",
+    "v4r2-01b-playlab",
+    "v4r2-01c-qah",
+    "v4r2-01d-playlab",
+    "v4r2-02a-qah",
+    "v4r2-02b-playlab",
+    "v4r2-02c-qah",
+    "v4r2-02d-playlab"
+  ],
+  "category_targets": {
+    "cursor_hover_focus": 2
+  },
+  "collection_selection": {
+    "candidate_count": 8,
+    "mode": "first_valid_per_slot_in_plan_order",
+    "model_outputs_forbidden_before_selection": true,
+    "required_valid_cases": 2,
+    "retain_all_attempts": true,
+    "slots": [
+      {
+        "candidate_ids": [
+          "v4r2-01a-qah",
+          "v4r2-01b-playlab",
+          "v4r2-01c-qah",
+          "v4r2-01d-playlab"
+        ],
+        "slot_id": "v4-reserve2-slot-01"
+      },
+      {
+        "candidate_ids": [
+          "v4r2-02a-qah",
+          "v4r2-02b-playlab",
+          "v4r2-02c-qah",
+          "v4r2-02d-playlab"
+        ],
+        "slot_id": "v4-reserve2-slot-02"
+      }
+    ],
+    "validity_source": "independent_capture_verification"
+  },
+  "created_at_utc": "2026-08-21T17:10:35.016980+00:00",
+  "kind": "signum_claim180_v4_visibility_reserve_preregistration",
+  "plan": "claim180-v4-visibility-reserve-plan-v2.json",
+  "plan_bytes": 7984,
+  "plan_sha256": "d07b31bcb67c07f68094f3ce6faa36cb32d0ddb939629fd89ef59dbf9483f145",
+  "preregistration_id": "83ca482fdfe2816b625bed6ea38792621be353d5d95c64d9012caa6f7dceb266",
+  "protocol_id": "signum-claim180-v4-visibility-reserve-v2-2026-08-22",
+  "protocol_repository": "https://github.com/consol0302/Signum",
+  "protocol_revision": "eb6a795bc448671309dc2cd7af9cdb3b1a5063ce",
+  "schema_version": 1
+}
