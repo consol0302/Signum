@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import tempfile
 import unittest
 from pathlib import Path
@@ -63,6 +64,33 @@ class ClaimAssessmentTests(unittest.TestCase):
                 self.root / "unregistered-freeze.json",
                 role="held_out",
             )
+
+    def test_claim_is_blocked_when_a_run_artifact_changes(self) -> None:
+        manifest, events, preregistration = self._claim_manifest()
+        held_out_lock = self.root / "artifact-freeze.json"
+        frozen = freeze_manifest(
+            manifest,
+            held_out_lock,
+            role="held_out",
+            preregistration_path=preregistration,
+        )
+        comparison = self._comparison(
+            held_out_lock,
+            frozen["freeze_id"],
+            events,
+            name="artifact-comparison.json",
+        )
+        payload = json.loads(comparison.read_text(encoding="utf-8"))
+        run_path = self.root / payload["systems"][0]["run_artifacts"][0]["path"]
+        run_path.write_text("changed after comparison assembly", encoding="utf-8")
+
+        result = assess_claim(comparison)
+
+        self.assertFalse(result["claim_supported"])
+        self.assertIn(
+            "one or more system run artifacts failed integrity checks",
+            result["global_reasons"],
+        )
 
     def _claim_manifest(
         self,
@@ -158,6 +186,38 @@ class ClaimAssessmentTests(unittest.TestCase):
         *,
         name: str = "comparison.json",
     ) -> Path:
+        def artifact(name: str, payload: dict[str, object], *, reviewer: str | None = None) -> dict[str, object]:
+            destination = self.root / name
+            destination.write_text(json.dumps(payload), encoding="utf-8")
+            data = destination.read_bytes()
+            result: dict[str, object] = {
+                "path": destination.name,
+                "sha256": hashlib.sha256(data).hexdigest(),
+                "bytes": len(data),
+            }
+            if reviewer is not None:
+                result["reviewer"] = reviewer
+            return result
+
+        candidate_artifacts = [
+            artifact(f"candidate-run-{index}.json", {"run": index, "system": "candidate"})
+            for index in range(3)
+        ]
+        baseline_artifacts = [
+            artifact(f"baseline-run-{index}.json", {"run": index, "system": "baseline"})
+            for index in range(3)
+        ]
+        reviewer_artifacts = [
+            artifact(
+                f"review-{reviewer}.json",
+                {"reviewer": reviewer, "method": "human_blind"},
+                reviewer=reviewer,
+            )
+            for reviewer in ("reviewer-a", "reviewer-b")
+        ]
+        adjudication_artifact = artifact(
+            "adjudication.json", {"adjudicated": True}
+        )
         payload = {
             "schema_version": 1,
             "freeze": lock.name,
@@ -167,6 +227,8 @@ class ClaimAssessmentTests(unittest.TestCase):
                 "method": "human_blind",
                 "reviewers": ["reviewer-a", "reviewer-b"],
                 "adjudicated": True,
+                "artifacts": reviewer_artifacts,
+                "adjudication_artifact": adjudication_artifact,
             },
             "systems": [
                 {
@@ -177,6 +239,7 @@ class ClaimAssessmentTests(unittest.TestCase):
                     "cost_basis": "provider_invoice",
                     "cost_evidence": "test invoice hash candidate",
                     "billed_cost_usd_runs": [0.5, 0.5, 0.5],
+                    "run_artifacts": candidate_artifacts,
                     "events": events,
                 },
                 {
@@ -187,6 +250,7 @@ class ClaimAssessmentTests(unittest.TestCase):
                     "cost_basis": "provider_invoice",
                     "cost_evidence": "test invoice hash baseline",
                     "billed_cost_usd_runs": [1.0, 1.0, 1.0],
+                    "run_artifacts": baseline_artifacts,
                     "events": events,
                 },
             ],

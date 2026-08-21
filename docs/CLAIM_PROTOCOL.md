@@ -82,6 +82,14 @@ The default gate requires all of the following:
   price snapshot;
 - complete coverage of the eligible frozen events by candidate and baseline.
 
+Every system must also list distinct raw run artifacts with their relative
+path, byte count, and SHA-256. The review contract lists one similarly sealed
+artifact per reviewer plus a sealed adjudication artifact. `assess-claim`
+recomputes every hash and blocks publication if a file is absent, outside the
+comparison directory, reused as another run, or changed after assembly. This
+provides artifact integrity; it does not prove that a named reviewer is human,
+so reviewer identity and independence still require publication-level audit.
+
 The primary outcome is reviewed end-to-end perception success. A success
 requires visible evidence, a correct semantic description, and a safe task
 state. Failed actions also receive a false-confirmation verdict.

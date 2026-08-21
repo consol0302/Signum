@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import random
@@ -39,8 +40,8 @@ def assess_claim(comparison_path: Path | str) -> dict[str, Any]:
     frozen_events, frozen_stats = _frozen_event_contract(freeze_lock)
     freeze_id = comparison.get("freeze_id")
     freeze_identity_matches = freeze_id == freeze.get("freeze_id")
-    review = _review_contract(comparison.get("review"))
-    systems = _systems(comparison.get("systems"))
+    review = _review_contract(comparison.get("review"), path.parent)
+    systems = _systems(comparison.get("systems"), path.parent)
     _validate_systems_against_freeze(systems, frozen_events)
     candidates = [row for row in systems if row["kind"] == "candidate"]
     baselines = [row for row in systems if row["kind"] == "baseline"]
@@ -76,6 +77,10 @@ def assess_claim(comparison_path: Path | str) -> dict[str, Any]:
         global_reasons.append("too few independent reviewers")
     if not review["adjudicated"]:
         global_reasons.append("review disagreements are not adjudicated")
+    if not review["artifact_integrity_valid"]:
+        global_reasons.append("review or adjudication artifact integrity failed")
+    if any(not system["artifact_integrity_valid"] for system in systems):
+        global_reasons.append("one or more system run artifacts failed integrity checks")
     claimable_baselines = [
         row["baseline"]
         for row in comparisons
@@ -89,6 +94,13 @@ def assess_claim(comparison_path: Path | str) -> dict[str, Any]:
         "frozen_evidence": frozen_stats,
         "requirements": requirements,
         "review": review,
+        "system_artifacts": {
+            system["id"]: {
+                "valid": system["artifact_integrity_valid"],
+                "artifacts": system["run_artifacts"],
+            }
+            for system in systems
+        },
         "candidate": candidate["id"],
         "comparisons": comparisons,
         "global_reasons": global_reasons,
@@ -219,6 +231,8 @@ def _cost_comparison(
     enough_runs = (
         len(candidate_runs) >= requirements["min_cost_runs"]
         and len(baseline_runs) >= requirements["min_cost_runs"]
+        and len(candidate["run_artifacts"]) >= requirements["min_cost_runs"]
+        and len(baseline["run_artifacts"]) >= requirements["min_cost_runs"]
     )
     paired_count = min(len(candidate_runs), len(baseline_runs))
     ratios = [
@@ -289,7 +303,7 @@ def _quantile(ordered: list[float], probability: float) -> float:
     return ordered[lower] * (1.0 - weight) + ordered[upper] * weight
 
 
-def _systems(raw: object) -> list[dict[str, Any]]:
+def _systems(raw: object, root: Path) -> list[dict[str, Any]]:
     if not isinstance(raw, list):
         raise EvaluationError("comparison systems must be an array")
     systems = []
@@ -320,6 +334,20 @@ def _systems(raw: object) -> list[dict[str, Any]]:
             for value in costs
         ):
             raise EvaluationError("billed_cost_usd_runs must contain non-negative numbers")
+        raw_artifacts = item.get("run_artifacts")
+        if not isinstance(raw_artifacts, list) or not raw_artifacts:
+            raise EvaluationError(
+                f"system {system_id!r} must contain at least one run artifact"
+            )
+        run_artifacts = [
+            _artifact_contract(value, root, f"system {system_id!r} run")
+            for value in raw_artifacts
+        ]
+        artifact_paths = [artifact["resolved_path"] for artifact in run_artifacts]
+        if len(artifact_paths) != len(set(artifact_paths)):
+            raise EvaluationError(
+                f"system {system_id!r} run artifacts must be distinct files"
+            )
         systems.append(
             {
                 "id": system_id,
@@ -329,6 +357,10 @@ def _systems(raw: object) -> list[dict[str, Any]]:
                 "cost_basis": _required_string(item, "cost_basis"),
                 "cost_evidence": _required_string(item, "cost_evidence"),
                 "billed_cost_usd_runs": [float(value) for value in costs],
+                "run_artifacts": run_artifacts,
+                "artifact_integrity_valid": all(
+                    artifact["valid"] for artifact in run_artifacts
+                ),
                 "events": events,
             }
         )
@@ -425,7 +457,7 @@ def _event(raw: object, system_id: str) -> dict[str, Any]:
     }
 
 
-def _review_contract(raw: object) -> dict[str, Any]:
+def _review_contract(raw: object, root: Path) -> dict[str, Any]:
     if not isinstance(raw, dict):
         raise EvaluationError("comparison review must be an object")
     reviewers = raw.get("reviewers")
@@ -438,11 +470,90 @@ def _review_contract(raw: object) -> dict[str, Any]:
     adjudicated = raw.get("adjudicated")
     if not isinstance(adjudicated, bool):
         raise EvaluationError("review adjudicated must be boolean")
+    raw_artifacts = raw.get("artifacts")
+    if not isinstance(raw_artifacts, list) or len(raw_artifacts) != len(reviewers):
+        raise EvaluationError("review must contain one artifact per reviewer")
+    artifacts = [
+        _artifact_contract(value, root, "review") for value in raw_artifacts
+    ]
+    if len({artifact["resolved_path"] for artifact in artifacts}) != len(artifacts):
+        raise EvaluationError("review artifacts must be distinct files")
+    artifact_reviewers = [artifact.get("reviewer") for artifact in artifacts]
+    if artifact_reviewers != reviewers:
+        raise EvaluationError(
+            "review artifact reviewer order must match the reviewers array"
+        )
+    adjudication_artifact = _artifact_contract(
+        raw.get("adjudication_artifact"), root, "adjudication"
+    )
     return {
         "method": _required_string(raw, "method"),
         "reviewers": reviewers,
         "adjudicated": adjudicated,
+        "artifacts": artifacts,
+        "adjudication_artifact": adjudication_artifact,
+        "artifact_integrity_valid": (
+            all(artifact["valid"] for artifact in artifacts)
+            and adjudication_artifact["valid"]
+        ),
     }
+
+
+def _artifact_contract(raw: object, root: Path, kind: str) -> dict[str, Any]:
+    if not isinstance(raw, dict):
+        raise EvaluationError(f"{kind} artifact must be an object")
+    relative = _required_string(raw, "path")
+    expected_sha256 = _required_string(raw, "sha256").lower()
+    expected_bytes = raw.get("bytes")
+    if (
+        len(expected_sha256) != 64
+        or any(character not in "0123456789abcdef" for character in expected_sha256)
+    ):
+        raise EvaluationError(f"{kind} artifact sha256 must be 64 hex characters")
+    if (
+        not isinstance(expected_bytes, int)
+        or isinstance(expected_bytes, bool)
+        or expected_bytes < 0
+    ):
+        raise EvaluationError(f"{kind} artifact bytes must be a non-negative integer")
+    path = (root / relative).resolve()
+    try:
+        path.relative_to(root.resolve())
+    except ValueError as error:
+        raise EvaluationError(
+            f"{kind} artifact must remain inside the comparison directory"
+        ) from error
+    exists = path.is_file()
+    actual_bytes = path.stat().st_size if exists else None
+    actual_sha256 = _sha256_file(path) if exists else None
+    result = {
+        "path": relative,
+        "resolved_path": str(path),
+        "expected_sha256": expected_sha256,
+        "actual_sha256": actual_sha256,
+        "expected_bytes": expected_bytes,
+        "actual_bytes": actual_bytes,
+        "exists": exists,
+        "valid": (
+            exists
+            and actual_bytes == expected_bytes
+            and actual_sha256 == expected_sha256
+        ),
+    }
+    reviewer = raw.get("reviewer")
+    if reviewer is not None:
+        if not isinstance(reviewer, str) or not reviewer.strip():
+            raise EvaluationError(f"{kind} artifact reviewer must be a string")
+        result["reviewer"] = reviewer
+    return result
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _requirements(raw: object) -> dict[str, Any]:
