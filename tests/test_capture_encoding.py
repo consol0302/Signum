@@ -135,6 +135,9 @@ class CaptureEncodingTests(unittest.TestCase):
             action_payload = {
                 "schema_version": 1,
                 "case_id": "verified-case",
+                "target_events": [
+                    {"action_id": "click", "category": "small_ui"}
+                ],
                 "actions": [
                     {"id": "click", "at_seconds": 0.05, "type": "click"}
                 ],
@@ -155,6 +158,7 @@ class CaptureEncodingTests(unittest.TestCase):
                         "capture_policy": {
                             "minimum_average_fps": 10,
                             "maximum_gap_seconds": 0.25,
+                            "duration_seconds": 0.25,
                         },
                         "frame_statistics": stats,
                         "frame_errors": [],
@@ -164,7 +168,13 @@ class CaptureEncodingTests(unittest.TestCase):
                             "sha256": hashlib.sha256(action_data).hexdigest(),
                         },
                         "actions": [
-                            {"id": "click", "required": True, "status": "completed"}
+                            {
+                                "id": "click",
+                                "required": True,
+                                "status": "completed",
+                                "started_at_seconds": 0.04,
+                                "completed_at_seconds": 0.05,
+                            }
                         ],
                         "frames": frames,
                     }
@@ -174,6 +184,21 @@ class CaptureEncodingTests(unittest.TestCase):
 
             valid = verify_capture(capture, expected_case_id="verified-case")
             self.assertTrue(valid["valid"])
+            target_check = next(
+                row
+                for row in valid["checks"]
+                if row["kind"] == "target_event_frame_coverage"
+            )
+            self.assertTrue(target_check["valid"])
+
+            uncovered_payload = json.loads(capture.read_text(encoding="utf-8"))
+            uncovered_payload["actions"][0]["completed_at_seconds"] = 0.23
+            capture.write_text(json.dumps(uncovered_payload), encoding="utf-8")
+            uncovered = verify_capture(capture, expected_case_id="verified-case")
+            self.assertFalse(uncovered["integrity_valid"])
+            self.assertFalse(uncovered["valid"])
+            uncovered_payload["actions"][0]["completed_at_seconds"] = 0.05
+            capture.write_text(json.dumps(uncovered_payload), encoding="utf-8")
 
             (frames_dir / "frame_000001.png").write_bytes(b"changed")
             tampered = verify_capture(capture, expected_case_id="verified-case")

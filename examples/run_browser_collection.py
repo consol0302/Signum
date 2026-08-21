@@ -79,6 +79,8 @@ def run_collection(
             str(policy["minimum_average_fps"]),
             "--maximum-gap-seconds",
             str(policy["maximum_gap_seconds"]),
+            "--screenshot-timeout-ms",
+            str(policy.get("screenshot_timeout_ms", 200)),
         ]
         completed = subprocess.run(
             command,

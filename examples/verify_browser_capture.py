@@ -49,6 +49,10 @@ def capture_statistics(frames: list[dict[str, Any]]) -> dict[str, Any]:
             "median": median(durations) if durations else None,
             "maximum": max(durations) if durations else None,
         },
+        "timestamp_range_seconds": {
+            "first": timestamps[0] if timestamps else None,
+            "last": timestamps[-1] if timestamps else None,
+        },
     }
 
 
@@ -135,9 +139,12 @@ def verify_capture(
         )
     checks.append(
         _check(
-            "frame_sequence",
-            sequences == list(range(len(frames))),
-            list(range(len(frames))),
+            "frame_sequence_order",
+            all(
+                sequences[index] > sequences[index - 1]
+                for index in range(1, len(sequences))
+            ),
+            "strictly increasing request indices; gaps preserve failed attempts",
             sequences,
         )
     )
@@ -200,6 +207,55 @@ def verify_capture(
         )
     )
 
+    target_events = action_payload.get("target_events", [])
+    if target_events:
+        if not isinstance(target_events, list):
+            raise CaptureVerificationError("action target_events must be an array")
+        action_positions = {
+            row.get("id"): index
+            for index, row in enumerate(action_rows)
+            if isinstance(row, dict)
+        }
+        duration_seconds = float(capture.get("capture_policy", {}).get("duration_seconds"))
+        target_windows = []
+        for target in target_events:
+            if not isinstance(target, dict) or not isinstance(target.get("action_id"), str):
+                raise CaptureVerificationError("target events must bind action ids")
+            action_id = target["action_id"]
+            position = action_positions.get(action_id)
+            row = action_rows[position] if position is not None else None
+            completed = row.get("completed_at_seconds") if isinstance(row, dict) else None
+            next_started = (
+                action_rows[position + 1].get("started_at_seconds")
+                if position is not None and position + 1 < len(action_rows)
+                else duration_seconds
+            )
+            evidence_frames = (
+                [timestamp for timestamp in timestamps if completed <= timestamp < next_started]
+                if isinstance(completed, (int, float))
+                and isinstance(next_started, (int, float))
+                and next_started > completed
+                else []
+            )
+            target_windows.append(
+                {
+                    "action_id": action_id,
+                    "completed_at_seconds": completed,
+                    "window_end_seconds": next_started,
+                    "evidence_frame_count": len(evidence_frames),
+                    "first_evidence_frame_seconds": evidence_frames[0] if evidence_frames else None,
+                    "valid": bool(evidence_frames),
+                }
+            )
+        checks.append(
+            _check(
+                "target_event_frame_coverage",
+                all(row["valid"] for row in target_windows),
+                "at least one post-completion frame before the following action",
+                target_windows,
+            )
+        )
+
     recomputed = capture_statistics(frames)
     reported = capture.get("frame_statistics")
     stats_match = isinstance(reported, dict) and _close_tree(recomputed, reported)
@@ -217,14 +273,25 @@ def verify_capture(
         and row.get("status") != "completed"
     ]
     policy_reasons = []
+    policy_warnings = []
     if capture.get("frame_errors"):
-        policy_reasons.append("one or more screenshot attempts failed")
+        policy_warnings.append(
+            "one or more screenshot attempts failed but temporal bounds remain independently enforced"
+        )
     if (recomputed["effective_average_fps"] or 0) < minimum_fps:
         policy_reasons.append("effective average frame rate is below the frozen minimum")
     if (recomputed["interval_seconds"]["maximum"] or math.inf) > maximum_gap:
         policy_reasons.append("maximum frame gap exceeds the frozen capture limit")
     if len(frames) < 2:
         policy_reasons.append("capture contains fewer than two frames")
+    duration_seconds = policy.get("duration_seconds")
+    first_timestamp = recomputed["timestamp_range_seconds"]["first"]
+    last_timestamp = recomputed["timestamp_range_seconds"]["last"]
+    if isinstance(duration_seconds, (int, float)) and first_timestamp is not None:
+        if first_timestamp > maximum_gap:
+            policy_reasons.append("capture starts after the frozen coverage limit")
+        if float(duration_seconds) - last_timestamp > maximum_gap:
+            policy_reasons.append("capture ends before the frozen coverage limit")
     if required_failures:
         policy_reasons.append("one or more required actions failed")
     reported_reasons = capture.get("invalid_reasons")
@@ -252,6 +319,7 @@ def verify_capture(
         ),
         "recomputed_statistics": recomputed,
         "policy_reasons": policy_reasons,
+        "policy_warnings": policy_warnings,
         "required_action_failures": required_failures,
         "checks": checks,
     }

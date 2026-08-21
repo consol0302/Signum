@@ -18,6 +18,7 @@ function parseArgs(argv) {
     headless: true,
     minimumAverageFps: 10,
     maximumGapSeconds: 0.25,
+    screenshotTimeoutMs: 200,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const name = argv[index];
@@ -46,11 +47,12 @@ function parseArgs(argv) {
       "--height": "height",
       "--minimum-average-fps": "minimumAverageFps",
       "--maximum-gap-seconds": "maximumGapSeconds",
+      "--screenshot-timeout-ms": "screenshotTimeoutMs",
     }[name];
     if (!key) {
       throw new CaptureError(`unknown argument: ${name}`);
     }
-    if (["fps", "durationSeconds", "width", "height", "minimumAverageFps", "maximumGapSeconds"].includes(key)) {
+    if (["fps", "durationSeconds", "width", "height", "minimumAverageFps", "maximumGapSeconds", "screenshotTimeoutMs"].includes(key)) {
       result[key] = Number(value);
     } else {
       result[key] = value;
@@ -64,13 +66,13 @@ function parseArgs(argv) {
   if (!result.url.startsWith("https://")) {
     throw new CaptureError("capture URL must use https");
   }
-  for (const key of ["fps", "durationSeconds", "width", "height", "minimumAverageFps", "maximumGapSeconds"]) {
+  for (const key of ["fps", "durationSeconds", "width", "height", "minimumAverageFps", "maximumGapSeconds", "screenshotTimeoutMs"]) {
     if (!Number.isFinite(result[key]) || result[key] <= 0) {
       throw new CaptureError(`${key} must be positive`);
     }
   }
-  if (!Number.isInteger(result.width) || !Number.isInteger(result.height)) {
-    throw new CaptureError("viewport dimensions must be integers");
+  if (!Number.isInteger(result.width) || !Number.isInteger(result.height) || !Number.isInteger(result.screenshotTimeoutMs)) {
+    throw new CaptureError("viewport dimensions and screenshot timeout must be integers");
   }
   return result;
 }
@@ -102,6 +104,7 @@ function readActionSpec(filename, options) {
     ["capture_policy.height", capturePolicy.height, options.height],
     ["capture_policy.minimum_average_fps", capturePolicy.minimum_average_fps, options.minimumAverageFps],
     ["capture_policy.maximum_gap_seconds", capturePolicy.maximum_gap_seconds, options.maximumGapSeconds],
+    ["capture_policy.screenshot_timeout_ms", capturePolicy.screenshot_timeout_ms ?? 200, options.screenshotTimeoutMs],
   );
   for (const [name, frozen, requested] of frozenFields) {
     if (frozen !== requested) {
@@ -132,6 +135,11 @@ function readActionSpec(filename, options) {
     previous = action.at_seconds;
     if (typeof action.type !== "string" || !action.type) {
       throw new CaptureError(`action ${action.id} has no type`);
+    }
+    if (action.type === "navigate" && (
+      typeof action.url !== "string" || !action.url.startsWith("https://")
+    )) {
+      throw new CaptureError(`navigate action ${action.id} must use an https URL`);
     }
     if (action.required != null && typeof action.required !== "boolean") {
       throw new CaptureError(`action ${action.id} required must be boolean`);
@@ -178,13 +186,20 @@ function captureStatistics(frames) {
         ? Math.max(...frames.map((frame) => frame.capture_duration_seconds))
         : null,
     },
+    timestamp_range_seconds: {
+      first: frames.length ? timestamps[0] : null,
+      last: frames.length ? timestamps.at(-1) : null,
+    },
   };
 }
 
 
 function assessCapture(stats, options, frameErrors, actionRows) {
   const reasons = [];
-  if (frameErrors.length) reasons.push("one or more screenshot attempts failed");
+  const warnings = [];
+  if (frameErrors.length) {
+    warnings.push("one or more screenshot attempts failed but all temporal validity bounds are assessed independently");
+  }
   if ((stats.effective_average_fps ?? 0) < options.minimumAverageFps) {
     reasons.push("effective average frame rate is below the frozen minimum");
   }
@@ -192,6 +207,16 @@ function assessCapture(stats, options, frameErrors, actionRows) {
     reasons.push("maximum frame gap exceeds the frozen capture limit");
   }
   if (stats.frame_count < 2) reasons.push("capture contains fewer than two frames");
+  const firstTimestamp = stats.timestamp_range_seconds?.first;
+  const lastTimestamp = stats.timestamp_range_seconds?.last;
+  if (Number.isFinite(options.durationSeconds) && Number.isFinite(firstTimestamp)) {
+    if (firstTimestamp > options.maximumGapSeconds) {
+      reasons.push("capture starts after the frozen coverage limit");
+    }
+    if (options.durationSeconds - lastTimestamp > options.maximumGapSeconds) {
+      reasons.push("capture ends before the frozen coverage limit");
+    }
+  }
   const requiredFailures = actionRows.filter(
     (row) => row.required && row.status !== "completed",
   );
@@ -199,6 +224,7 @@ function assessCapture(stats, options, frameErrors, actionRows) {
   return {
     valid: reasons.length === 0,
     reasons,
+    warnings,
     required_action_failures: requiredFailures.map((row) => row.id),
   };
 }
@@ -323,6 +349,8 @@ async function executeAction(page, action) {
       );
     case "reload":
       return page.reload({ waitUntil: "domcontentloaded", timeout });
+    case "navigate":
+      return page.goto(action.url, { waitUntil: "domcontentloaded", timeout });
     case "wait_for":
       return locatorFor(page, action.locator).waitFor({
         state: action.state || "visible",
@@ -345,7 +373,11 @@ async function captureFrames(page, destination, options, monotonicStart, wallSta
     if ((performance.now() - monotonicStart) / 1000 >= options.durationSeconds) break;
     const requestStart = performance.now();
     try {
-      const data = await page.screenshot({ type: "png", animations: "allow" });
+      const data = await page.screenshot({
+        type: "png",
+        animations: "allow",
+        timeout: options.screenshotTimeoutMs,
+      });
       const completed = performance.now();
       const midpoint = (requestStart + completed) / 2;
       const name = `frame_${String(sequence).padStart(6, "0")}.png`;
@@ -480,6 +512,7 @@ async function main(argv) {
       status: assessment.valid ? "completed" : "completed_invalid",
       valid: assessment.valid,
       invalid_reasons: assessment.reasons,
+      warnings: assessment.warnings,
       case_id: options.caseId,
       goal: options.goal,
       source_url: options.url,
@@ -489,6 +522,7 @@ async function main(argv) {
         requested_fps: options.fps,
         minimum_average_fps: options.minimumAverageFps,
         maximum_gap_seconds: options.maximumGapSeconds,
+        screenshot_timeout_ms: options.screenshotTimeoutMs,
         duration_seconds: options.durationSeconds,
       },
       navigation_seconds: navigationSeconds,
@@ -535,6 +569,7 @@ async function main(argv) {
     frames: report.frame_statistics.frame_count,
     effective_average_fps: report.frame_statistics.effective_average_fps,
     maximum_gap_seconds: report.frame_statistics.interval_seconds.maximum,
+    screenshot_errors: report.frame_errors.length,
     action_failures: report.actions.filter((row) => row.status !== "completed").length,
     output: reportPath,
   };

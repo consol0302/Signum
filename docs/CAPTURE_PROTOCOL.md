@@ -24,7 +24,8 @@ node examples/browser_capture.cjs `
   --width 1280 `
   --height 720 `
   --minimum-average-fps 10 `
-  --maximum-gap-seconds 0.25
+  --maximum-gap-seconds 0.25 `
+  --screenshot-timeout-ms 200
 ```
 
 `SIGNUM_NODE_MODULES` must contain Playwright. The output directory must be new
@@ -33,8 +34,8 @@ or empty; the collector never overwrites an earlier run.
 The action file is data rather than executable JavaScript. It freezes the case
 id, source URL, goal, duration, viewport, frame-rate limits, and typed
 operations such as click, fill, key press, select, check, hover, scroll,
-reload, and wait-for. Each locator, expected result, expected outcome, timeout,
-and required/optional status is frozen in JSON. Before held-out capture, every
+reload, HTTPS navigation, and wait-for. Each locator, expected result, expected
+outcome, timeout, and required/optional status is frozen in JSON. Before held-out capture, every
 workflow action file must be committed and pushed. Do not repair locators after
 viewing a held-out recording; a broken action remains a recorded failure or
 the workflow becomes ineligible under the preregistered rules.
@@ -69,28 +70,40 @@ capture/
     ...
 ```
 
-For every PNG, `capture.json` records the monotonic midpoint of the screenshot
-request, wall-clock UTC time, capture duration, byte count, and SHA-256. It also
+For every PNG, `capture.json` records the original screenshot-request index,
+monotonic midpoint, wall-clock UTC time, capture duration, byte count, and
+SHA-256. Gaps in request indices and every screenshot error remain visible. It also
 records action start/completion times and failures, navigation response,
 viewport, Chrome version and executable hash, Playwright and Node versions,
 frame-rate statistics, and every rejected policy condition. A navigation or
 startup error creates `failure.json`; it is not represented as an empty or
 zero-cost success.
 
-The capture is valid only when:
+An individual screenshot failure is a recorded warning rather than an automatic
+invalid result. It cannot disappear from the timeline: the adjacent-frame,
+average-rate, and start/end coverage checks independently bound the evidence
+loss. The capture is valid only when:
 
-- all screenshot attempts completed;
 - effective average capture rate is at least 10fps;
-- no adjacent retained frames are more than 250ms apart;
+- no adjacent retained frames exceed the action file's frozen maximum gap;
+- the first and last retained frames cover both ends of the requested duration
+  within that same maximum gap;
 - at least two frames exist;
 - every action marked `required` completed.
 
-The 250ms ceiling is a separate dropout guard, not a redefinition of the 10fps
-average. Both measurements are published. Events whose evidence overlaps any
-invalid capture are ineligible; they are not moved to a convenient timestamp.
+The original development fixture uses a 250ms ceiling. The pre-freeze Claim 180
+v4 candidate pool uses a measured 750ms ceiling and a 200ms per-screenshot
+timeout because full-document Chrome navigation can briefly detach the page.
+The 17-combination reconnaissance run sustained at least 12.91fps and measured
+a worst retained-frame gap of 549ms. These bounds were selected without viewing
+Signum or provider outputs. All errors and both measurements are published.
+Events whose evidence overlaps an invalid capture are ineligible; they are not
+moved to a convenient timestamp.
 
 Independently recompute file hashes, dimensions, timing, action coverage, and
-policy status:
+policy status. If an action file binds `target_events`, verification also
+requires at least one retained frame after each target completes and before the
+following action starts:
 
 ```powershell
 python examples/verify_browser_capture.py `

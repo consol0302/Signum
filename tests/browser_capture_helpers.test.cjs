@@ -41,6 +41,15 @@ const valid = assessCapture(
 );
 assert.strictEqual(valid.valid, true);
 
+const recoveredAttempt = assessCapture(
+  stats,
+  { minimumAverageFps: 10, maximumGapSeconds: 0.25, durationSeconds: 0.35 },
+  [{ sequence: 2, error: "navigation overlap" }],
+  [{ id: "click", required: true, status: "completed" }],
+);
+assert.strictEqual(recoveredAttempt.valid, true);
+assert.strictEqual(recoveredAttempt.warnings.length, 1);
+
 const invalid = assessCapture(
   captureStatistics([frame(0, 0), frame(1, 0.4)]),
   { minimumAverageFps: 10, maximumGapSeconds: 0.25 },
@@ -48,8 +57,16 @@ const invalid = assessCapture(
   [{ id: "click", required: true, status: "failed" }],
 );
 assert.strictEqual(invalid.valid, false);
-assert(invalid.reasons.includes("one or more screenshot attempts failed"));
 assert(invalid.required_action_failures.includes("click"));
+
+const incompleteCoverage = assessCapture(
+  captureStatistics([frame(0, 0), frame(1, 0.08), frame(2, 0.16)]),
+  { minimumAverageFps: 10, maximumGapSeconds: 0.25, durationSeconds: 1 },
+  [],
+  [],
+);
+assert.strictEqual(incompleteCoverage.valid, false);
+assert(incompleteCoverage.reasons.includes("capture ends before the frozen coverage limit"));
 
 assert.throws(
   () => parseArgs(["--url", "http://example.test"]),
@@ -73,6 +90,7 @@ try {
         height: 720,
         minimum_average_fps: 10,
         maximum_gap_seconds: 0.25,
+        screenshot_timeout_ms: 200,
       },
       actions: [
         { id: "first", at_seconds: 1, type: "reload" },
@@ -90,6 +108,7 @@ try {
     height: 720,
     minimumAverageFps: 10,
     maximumGapSeconds: 0.25,
+    screenshotTimeoutMs: 200,
   };
   const loaded = readActionSpec(actionPath, options);
   assert.strictEqual(loaded.payload.actions.length, 2);
@@ -101,6 +120,17 @@ try {
   assert.throws(
     () => readActionSpec(actionPath, { ...options, fps: 10 }),
     CaptureError,
+  );
+  fs.writeFileSync(
+    actionPath,
+    JSON.stringify({
+      ...loaded.payload,
+      actions: [{ id: "unsafe", at_seconds: 1, type: "navigate", url: "http://example.test" }],
+    }),
+  );
+  assert.throws(
+    () => readActionSpec(actionPath, options),
+    /must use an https URL/,
   );
 } finally {
   fs.rmSync(temporary, { recursive: true, force: true });
