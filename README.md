@@ -248,9 +248,9 @@ signum freeze-manifest real-evaluation.json \
 ```
 
 A claim-grade held-out suite cannot be created by changing that role string.
-The 180-event plan must be locked before recording, contain 30 planned
-workflows, use the fixed category distribution, and point to an immutable
-protocol commit:
+The 180-event plan must be locked before recording, contain at least 30 planned
+workflow candidates, use the fixed category distribution, and point to an
+immutable protocol commit:
 
 ```bash
 signum preregister-heldout held-out/plan.json \
@@ -261,14 +261,28 @@ signum audit-manifest held-out/manifest.json --profile claim180
 signum freeze-manifest held-out/manifest.json \
   --output held-out/freeze.json \
   --role held_out \
-  --preregistration held-out/preregistration.json
+  --preregistration held-out/preregistration.json \
+  --collection-summary held-out/collection-result.json \
+  --collection-root held-out/captures
 ```
 
 The template is [heldout180-plan.example.json](examples/heldout180-plan.example.json),
 and the collection rules are in [Held-out 180 collection](docs/HELDOUT180.md).
-The repository's public Claim 180 suite uses the v2 preregistration, which
-cryptographically binds the validated browser collector and all 30 workflow
-action files before any held-out recording is opened.
+The repository's public v3 collection uses a 45-case ordered pool and keeps all
+failed attempts. Its conservative inventory exposed a 37-event deficit before
+any model run. A deficit-only supplement must bind that exact base evidence,
+predeclare one target event per candidate, and select the first independently
+valid target events by category in plan order:
+
+```bash
+signum preregister-claim180-supplement held-out/supplement-plan.json \
+  --output held-out/supplement-preregistration.json
+```
+
+The command rejects changed base artifacts, unplanned categories, failure
+targets without a preregistered failed outcome, and loading targets that are not
+successful asynchronous `wait_for` actions. It creates an acquisition lock; it
+does not turn mechanically anchored events into reviewed ground truth.
 
 ### Replay native computer-use perception
 

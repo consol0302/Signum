@@ -13,7 +13,12 @@ from .evaluation import (
     run_evaluation,
     score_reviews,
 )
-from .freeze import freeze_manifest, preregister_heldout, verify_freeze
+from .freeze import (
+    freeze_manifest,
+    preregister_claim180_supplement,
+    preregister_heldout,
+    verify_freeze,
+)
 from .gateway import GatewayConfig
 from .interpreters import CodexExecInterpreter, InterpreterError
 from .observe import observe_video
@@ -130,6 +135,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     preregister.add_argument("plan", type=Path)
     preregister.add_argument("--output", type=Path, required=True)
+    preregister_supplement = subparsers.add_parser(
+        "preregister-claim180-supplement",
+        help="hash-lock a deficit-only Claim 180 supplement before capture",
+    )
+    preregister_supplement.add_argument("plan", type=Path)
+    preregister_supplement.add_argument("--output", type=Path, required=True)
     verify = subparsers.add_parser(
         "verify-freeze",
         help="verify that a frozen manifest and its videos have not changed",
@@ -158,6 +169,8 @@ def main(argv: list[str] | None = None) -> int:
         return _freeze_manifest_command(args)
     if args.command == "preregister-heldout":
         return _preregister_heldout_command(args)
+    if args.command == "preregister-claim180-supplement":
+        return _preregister_claim180_supplement_command(args)
     if args.command == "verify-freeze":
         return _verify_freeze_command(args)
     if args.command == "assess-claim":
@@ -339,6 +352,26 @@ def _preregister_heldout_command(args: argparse.Namespace) -> int:
                 "output": str(args.output.resolve()),
                 "preregistration_id": result["preregistration_id"],
                 "planned_cases": len(result["case_ids"]),
+            },
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
+def _preregister_claim180_supplement_command(args: argparse.Namespace) -> int:
+    try:
+        result = preregister_claim180_supplement(args.plan, args.output)
+    except EvaluationError as error:
+        print(f"signum: error: {error}", file=sys.stderr)
+        return 2
+    print(
+        json.dumps(
+            {
+                "output": str(args.output.resolve()),
+                "preregistration_id": result["preregistration_id"],
+                "planned_candidates": len(result["case_ids"]),
+                "category_targets": result["category_targets"],
             },
             sort_keys=True,
         )

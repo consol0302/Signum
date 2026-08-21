@@ -19,6 +19,8 @@ from .video import VideoError, probe_video
 
 FREEZE_ROLES = frozenset({"development", "held_out"})
 PREREGISTRATION_KIND = "signum_heldout_preregistration"
+SUPPLEMENT_PREREGISTRATION_KIND = "signum_claim180_supplement_preregistration"
+SUPPLEMENT_CATEGORIES = frozenset({"action_failure", "loading_completion"})
 
 
 def preregister_heldout(
@@ -129,6 +131,153 @@ def preregister_heldout(
         }
     if collection_selection is not None:
         payload["collection_selection"] = collection_selection
+    payload["preregistration_id"] = _fingerprint(
+        {key: value for key, value in payload.items() if key != "created_at_utc"}
+    )
+    destination.write_text(_json_text(payload), encoding="utf-8")
+    return payload
+
+
+def preregister_claim180_supplement(
+    plan_path: Path | str,
+    output_path: Path | str,
+) -> dict[str, Any]:
+    """Hash-lock a deficit-only collection before any supplement capture."""
+
+    source = Path(plan_path).resolve()
+    plan = _read_object(source, "Claim 180 supplement plan")
+    if (
+        plan.get("schema_version") != 1
+        or plan.get("kind") != "signum_claim180_supplement_plan"
+    ):
+        raise EvaluationError(
+            "Claim 180 supplement plan must use schema_version 1 and the supplement kind"
+        )
+    protocol_id = _required_nonempty(plan, "protocol_id", "supplement plan")
+    protocol_repository = _required_nonempty(
+        plan, "protocol_repository", "supplement plan"
+    )
+    protocol_revision = _required_nonempty(
+        plan, "protocol_revision", "supplement plan"
+    )
+    if not protocol_repository.startswith("https://"):
+        raise EvaluationError("supplement protocol_repository must use https")
+    if not re.fullmatch(r"[0-9a-fA-F]{40,64}", protocol_revision):
+        raise EvaluationError(
+            "supplement protocol_revision must be a full immutable commit hash"
+        )
+
+    base_evidence = _validate_supplement_base_evidence(source, plan.get("base_evidence"))
+    category_targets = plan.get("category_targets")
+    if (
+        not isinstance(category_targets, dict)
+        or set(category_targets) != SUPPLEMENT_CATEGORIES
+        or any(
+            not isinstance(value, int)
+            or isinstance(value, bool)
+            or value <= 0
+            for value in category_targets.values()
+        )
+    ):
+        raise EvaluationError(
+            "supplement category_targets must contain positive action_failure and loading_completion counts"
+        )
+    if category_targets != base_evidence["supplement_deficits"]:
+        raise EvaluationError(
+            "supplement category targets differ from the frozen base inventory deficits"
+        )
+
+    case_ids = plan.get("case_ids")
+    if (
+        not isinstance(case_ids, list)
+        or len(case_ids) < sum(category_targets.values())
+        or any(not isinstance(value, str) or not value for value in case_ids)
+        or len(case_ids) != len(set(case_ids))
+    ):
+        raise EvaluationError(
+            "supplement case_ids must contain enough unique non-empty candidates"
+        )
+    workflow_sources = plan.get("workflow_sources")
+    if not isinstance(workflow_sources, list) or len(workflow_sources) != len(case_ids):
+        raise EvaluationError(
+            "supplement workflow_sources must contain one entry per case id"
+        )
+    source_ids = []
+    for row in workflow_sources:
+        if not isinstance(row, dict):
+            raise EvaluationError("supplement workflow sources must be objects")
+        source_ids.append(_required_nonempty(row, "case_id", "supplement source"))
+        url = _required_nonempty(row, "url", "supplement source")
+        _required_nonempty(row, "goal", "supplement source")
+        if not url.startswith("https://"):
+            raise EvaluationError("supplement source URLs must use https")
+    if source_ids != case_ids:
+        raise EvaluationError(
+            "supplement workflow source order must match case_ids"
+        )
+
+    actions_manifest = _validate_actions_manifest(
+        source,
+        plan.get("actions_manifest"),
+        case_ids,
+    )
+    if actions_manifest is None:
+        raise EvaluationError("supplement plan requires an actions manifest")
+    target_events = _validate_supplement_target_events(
+        actions_manifest["path"],
+        case_ids,
+        plan.get("target_events"),
+        category_targets,
+    )
+    collection_selection = _validate_supplement_selection(
+        plan.get("collection_selection"),
+        len(case_ids),
+        category_targets,
+    )
+    evidence_policy = plan.get("evidence_policy")
+    observation_budget = plan.get("observation_budget")
+    if not isinstance(evidence_policy, dict) or not evidence_policy:
+        raise EvaluationError("supplement evidence_policy must be a non-empty object")
+    if not isinstance(observation_budget, dict) or not observation_budget:
+        raise EvaluationError("supplement observation_budget must be a non-empty object")
+
+    destination = Path(output_path).resolve()
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schema_version": 1,
+        "kind": SUPPLEMENT_PREREGISTRATION_KIND,
+        "created_at_utc": datetime.now(UTC).isoformat(),
+        "plan": _relative_to_lock(source, destination),
+        "plan_bytes": source.stat().st_size,
+        "plan_sha256": _sha256_file(source),
+        "protocol_id": protocol_id,
+        "protocol_repository": protocol_repository,
+        "protocol_revision": protocol_revision,
+        "base_evidence": {
+            key: {
+                **{
+                    field: value[field]
+                    for field in ("bytes", "sha256", "identity")
+                },
+                "path": _relative_to_lock(value["path"], destination),
+            }
+            for key, value in base_evidence["artifacts"].items()
+        },
+        "category_targets": category_targets,
+        "case_ids": case_ids,
+        "workflow_sources": workflow_sources,
+        "target_events": target_events,
+        "actions_manifest": {
+            "path": _relative_to_lock(actions_manifest["path"], destination),
+            "bytes": actions_manifest["bytes"],
+            "sha256": actions_manifest["sha256"],
+            "collector_revision": actions_manifest["collector_revision"],
+            "case_count": actions_manifest["case_count"],
+        },
+        "collection_selection": collection_selection,
+        "evidence_policy": evidence_policy,
+        "observation_budget": observation_budget,
+    }
     payload["preregistration_id"] = _fingerprint(
         {key: value for key, value in payload.items() if key != "created_at_utc"}
     )
@@ -794,6 +943,220 @@ def _validate_actions_manifest(
         "collector_revision": collector_revision,
         "case_count": len(rows),
     }
+
+
+def _validate_supplement_base_evidence(
+    plan_path: Path,
+    raw: object,
+) -> dict[str, Any]:
+    if not isinstance(raw, dict) or set(raw) != {
+        "preregistration",
+        "collection_summary",
+        "event_inventory",
+    }:
+        raise EvaluationError(
+            "supplement base_evidence must reference preregistration, collection_summary, and event_inventory"
+        )
+    specifications = {
+        "preregistration": (
+            "preregistration_id",
+            "created_at_utc",
+            PREREGISTRATION_KIND,
+        ),
+        "collection_summary": (
+            "collection_id",
+            "generated_at_utc",
+            "signum_claim180_collection_summary",
+        ),
+        "event_inventory": (
+            "inventory_id",
+            None,
+            "signum_claim180_v3_event_inventory",
+        ),
+    }
+    artifacts: dict[str, dict[str, Any]] = {}
+    payloads: dict[str, dict[str, Any]] = {}
+    for name, (identity_field, timestamp_field, kind) in specifications.items():
+        reference = raw.get(name)
+        if not isinstance(reference, dict):
+            raise EvaluationError(f"supplement base {name} reference must be an object")
+        path = (plan_path.parent / _required_string(reference, "path")).resolve()
+        expected_bytes = _required_integer(reference, "bytes")
+        expected_sha256 = _required_string(reference, "sha256")
+        identity = _required_string(reference, "identity")
+        check = _file_check(
+            f"supplement-base-{name}", path, expected_sha256, expected_bytes
+        )
+        if not check["valid"]:
+            raise EvaluationError(f"supplement base {name} integrity check failed")
+        payload = _read_object(path, f"supplement base {name}")
+        if payload.get("schema_version") != 1 or payload.get("kind") != kind:
+            raise EvaluationError(f"supplement base {name} has an invalid schema or kind")
+        omitted = {identity_field}
+        if timestamp_field is not None:
+            omitted.add(timestamp_field)
+        actual_identity = _fingerprint(
+            {key: value for key, value in payload.items() if key not in omitted}
+        )
+        if payload.get(identity_field) != actual_identity or identity != actual_identity:
+            raise EvaluationError(f"supplement base {name} fingerprint is invalid")
+        artifacts[name] = {
+            "path": path,
+            "bytes": expected_bytes,
+            "sha256": expected_sha256,
+            "identity": identity,
+        }
+        payloads[name] = payload
+
+    preregistration = payloads["preregistration"]
+    collection = payloads["collection_summary"]
+    inventory = payloads["event_inventory"]
+    if collection.get("preregistration_id") != preregistration.get(
+        "preregistration_id"
+    ):
+        raise EvaluationError(
+            "supplement base collection does not belong to the base preregistration"
+        )
+    if inventory.get("collection_id") != collection.get("collection_id"):
+        raise EvaluationError(
+            "supplement base inventory does not belong to the base collection"
+        )
+    if inventory.get("model_outputs_seen") is not False:
+        raise EvaluationError(
+            "supplement cannot be planned after model outputs were seen on the base inventory"
+        )
+    deficits = inventory.get("supplement_deficits")
+    if (
+        not isinstance(deficits, dict)
+        or set(deficits) != SUPPLEMENT_CATEGORIES
+        or any(
+            not isinstance(value, int)
+            or isinstance(value, bool)
+            or value <= 0
+            for value in deficits.values()
+        )
+    ):
+        raise EvaluationError("supplement base inventory has invalid deficits")
+    return {
+        "artifacts": artifacts,
+        "supplement_deficits": deficits,
+    }
+
+
+def _validate_supplement_target_events(
+    actions_manifest_path: Path,
+    case_ids: list[str],
+    raw: object,
+    category_targets: dict[str, int],
+) -> list[dict[str, str]]:
+    if not isinstance(raw, list) or len(raw) != len(case_ids):
+        raise EvaluationError(
+            "supplement target_events must contain exactly one row per candidate"
+        )
+    actions_manifest = _read_object(
+        actions_manifest_path, "supplement actions manifest"
+    )
+    action_rows = actions_manifest.get("cases")
+    if not isinstance(action_rows, list):
+        raise EvaluationError("supplement actions manifest has invalid cases")
+    action_path_by_case = {
+        _required_string(row, "case_id"): (
+            actions_manifest_path.parent / _required_string(row, "action_file")
+        ).resolve()
+        for row in action_rows
+        if isinstance(row, dict)
+    }
+    result = []
+    candidate_counts = {category: 0 for category in category_targets}
+    for expected_case_id, row in zip(case_ids, raw, strict=True):
+        if not isinstance(row, dict):
+            raise EvaluationError("supplement target event rows must be objects")
+        case_id = _required_nonempty(row, "case_id", "supplement target event")
+        action_id = _required_nonempty(row, "action_id", "supplement target event")
+        category = _required_nonempty(row, "category", "supplement target event")
+        expected_result = _required_nonempty(
+            row, "expected_result", "supplement target event"
+        )
+        if case_id != expected_case_id:
+            raise EvaluationError(
+                "supplement target event order must match case_ids"
+            )
+        if category not in category_targets:
+            raise EvaluationError(
+                f"supplement target event {case_id!r} has an unplanned category"
+            )
+        action_path = action_path_by_case.get(case_id)
+        if action_path is None:
+            raise EvaluationError(
+                f"supplement target event {case_id!r} has no action file"
+            )
+        action_payload = _read_object(
+            action_path, f"supplement action file {case_id!r}"
+        )
+        matches = [
+            action
+            for action in action_payload.get("actions", [])
+            if isinstance(action, dict) and action.get("id") == action_id
+        ]
+        if len(matches) != 1:
+            raise EvaluationError(
+                f"supplement target action {case_id}/{action_id} is missing or duplicated"
+            )
+        action = matches[0]
+        if action.get("required") is False:
+            raise EvaluationError("supplement target actions must be required")
+        if action.get("expected_result") != expected_result:
+            raise EvaluationError(
+                f"supplement target result differs from action file for {case_id!r}"
+            )
+        if category == "action_failure" and action.get("expected_outcome") != "failure":
+            raise EvaluationError(
+                "supplement action_failure targets must preregister a failed outcome"
+            )
+        if category == "loading_completion" and (
+            action.get("type") != "wait_for"
+            or action.get("expected_outcome") != "success"
+        ):
+            raise EvaluationError(
+                "supplement loading_completion targets must be successful wait_for actions"
+            )
+        candidate_counts[category] += 1
+        result.append(
+            {
+                "case_id": case_id,
+                "action_id": action_id,
+                "category": category,
+                "expected_result": expected_result,
+            }
+        )
+    for category, target in category_targets.items():
+        if candidate_counts[category] < target:
+            raise EvaluationError(
+                f"supplement has too few {category} candidates for its target"
+            )
+    return result
+
+
+def _validate_supplement_selection(
+    raw: object,
+    candidate_count: int,
+    category_targets: dict[str, int],
+) -> dict[str, Any]:
+    if not isinstance(raw, dict):
+        raise EvaluationError("supplement collection_selection must be an object")
+    expected = {
+        "mode": "first_valid_target_event_by_category_in_plan_order",
+        "validity_source": "independent_capture_verification",
+        "retain_all_attempts": True,
+        "model_outputs_forbidden_before_selection": True,
+        "candidate_count": candidate_count,
+        "category_targets": category_targets,
+    }
+    if raw != expected:
+        raise EvaluationError(
+            "supplement collection_selection must exactly match the frozen category selection rule"
+        )
+    return expected
 
 
 def _file_check(
