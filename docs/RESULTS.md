@@ -164,8 +164,20 @@ selection contains exactly the first 30 valid case ids and is locked under
 collection id
 `3ee5284d843080914b11da1e0a9160a3469c40b1a7a58f7c33cd60a58033f861`.
 This establishes collection readiness only; the 180 event labels, detector
-measurements, provider runs, and blind review are not complete. The native OpenAI and Claude event-checkpoint adapters are implemented,
+measurements, provider runs, and blind review are not complete. The native
+OpenAI and Claude event-checkpoint adapters are implemented,
 including screenshot retry, Claude zoom, usage normalization, and visible
 failure recording. They have not made a paid request because the required API
 keys are absent. Until a new collection, labels, review, and provider execution
 finish, Signum cannot support an accuracy or cost claim against either provider.
+
+A conservative label-capacity audit then found that the selected recordings
+contain 146 preregistered browser actions, so they are at least 34 independent
+action-anchored transitions short of the 180-event target. Only five actions
+were preregistered as expected failures, 19 short of the required 24 failed
+actions. The audit id is
+`853a831e8f8d3bc83810460ab6351628a33256fd9717a73908e91a46eda4615b`.
+Signum does not credit repeated descriptions of one transition or inferred
+unobserved failures, so v3 will not be inflated into a Claim 180 manifest. A
+successor collection must preregister the event/category allocation and enough
+independent transitions before capture.
