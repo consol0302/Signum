@@ -264,6 +264,9 @@ signum freeze-manifest held-out/manifest.json \
 
 The template is [heldout180-plan.example.json](examples/heldout180-plan.example.json),
 and the collection rules are in [Held-out 180 collection](docs/HELDOUT180.md).
+The repository's public Claim 180 suite uses the v2 preregistration, which
+cryptographically binds the validated browser collector and all 30 workflow
+action files before any held-out recording is opened.
 
 ### Replay native computer-use perception
 

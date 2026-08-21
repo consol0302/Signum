@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "protocol_id": "signum-claim180-public-web-v2",
+  "protocol_repository": "https://github.com/consol0302/Signum",
+  "protocol_revision": "3256ea43c49eb281411ffb18b340e7b4651d1185",
+  "supersedes_preregistration_id": "733a118e7d96b0056c9d56b9fcaf036dece8e23ecca44206800ea82b6960c003",
+  "actions_manifest": {
+    "path": "claim180-actions-manifest.json",
+    "bytes": 7682,
+    "sha256": "ca65cb88ddb789bfd8fcbc7c70bcbb3be59f915d147561224cc7b6f919bb05d7"
+  },
+  "case_ids": [
+    "workflow-01-dynamic-controls-remove",
+    "workflow-02-dynamic-controls-enable",
+    "workflow-03-dynamic-loading-hidden",
+    "workflow-04-dynamic-loading-rendered",
+    "workflow-05-add-remove-elements",
+    "workflow-06-notification-message",
+    "workflow-07-auth-success",
+    "workflow-08-auth-rejected",
+    "workflow-09-hover-card",
+    "workflow-10-checkbox-toggle",
+    "workflow-11-dropdown-select",
+    "workflow-12-key-press",
+    "workflow-13-horizontal-slider",
+    "workflow-14-infinite-scroll",
+    "workflow-15-disappearing-elements",
+    "workflow-16-selenium-form-valid",
+    "workflow-17-selenium-form-invalid",
+    "workflow-18-selenium-small-controls",
+    "workflow-19-selenium-range",
+    "workflow-20-selenium-datalist",
+    "workflow-21-todomvc-react-add",
+    "workflow-22-todomvc-vue-complete-filter",
+    "workflow-23-todomvc-svelte-edit",
+    "workflow-24-todomvc-preact-clear",
+    "workflow-25-todomvc-lit-filter",
+    "workflow-26-w3-modal",
+    "workflow-27-w3-tabs",
+    "workflow-28-w3-snackbar",
+    "workflow-29-w3-accordion",
+    "workflow-30-w3-filter-list"
+  ],
+  "category_targets": {
+    "small_ui": 30,
+    "action_success": 24,
+    "action_failure": 24,
+    "popup_notification": 18,
+    "loading_completion": 18,
+    "scroll_navigation": 15,
+    "cursor_hover_focus": 15,
+    "animation_game_hud": 18,
+    "transient_event": 18
+  },
+  "evidence_policy": {
+    "scope": "computer-use perception only; no action-execution score",
+    "capture": {
+      "viewport": "1280x720",
+      "format": "original timestamped browser recording",
+      "minimum_frame_rate": 10,
+      "fixed_duration_state_reconstruction": false
+    },
+    "labels": {
+      "created_before_any_model_run": true,
+      "labels_hidden_from_models": true,
+      "unique_source_transition_per_eligible_event": true,
+      "constructed_failures_eligible": false,
+      "ambiguous_or_corrupted_events_retained_as_ineligible": true
+    },
+    "event_checkpoint_native_replay": {
+      "passive_event": "original frame at the frozen event midpoint",
+      "action_event": "original frames at frozen before and after timestamps",
+      "allowed_requests": [
+        "screenshot",
+        "zoom_when_documented_by_provider"
+      ],
+      "disallowed_requests": [
+        "click",
+        "type",
+        "scroll",
+        "navigate",
+        "wait"
+      ],
+      "provider_failures_count_as_failures": true
+    },
+    "review": "two independent human-blind reviewers plus adjudication"
+  },
+  "observation_budget": {
+    "unit": "per eligible event",
+    "max_turns": 6,
+    "max_screenshots": 3,
+    "max_zooms": 2,
+    "same_frozen_prompt_and_output_schema": true,
+    "all_requests_count_toward_cost_and_latency": true
+  },
+  "workflow_sources": [
+    {
+      "case_id": "workflow-01-dynamic-controls-remove",
+      "url": "https://the-internet.herokuapp.com/dynamic_controls",
+      "goal": "Remove the checkbox, observe the loading state, and verify the replacement state."
+    },
+    {
+      "case_id": "workflow-02-dynamic-controls-enable",
+      "url": "https://the-internet.herokuapp.com/dynamic_controls",
+      "goal": "Enable the text field, enter a short value, and verify enabled and disabled behavior."
+    },
+    {
+      "case_id": "workflow-03-dynamic-loading-hidden",
+      "url": "https://the-internet.herokuapp.com/dynamic_loading/1",
+      "goal": "Start the hidden-element example and detect the completed Hello World state."
+    },
+    {
+      "case_id": "workflow-04-dynamic-loading-rendered",
+      "url": "https://the-internet.herokuapp.com/dynamic_loading/2",
+      "goal": "Start the rendered-element example and detect its loading and completion states."
+    },
+    {
+      "case_id": "workflow-05-add-remove-elements",
+      "url": "https://the-internet.herokuapp.com/add_remove_elements/",
+      "goal": "Add and remove controls while verifying both successful and unchanged outcomes."
+    },
+    {
+      "case_id": "workflow-06-notification-message",
+      "url": "https://the-internet.herokuapp.com/notification_message_rendered",
+      "goal": "Request a notification and identify the visible status message."
+    },
+    {
+      "case_id": "workflow-07-auth-success",
+      "url": "https://the-internet.herokuapp.com/login",
+      "goal": "Sign in with the documented test account and verify the secure-area state."
+    },
+    {
+      "case_id": "workflow-08-auth-rejected",
+      "url": "https://the-internet.herokuapp.com/login",
+      "goal": "Attempt an invalid sign-in and verify that access is rejected."
+    },
+    {
+      "case_id": "workflow-09-hover-card",
+      "url": "https://the-internet.herokuapp.com/hovers",
+      "goal": "Hover the first profile and identify the revealed profile action."
+    },
+    {
+      "case_id": "workflow-10-checkbox-toggle",
+      "url": "https://the-internet.herokuapp.com/checkboxes",
+      "goal": "Toggle both checkboxes and verify their visible checked states."
+    },
+    {
+      "case_id": "workflow-11-dropdown-select",
+      "url": "https://the-internet.herokuapp.com/dropdown",
+      "goal": "Choose each available option and verify the current selection."
+    },
+    {
+      "case_id": "workflow-12-key-press",
+      "url": "https://the-internet.herokuapp.com/key_presses",
+      "goal": "Send several keys and identify the page's latest key result."
+    },
+    {
+      "case_id": "workflow-13-horizontal-slider",
+      "url": "https://the-internet.herokuapp.com/horizontal_slider",
+      "goal": "Move the slider to a requested value and verify the displayed number."
+    },
+    {
+      "case_id": "workflow-14-infinite-scroll",
+      "url": "https://the-internet.herokuapp.com/infinite_scroll",
+      "goal": "Scroll through newly appended content and verify the viewport position changes."
+    },
+    {
+      "case_id": "workflow-15-disappearing-elements",
+      "url": "https://the-internet.herokuapp.com/disappearing_elements",
+      "goal": "Reload and track which navigation controls are visibly present or absent."
+    },
+    {
+      "case_id": "workflow-16-selenium-form-valid",
+      "url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "goal": "Complete representative form controls and submit a valid form."
+    },
+    {
+      "case_id": "workflow-17-selenium-form-invalid",
+      "url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "goal": "Exercise disabled and readonly controls and verify rejected changes."
+    },
+    {
+      "case_id": "workflow-18-selenium-small-controls",
+      "url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "goal": "Toggle compact checkbox and radio controls and verify their selected states."
+    },
+    {
+      "case_id": "workflow-19-selenium-range",
+      "url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "goal": "Change the range and color controls and verify the small visual updates."
+    },
+    {
+      "case_id": "workflow-20-selenium-datalist",
+      "url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "goal": "Use the datalist and select controls, then verify the submitted state."
+    },
+    {
+      "case_id": "workflow-21-todomvc-react-add",
+      "url": "https://todomvc.com/examples/react/dist/",
+      "goal": "Add multiple todos and verify the visible item count."
+    },
+    {
+      "case_id": "workflow-22-todomvc-vue-complete-filter",
+      "url": "https://todomvc.com/examples/vue/dist/",
+      "goal": "Complete a todo and verify the active and completed filters."
+    },
+    {
+      "case_id": "workflow-23-todomvc-svelte-edit",
+      "url": "https://todomvc.com/examples/svelte/dist/",
+      "goal": "Edit a todo label and verify the committed and cancelled edit states."
+    },
+    {
+      "case_id": "workflow-24-todomvc-preact-clear",
+      "url": "https://todomvc.com/examples/preact/dist/",
+      "goal": "Complete and clear todos while verifying the remaining list."
+    },
+    {
+      "case_id": "workflow-25-todomvc-lit-filter",
+      "url": "https://todomvc.com/examples/lit/dist/",
+      "goal": "Create todos and navigate among all, active, and completed filters."
+    },
+    {
+      "case_id": "workflow-26-w3-modal",
+      "url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal",
+      "goal": "Open and close the example modal and verify its overlay state."
+    },
+    {
+      "case_id": "workflow-27-w3-tabs",
+      "url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_tabs",
+      "goal": "Switch among example tabs and verify the selected content panel."
+    },
+    {
+      "case_id": "workflow-28-w3-snackbar",
+      "url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_snackbar",
+      "goal": "Trigger the snackbar and observe its appearance and disappearance."
+    },
+    {
+      "case_id": "workflow-29-w3-accordion",
+      "url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_accordion",
+      "goal": "Expand and collapse accordion sections and verify their content visibility."
+    },
+    {
+      "case_id": "workflow-30-w3-filter-list",
+      "url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_filter_list",
+      "goal": "Filter the example list with matching and non-matching text and verify the results."
+    }
+  ]
+}
