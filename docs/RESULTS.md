@@ -234,3 +234,19 @@ complete and has reproducible id
 No model output was seen before or during selection. The result closes the
 mechanical 37-event deficit, but the combined 180-event manifest still requires
 human review before comparative runs can support a claim.
+
+The selected 37 supplement captures were encoded at 30 fps with a timestamped
+output-frame-to-source-frame map. Their encoded videos total 715,960,812 bytes;
+the largest output frame age relative to its source frame is 0.158 seconds. The
+supplement event inventory contains exactly 18 loading-completion and 19
+action-failure transitions and has id
+`e869b6994a0719389d9ef4e42c1b48dfc50cf814671f0e6a666eac1027670dc1`.
+
+Combining only eligible V3 events with the frozen supplement yields exactly 180
+unique source transitions across 67 workflows. The resulting distribution is
+30 small-UI, 24 action-success, 24 action-failure, 18 popup/notification, 18
+loading-completion, 15 scroll/navigation, 15 cursor/focus, 18 animation/dynamic
+UI, and 18 transient events. The composite inventory id is
+`ca24e78e5bfe081a3ecced64817d331f646759e4739a5d0f0d1eeda28494bde5`.
+Its status remains `mechanically_anchored_pending_human_review`; these counts
+are capacity and integrity evidence, not reviewed accuracy ground truth.

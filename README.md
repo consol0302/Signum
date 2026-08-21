@@ -46,6 +46,14 @@ events. The reproducible supplement collection id is
 This closes the mechanical 180-event capacity deficit; it does not replace
 human label review or establish an OpenAI/Claude accuracy or cost claim.
 
+The 143-event V3 inventory and 37-event supplement inventory have been combined
+without reusing a source transition. The composite inventory contains exactly
+180 eligible events across 67 workflows and matches the frozen Claim 180
+category distribution. Its inventory id is
+`ca24e78e5bfe081a3ecced64817d331f646759e4739a5d0f0d1eeda28494bde5`.
+It remains mechanically anchored and pending human review, so comparative model
+runs have not started.
+
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 
 ## Install
