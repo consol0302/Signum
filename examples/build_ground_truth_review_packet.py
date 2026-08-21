@@ -201,17 +201,26 @@ def main() -> None:
         description="Build a two-reviewer, method-blind ground-truth packet."
     )
     parser.add_argument("--inventory", type=Path, required=True)
-    parser.add_argument("--v3-root", type=Path, required=True)
-    parser.add_argument("--supplement-root", type=Path, required=True)
+    parser.add_argument("--v3-root", type=Path)
+    parser.add_argument("--supplement-root", type=Path)
+    parser.add_argument("--v4-root", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--seed", required=True)
     args = parser.parse_args()
+    roots = {
+        name: path.resolve()
+        for name, path in {
+            "v3": args.v3_root,
+            "supplement": args.supplement_root,
+            "v4": args.v4_root,
+        }.items()
+        if path is not None
+    }
+    if not roots:
+        parser.error("at least one evidence root is required")
     packet = build_packet(
         args.inventory.resolve(),
-        {
-            "v3": args.v3_root.resolve(),
-            "supplement": args.supplement_root.resolve(),
-        },
+        roots,
         args.output.resolve(),
         seed=args.seed,
     )

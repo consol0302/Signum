@@ -70,21 +70,39 @@ run; `examples/compare_ground_truth_reviews.py` sends every disagreement or
 negative verdict to adjudication. This protects the labels from detector and
 provider-output leakage, but it does not itself establish a comparative claim.
 
-The fresh V4 candidate plan is now generated but not yet collected. It contains
+The fresh V4 candidate plan was collected once after its plan and acquisition
+lock were pushed. It contains
 30 balanced slots with two ordered candidates per slot, exactly six target
 events per candidate, and the fixed 180-event category distribution. The 60
 candidates are split evenly across three domains absent from earlier plans:
 PlayLab, QA Practice Hub, and TestPages. Reconnaissance covered all 17 unique
 domain/template combinations without running Signum or any provider model;
 17/17 captures passed independent integrity, timing, action, and target-frame
-checks. This validates collection mechanics only. The collector revision is
+checks. This validated collection mechanics only. The collector revision is
 `b6025b84d4498c682a76273e8540c63032d8e83e` and the plan-builder revision is
 `67c821dc38bc07e38816a5f39030a607222a0f83`. The plan and pre-collection lock
 are now public. The reproducible preregistration id is
 `02912857cf4064f23311ba722c546c3d6297658afb189fecb2e7e76fd531fc02`.
-The one-shot 60-candidate collection may begin only from this point; no model
-output may be produced until all attempts are independently verified and the
-per-slot selection is fixed.
+The final run retained all 60 attempts. Independent verification found 56
+valid and four invalid captures, with no missing or startup-failed attempt.
+Every slot had a valid candidate, so the frozen first-valid-per-slot rule
+selected 30 cases. The collection id is
+`5f8ece1a7830d45c65dca4c8b2de837cd40c3c8eeb7e4c729081b4c248a6bbdf`.
+No detector or provider output was generated before selection.
+
+The selected captures were encoded at 30 fps with complete output-to-source
+timestamp maps. The preregistered six actions per slot produce a mechanically
+anchored 180-event inventory with id
+`39b53be53fd6c090519aa819e4576007c7a9cce24e527983045689b9cebfe050`.
+An exact-pixel audit found that immediate post-action anchors left 15/180
+before/after pairs identical. Applying one fixed 0.3-second settle delay to all
+events reduced that to 2/180 without crossing a following action. Both
+remaining cases are the same TestPages hover target. This is a disclosed
+ground-truth visibility deficit, not a detector result. The method-blind review
+packet id is
+`341033d585d5279c4286bac7251dfcca48a38b1c9cbd3ee836f341f444f66e5d`;
+two independent human reviews and adjudication are still required before the
+suite can be frozen or any comparative claim can be assessed.
 
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 
@@ -360,6 +378,33 @@ python examples/build_claim180_v4_plan.py `
 
 signum preregister-heldout benchmark-protocol/claim180-plan-v4.json `
   --output benchmark-protocol/claim180-preregistration-v4.json
+
+python examples/verify_browser_collection.py `
+  --root benchmark-output/claim180-v4-heldout-captures `
+  --plan benchmark-protocol/claim180-plan-v4.json
+
+python examples/summarize_claim180_collection.py `
+  --root benchmark-output/claim180-v4-heldout-captures `
+  --plan benchmark-protocol/claim180-plan-v4.json `
+  --preregistration benchmark-protocol/claim180-preregistration-v4.json `
+  --output benchmark-protocol/claim180-v4-collection-result.json
+
+python examples/encode_selected_claim180.py `
+  --collection-root benchmark-output/claim180-v4-heldout-captures `
+  --summary benchmark-protocol/claim180-v4-collection-result.json `
+  --fps 30
+
+python examples/build_claim180_v4_event_inventory.py `
+  --summary benchmark-protocol/claim180-v4-collection-result.json `
+  --collection-root benchmark-output/claim180-v4-heldout-captures `
+  --plan benchmark-protocol/claim180-plan-v4.json `
+  --output benchmark-protocol/claim180-v4-event-inventory.json
+
+python examples/build_ground_truth_review_packet.py `
+  --inventory benchmark-protocol/claim180-v4-event-inventory.json `
+  --v4-root benchmark-output/claim180-v4-heldout-captures `
+  --output benchmark-output/claim180-v4-ground-truth-review `
+  --seed claim180-v4-ground-truth-v1
 ```
 
 The repository now also contains the deterministic supplement candidate

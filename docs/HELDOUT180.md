@@ -72,6 +72,10 @@ evidence/budget policies.
 - Record one manifest case per preregistered case id and keep that order.
 - For action labels, record the action, expected visible result, and exact
   before/after timestamps. Keep failures even when the screen is unchanged.
+- Apply any post-action settle interval uniformly, before human review and
+  before method execution. Publish an anchor audit, keep known identical pairs,
+  and forbid an after anchor from crossing the next action. Do not choose a
+  different delay per event.
 - Mark synthetic, constructed, ambiguous, corrupted, or policy-violating
   events `real_world_eligible: false`; do not replace them after seeing model
   output.

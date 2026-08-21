@@ -276,3 +276,41 @@ Because this composite suite was used to choose the detector setting, it is a
 validation set and cannot serve as the final held-out claim suite. The final
 claim requires a fresh preregistered collection after the detector and review
 rules are frozen.
+
+## Fresh balanced V4 collection
+
+The V4 acquisition plan and preregistration were published before collection.
+All 60 ordered candidates were attempted once. The collector reported four
+invalid captures and 56 valid captures; a separate verifier reproduced those
+counts with no missing or startup-failed case. The invalid attempts remain in
+the evidence root. All 30 slots had at least one valid candidate, and the
+preregistered first-valid-per-slot rule produced collection id
+`5f8ece1a7830d45c65dca4c8b2de837cd40c3c8eeb7e4c729081b4c248a6bbdf`.
+No Signum, uniform, OpenAI, Claude, or Codex semantic output was generated
+before the selection was fixed.
+
+The 30 selected recordings were encoded at 30 fps. The videos total
+1,215,888,694 bytes and retain a frame-level output-to-source timestamp map;
+the largest output-frame source age is 0.698 seconds. The six preregistered
+target actions in each slot form an exact 180-event inventory with the frozen
+category totals. Inventory id
+`39b53be53fd6c090519aa819e4576007c7a9cce24e527983045689b9cebfe050`
+is mechanically anchored and explicitly pending human review.
+
+An exact-PNG anchor audit exposed a labeling-timing failure before review.
+Selecting the first frame immediately after action completion produced 15/180
+identical before/after pairs. One fixed 0.3-second settle delay reduced the
+count to 2/180, with zero missing after frames and zero anchors crossing the
+next action. Longer delays through 1.0 second did not change the two remaining
+cases; both are the TestPages `15-hover-calculation-control` target. Audit id
+`054f1fd98982eca26d105b41ee5bb35dd8a0472b5d3a03f9217dcfcd7fed89b3`
+preserves every tested delay and affected event key. This audit does not
+establish ground truth or accuracy. It identifies a likely two-event
+cursor/focus deficit that must be resolved by independent reviewers and, if
+confirmed, a separately preregistered supplement.
+
+The method-blind 180-item packet has id
+`341033d585d5279c4286bac7251dfcca48a38b1c9cbd3ee836f341f444f66e5d`.
+It contains no method output. Two distinct human reviewers and adjudication are
+still required. Native provider and same-budget method runs remain forbidden
+until that label review and the final suite freeze are complete.

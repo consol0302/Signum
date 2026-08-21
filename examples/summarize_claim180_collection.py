@@ -36,6 +36,37 @@ def read_object(path: Path, kind: str) -> dict[str, Any]:
     return payload
 
 
+def locked_selection_view(raw: object) -> object:
+    """Return the selection fields persisted by the preregistration lock."""
+
+    if not isinstance(raw, dict):
+        return raw
+    keys = (
+        "mode",
+        "validity_source",
+        "retain_all_attempts",
+        "model_outputs_forbidden_before_selection",
+        "required_valid_cases",
+        "candidate_count",
+    )
+    locked = {key: raw.get(key) for key in keys}
+    if raw.get("mode") == "first_valid_per_slot_in_plan_order":
+        slots = raw.get("slots")
+        if not isinstance(slots, list):
+            locked["slots"] = slots
+        else:
+            locked["slots"] = [
+                {
+                    "slot_id": slot.get("slot_id"),
+                    "candidate_ids": slot.get("candidate_ids"),
+                }
+                if isinstance(slot, dict)
+                else slot
+                for slot in slots
+            ]
+    return locked
+
+
 def summarize_case(case_id: str, root: Path) -> dict[str, Any]:
     case_root = root / case_id
     capture_path = case_root / "capture.json"
@@ -132,6 +163,16 @@ def build_summary(
         raise RuntimeError("plan case_ids must be strings")
     if preregistration.get("case_ids") != case_ids:
         raise RuntimeError("preregistration case ids differ from the plan")
+    if (
+        preregistration.get("plan_bytes") != plan_path.stat().st_size
+        or preregistration.get("plan_sha256") != sha256_file(plan_path)
+    ):
+        raise RuntimeError("preregistration plan integrity check failed")
+    selection = plan.get("collection_selection")
+    if preregistration.get("collection_selection") != locked_selection_view(
+        selection
+    ):
+        raise RuntimeError("preregistration collection selection differs from the plan")
     cases = [summarize_case(case_id, root) for case_id in case_ids]
     counts = {
         status: sum(row["collection_status"] == status for row in cases)
@@ -140,9 +181,6 @@ def build_summary(
     unexpected = sorted(
         path.name for path in root.iterdir() if path.is_dir() and path.name not in case_ids
     )
-    selection = plan.get("collection_selection")
-    if preregistration.get("collection_selection") != selection:
-        raise RuntimeError("preregistration collection selection differs from the plan")
     if selection is None:
         required_valid_cases = len(case_ids)
         selection_mode = "all_planned_cases_valid"

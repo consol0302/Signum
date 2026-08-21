@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 import tempfile
 import unittest
@@ -45,8 +46,13 @@ class Claim180CollectionSummaryTests(unittest.TestCase):
             }
             plan = root / "plan.json"
             preregistration = root / "preregistration.json"
+            plan_selection = json.loads(json.dumps(selection))
+            for slot in plan_selection["slots"]:
+                slot["category_template"] = ["small_ui"]
             plan.write_text(
-                json.dumps({"case_ids": case_ids, "collection_selection": selection}),
+                json.dumps(
+                    {"case_ids": case_ids, "collection_selection": plan_selection}
+                ),
                 encoding="utf-8",
             )
             preregistration.write_text(
@@ -55,6 +61,8 @@ class Claim180CollectionSummaryTests(unittest.TestCase):
                         "case_ids": case_ids,
                         "preregistration_id": "slot-lock",
                         "collection_selection": selection,
+                        "plan_bytes": plan.stat().st_size,
+                        "plan_sha256": hashlib.sha256(plan.read_bytes()).hexdigest(),
                     }
                 ),
                 encoding="utf-8",
@@ -93,6 +101,8 @@ class Claim180CollectionSummaryTests(unittest.TestCase):
                     {
                         "case_ids": case_ids,
                         "preregistration_id": "frozen-preregistration",
+                        "plan_bytes": plan.stat().st_size,
+                        "plan_sha256": hashlib.sha256(plan.read_bytes()).hexdigest(),
                     }
                 ),
                 encoding="utf-8",
@@ -128,6 +138,30 @@ class Claim180CollectionSummaryTests(unittest.TestCase):
                 "source_path", summary["cases"][0]["action_spec"]
             )
             self.assertNotIn("executable", summary["cases"][0]["browser"])
+
+    def test_summary_rejects_a_plan_that_no_longer_matches_the_lock(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            captures = root / "captures"
+            captures.mkdir()
+            plan = root / "plan.json"
+            plan.write_text(json.dumps({"case_ids": []}), encoding="utf-8")
+            preregistration = root / "preregistration.json"
+            preregistration.write_text(
+                json.dumps(
+                    {
+                        "case_ids": [],
+                        "plan_bytes": plan.stat().st_size,
+                        "plan_sha256": "0" * 64,
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                RuntimeError, "preregistration plan integrity check failed"
+            ):
+                MODULE.build_summary(captures, plan, preregistration)
 
     @staticmethod
     def _write_capture(root: Path, case_id: str, *, valid: bool) -> None:
