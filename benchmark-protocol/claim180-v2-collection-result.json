@@ -1,0 +1,1790 @@
+{
+  "cases": [
+    {
+      "action_spec": {
+        "bytes": 2221,
+        "path": "actions.json",
+        "sha256": "2cb19893ac63bf5fa71e0941a277ca73e9838fef46270bd98fed25a06daafaae"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66760,
+        "path": "workflow-01-dynamic-controls-remove/capture.json",
+        "sha256": "e2ffd7b2abdb12188be3283802c203c684402f6fc2eb72b8eaa4fd8327406f32"
+      },
+      "captured_at_utc": "2026-08-21T09:17:43.476Z",
+      "case_id": "workflow-01-dynamic-controls-remove",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#checkbox')\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "click-absent-checkbox",
+          "required": false
+        }
+      ],
+      "final_url": "https://the-internet.herokuapp.com/dynamic_controls",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/dynamic_controls",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.06152239999999801,
+          "median": 0.040920099999997545
+        },
+        "effective_average_fps": 15.00275038550049,
+        "elapsed_seconds": 11.931145650000001,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.09067575000000261,
+          "median": 0.06760475000000277,
+          "minimum": 0.0452527000000007,
+          "p95": 0.08262871499999713
+        }
+      },
+      "verification_artifact": {
+        "bytes": 127844,
+        "path": "workflow-01-dynamic-controls-remove/verification.json",
+        "sha256": "6c2eb96e6f1ee620b9b7504793de8854879535f6cf5434ac6d78c657627bc8e7"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2264,
+        "path": "actions.json",
+        "sha256": "2b14bda719402bc0dfa48afb8bfd065a2e2ef1fb5b4cb109299334286219b37e"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 67622,
+        "path": "workflow-02-dynamic-controls-enable/capture.json",
+        "sha256": "420c34bfb11ef99c90c469be4d351978df14c5c5dacbf5788210e6a84cc0aaa1"
+      },
+      "captured_at_utc": "2026-08-21T09:18:20.022Z",
+      "case_id": "workflow-02-dynamic-controls-enable",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.fill: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#input-example input')\u001b[22m\n\u001b[2m    - locator resolved to <input disabled type=\"text\"/>\u001b[22m\n\u001b[2m    - fill(\"rejected\")\u001b[22m\n\u001b[2m  - attempting fill action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and editable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying fill action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and editable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying fill action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and editable\u001b[22m\n\u001b[2m    - element is not enabled\u001b[22m\n\u001b[2m  - retrying fill action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "fill-disabled-input",
+          "required": false
+        }
+      ],
+      "final_url": "https://the-internet.herokuapp.com/dynamic_controls",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/dynamic_controls",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.06022200000000157,
+          "median": 0.04004825000000346
+        },
+        "effective_average_fps": 15.026727174959678,
+        "elapsed_seconds": 11.912108199999999,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.09315224999999838,
+          "median": 0.06068119999999899,
+          "minimum": 0.045482250000000946,
+          "p95": 0.08518151499999652
+        }
+      },
+      "verification_artifact": {
+        "bytes": 127835,
+        "path": "workflow-02-dynamic-controls-enable/verification.json",
+        "sha256": "9ee5ad18e9aed5193690f22c414e535761cc2395d47bf7be97f85a5a357d0522"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 1885,
+        "path": "actions.json",
+        "sha256": "4d4d4558a59997fb7a9538fd8654805525dafeea7c5e626ba351ee1e6708d76d"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66378,
+        "path": "workflow-03-dynamic-loading-hidden/capture.json",
+        "sha256": "bd0fa7e1f410becdfcb346a82007bbc25f3f42db8f16dd2824c74fdee85995d5"
+      },
+      "captured_at_utc": "2026-08-21T09:18:56.561Z",
+      "case_id": "workflow-03-dynamic-loading-hidden",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Start', exact: true })\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "click-hidden-start",
+          "required": false
+        }
+      ],
+      "final_url": "https://the-internet.herokuapp.com/dynamic_loading/1",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/dynamic_loading/1",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.06086189999999988,
+          "median": 0.039585299999998824
+        },
+        "effective_average_fps": 15.004081571206639,
+        "elapsed_seconds": 11.930087099999996,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08786830000000179,
+          "median": 0.06789585000000065,
+          "minimum": 0.045149400000002116,
+          "p95": 0.08132422000000283
+        }
+      },
+      "verification_artifact": {
+        "bytes": 127638,
+        "path": "workflow-03-dynamic-loading-hidden/verification.json",
+        "sha256": "14a0225a6428918844f3a943e443a78eeb0dac45e7da8df22cdf660502353b5a"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 1922,
+        "path": "actions.json",
+        "sha256": "edd712d02723e0ce3e1b2f47bde65f648a397da15aa38297fd53593f7aa31f36"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66417,
+        "path": "workflow-04-dynamic-loading-rendered/capture.json",
+        "sha256": "b552fbcebbb803525c9d9529947d2d1d5d2c6645ce5a47e86046fc1b8c24196f"
+      },
+      "captured_at_utc": "2026-08-21T09:19:33.046Z",
+      "case_id": "workflow-04-dynamic-loading-rendered",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Start', exact: true })\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "click-hidden-start",
+          "required": false
+        }
+      ],
+      "final_url": "https://the-internet.herokuapp.com/dynamic_loading/2",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/dynamic_loading/2",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.0573038000000015,
+          "median": 0.039100150000002026
+        },
+        "effective_average_fps": 15.01153135101086,
+        "elapsed_seconds": 11.92416655,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08205004999999765,
+          "median": 0.0675905999999995,
+          "minimum": 0.05076804999999851,
+          "p95": 0.07789765000000218
+        }
+      },
+      "verification_artifact": {
+        "bytes": 127994,
+        "path": "workflow-04-dynamic-loading-rendered/verification.json",
+        "sha256": "392314865715a5842d94024e237f253a6ff85debf1d53090852b56150e4accf8"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2562,
+        "path": "actions.json",
+        "sha256": "138ee6b809e44e91b71dbd929b5a8598d10b5abb28280fa7dbed496f85be0a33"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 68838,
+        "path": "workflow-05-add-remove-elements/capture.json",
+        "sha256": "cce57e6f3f97ea274ada27b3c409fcbac85a1e5f4fdf01602d1b32c382404b28"
+      },
+      "captured_at_utc": "2026-08-21T09:20:09.531Z",
+      "case_id": "workflow-05-add-remove-elements",
+      "collection_status": "invalid",
+      "eligible_for_claim": false,
+      "failed_actions": [
+        {
+          "expected_outcome": "success",
+          "failure": "locator.click: Error: strict mode violation: getByRole('button', { name: 'Delete', exact: true }) resolved to 2 elements:\n    1) <button class=\"added-manually\" onclick=\"deleteElement()\">Delete</button> aka getByRole('button', { name: 'Delete' }).first()\n    2) <button class=\"added-manually\" onclick=\"deleteElement()\">Delete</button> aka getByRole('button', { name: 'Delete' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Delete', exact: true })\u001b[22m\n",
+          "failure_type": "PlaywrightError",
+          "id": "delete-first",
+          "required": true
+        },
+        {
+          "expected_outcome": "success",
+          "failure": "locator.click: Error: strict mode violation: getByRole('button', { name: 'Delete', exact: true }) resolved to 2 elements:\n    1) <button class=\"added-manually\" onclick=\"deleteElement()\">Delete</button> aka getByRole('button', { name: 'Delete' }).first()\n    2) <button class=\"added-manually\" onclick=\"deleteElement()\">Delete</button> aka getByRole('button', { name: 'Delete' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Delete', exact: true })\u001b[22m\n",
+          "failure_type": "PlaywrightError",
+          "id": "delete-last",
+          "required": true
+        },
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Error: strict mode violation: getByRole('button', { name: 'Delete', exact: true }) resolved to 2 elements:\n    1) <button class=\"added-manually\" onclick=\"deleteElement()\">Delete</button> aka getByRole('button', { name: 'Delete' }).first()\n    2) <button class=\"added-manually\" onclick=\"deleteElement()\">Delete</button> aka getByRole('button', { name: 'Delete' }).nth(1)\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Delete', exact: true })\u001b[22m\n",
+          "failure_type": "PlaywrightError",
+          "id": "delete-absent",
+          "required": false
+        }
+      ],
+      "final_url": "https://the-internet.herokuapp.com/add_remove_elements/",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "one or more required actions failed"
+      ],
+      "policy_valid": false,
+      "required_action_failures": [
+        "delete-first",
+        "delete-last"
+      ],
+      "source_url": "https://the-internet.herokuapp.com/add_remove_elements/",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.053547200000000884,
+          "median": 0.03863515000000007
+        },
+        "effective_average_fps": 15.006632994660594,
+        "elapsed_seconds": 11.92805875,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08165590000000167,
+          "median": 0.06762725000000191,
+          "minimum": 0.05343905000000104,
+          "p95": 0.06976562499999658
+        }
+      },
+      "verification_artifact": {
+        "bytes": 127350,
+        "path": "workflow-05-add-remove-elements/verification.json",
+        "sha256": "87284b944ef540b6684627d24a85850bae773b511915a10e258d15d9d4d9e9bc"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 1819,
+        "path": "actions.json",
+        "sha256": "4b2bec1c005ed5afd1356885181ad713d96ce98d874720a4468b3065ff7f6ea3"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66351,
+        "path": "workflow-06-notification-message/capture.json",
+        "sha256": "0d4f60a83ce4f6ebd21fc3be97dbcb8884acb2b68cd05b9955633d9131c36ea0"
+      },
+      "captured_at_utc": "2026-08-21T09:20:46.008Z",
+      "case_id": "workflow-06-notification-message",
+      "collection_status": "invalid",
+      "eligible_for_claim": false,
+      "failed_actions": [],
+      "final_url": "https://the-internet.herokuapp.com/notification_message_rendered",
+      "integrity_valid": false,
+      "policy_reasons": [
+        "one or more screenshot attempts failed",
+        "maximum frame gap exceeds the frozen capture limit"
+      ],
+      "policy_valid": false,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/notification_message_rendered",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.4407232999999978,
+          "median": 0.033131199999999805
+        },
+        "effective_average_fps": 14.918463493972965,
+        "elapsed_seconds": 11.931523649999995,
+        "frame_count": 179,
+        "interval_seconds": {
+          "maximum": 0.6694341999999998,
+          "median": 0.05564087499999548,
+          "minimum": 0.0299208000000033,
+          "p95": 0.0845341975000002
+        }
+      },
+      "verification_artifact": {
+        "bytes": 126954,
+        "path": "workflow-06-notification-message/verification.json",
+        "sha256": "62588a8693335fa8cec4fa33721974bb1e60c77b340bc1cdf83eebdc6f8e5512"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2194,
+        "path": "actions.json",
+        "sha256": "68c6465a4627212f837bc5fd81a113aee14e58e01cc7dc6b1f31eec4a3d8a938"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 67295,
+        "path": "workflow-07-auth-success/capture.json",
+        "sha256": "5bb3afb2f4999c47d594ff47709fd752eb66570a381be6cce891c5be8869cdcf"
+      },
+      "captured_at_utc": "2026-08-21T09:21:22.521Z",
+      "case_id": "workflow-07-auth-success",
+      "collection_status": "invalid",
+      "eligible_for_claim": false,
+      "failed_actions": [
+        {
+          "expected_outcome": "success",
+          "failure": "locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Login', exact: true })\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "submit-login",
+          "required": true
+        },
+        {
+          "expected_outcome": "success",
+          "failure": "locator.waitFor: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByText('Logout') to be visible\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "wait-logout",
+          "required": true
+        },
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Login', exact: true })\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "click-missing-login",
+          "required": false
+        }
+      ],
+      "final_url": "https://the-internet.herokuapp.com/login",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "one or more required actions failed"
+      ],
+      "policy_valid": false,
+      "required_action_failures": [
+        "submit-login",
+        "wait-logout"
+      ],
+      "source_url": "https://the-internet.herokuapp.com/login",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.05606330000000162,
+          "median": 0.030276550000002317
+        },
+        "effective_average_fps": 15.024291173247407,
+        "elapsed_seconds": 11.914039599999995,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08620119999999609,
+          "median": 0.06671330000000353,
+          "minimum": 0.05059404999999906,
+          "p95": 0.08372539499999582
+        }
+      },
+      "verification_artifact": {
+        "bytes": 126071,
+        "path": "workflow-07-auth-success/verification.json",
+        "sha256": "7ab692195eb4a50a33a343d67c93c9095cf4bc28818d8c571ba4602f315a0641"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2131,
+        "path": "actions.json",
+        "sha256": "f5f493d7690df9cb56f8ee381cbfd4bb20a153ce36cdffdddf5acf254ab2d12d"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 67323,
+        "path": "workflow-08-auth-rejected/capture.json",
+        "sha256": "75008357ba51de16c7427475b28b2ad0a04454cd11bd27e0e4eb48e727775337"
+      },
+      "captured_at_utc": "2026-08-21T09:21:58.967Z",
+      "case_id": "workflow-08-auth-rejected",
+      "collection_status": "invalid",
+      "eligible_for_claim": false,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Login', exact: true })\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "submit-invalid-login",
+          "required": true
+        },
+        {
+          "expected_outcome": "success",
+          "failure": "locator.waitFor: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#flash.error') to be visible\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "wait-login-error",
+          "required": true
+        },
+        {
+          "expected_outcome": "success",
+          "failure": "locator.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#flash a.close')\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "dismiss-error",
+          "required": true
+        }
+      ],
+      "final_url": "https://the-internet.herokuapp.com/login",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "one or more required actions failed"
+      ],
+      "policy_valid": false,
+      "required_action_failures": [
+        "submit-invalid-login",
+        "wait-login-error",
+        "dismiss-error"
+      ],
+      "source_url": "https://the-internet.herokuapp.com/login",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.061190699999999196,
+          "median": 0.032662900000001174
+        },
+        "effective_average_fps": 15.002319911816524,
+        "elapsed_seconds": 11.931488000000005,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08346754999999761,
+          "median": 0.06772405000000115,
+          "minimum": 0.052867000000001774,
+          "p95": 0.07047004999999835
+        }
+      },
+      "verification_artifact": {
+        "bytes": 126354,
+        "path": "workflow-08-auth-rejected/verification.json",
+        "sha256": "5e16616bc0062c0e2a1718ea0b1b4d54ca24bc618839f1ed06204eb1c4e3fee2"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2127,
+        "path": "actions.json",
+        "sha256": "c651b19bb23d89be5aa28690887ae2b0c75d7583e034312d39513a39086724dd"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 67631,
+        "path": "workflow-09-hover-card/capture.json",
+        "sha256": "1f0feeafc504c660bab9bb694f356e03117443bf68d8b14bcb19af85dadbcce1"
+      },
+      "captured_at_utc": "2026-08-21T09:22:36.569Z",
+      "case_id": "workflow-09-hover-card",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.figure:nth-of-type(1) a')\u001b[22m\n\u001b[2m    - locator resolved to <a href=\"/users/1\">View profile</a>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not visible\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "click-hidden-profile",
+          "required": false
+        }
+      ],
+      "final_url": "https://the-internet.herokuapp.com/hovers",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/hovers",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.05922829999999885,
+          "median": 0.030085800000000745
+        },
+        "effective_average_fps": 15.010573628358419,
+        "elapsed_seconds": 11.924927349999997,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08784924999999966,
+          "median": 0.06774870000000455,
+          "minimum": 0.04825839999999815,
+          "p95": 0.07679240500000958
+        }
+      },
+      "verification_artifact": {
+        "bytes": 125525,
+        "path": "workflow-09-hover-card/verification.json",
+        "sha256": "b65d5743c363905bbb775544223bf352bdcac5b226a3ecca241f7b904f781633"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2055,
+        "path": "actions.json",
+        "sha256": "12b9a0f050d1d2069951bed3163ce1bae192df41820c8689aa4bfbe25f488b5a"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66519,
+        "path": "workflow-10-checkbox-toggle/capture.json",
+        "sha256": "2efd03ca1a959e48a4a937e31e3aa6ea9cfa3041098ccd584c013dbf1ccc6831"
+      },
+      "captured_at_utc": "2026-08-21T09:23:13.018Z",
+      "case_id": "workflow-10-checkbox-toggle",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [],
+      "final_url": "https://the-internet.herokuapp.com/checkboxes",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/checkboxes",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.06124489999999787,
+          "median": 0.03745429999999942
+        },
+        "effective_average_fps": 15.006809696206583,
+        "elapsed_seconds": 11.927918300000004,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08619109999999996,
+          "median": 0.0676491499999976,
+          "minimum": 0.05047214999999383,
+          "p95": 0.07285581999999963
+        }
+      },
+      "verification_artifact": {
+        "bytes": 126297,
+        "path": "workflow-10-checkbox-toggle/verification.json",
+        "sha256": "342444ef1e4591fb6f7db6f578aa3128e31230a5560e3b55b49e2ad244edff54"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 1734,
+        "path": "actions.json",
+        "sha256": "07c3e7f420e12b87baa51b5816a42cb03b7804fa7bfa2d20a20776432db11b21"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 67131,
+        "path": "workflow-11-dropdown-select/capture.json",
+        "sha256": "fc784c76755a037a3b832931affe59decad615e4ee7a856d9ce3acbd16dde26e"
+      },
+      "captured_at_utc": "2026-08-21T09:23:49.501Z",
+      "case_id": "workflow-11-dropdown-select",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.selectOption: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#dropdown')\u001b[22m\n\u001b[2m    - locator resolved to <select id=\"dropdown\">…</select>\u001b[22m\n\u001b[2m  - attempting select option action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m      - did not find some options\u001b[22m\n\u001b[2m    - retrying select option action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m      - did not find some options\u001b[22m\n\u001b[2m    - retrying select option action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible and enabled\u001b[22m\n\u001b[2m    - did not find some options\u001b[22m\n\u001b[2m  - retrying select option action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "select-missing-option",
+          "required": false
+        }
+      ],
+      "final_url": "https://the-internet.herokuapp.com/dropdown",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/dropdown",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.05581919999999809,
+          "median": 0.03777445000000261
+        },
+        "effective_average_fps": 15.012166501314084,
+        "elapsed_seconds": 11.923662049999999,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08228105000000152,
+          "median": 0.06770514999999744,
+          "minimum": 0.05165124999999904,
+          "p95": 0.07003885000000122
+        }
+      },
+      "verification_artifact": {
+        "bytes": 126388,
+        "path": "workflow-11-dropdown-select/verification.json",
+        "sha256": "92cc04c1efb7e45e2286d28b6b5b8ee034c127cb52a1b252cd4132398222f7ad"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 1637,
+        "path": "actions.json",
+        "sha256": "51a05116984796d16773457eec4fa5c5bf854bad55eafb3ac3e52033d4cee14a"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66074,
+        "path": "workflow-12-key-press/capture.json",
+        "sha256": "4ac51ccb95c05751de4124b8dba0c08d2b5f363bb091bfc292f2aabfe3939a6a"
+      },
+      "captured_at_utc": "2026-08-21T09:24:26.127Z",
+      "case_id": "workflow-12-key-press",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [],
+      "final_url": "https://the-internet.herokuapp.com/key_presses",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/key_presses",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.06096900000000096,
+          "median": 0.039547400000003105
+        },
+        "effective_average_fps": 14.984797859785786,
+        "elapsed_seconds": 11.945439749999997,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.09067900000000506,
+          "median": 0.06198915000000138,
+          "minimum": 0.049173349999996674,
+          "p95": 0.08391079500000045
+        }
+      },
+      "verification_artifact": {
+        "bytes": 125198,
+        "path": "workflow-12-key-press/verification.json",
+        "sha256": "c286637b80aa83e001075c0947ecca5578cf49838d50b88e57a0ded61181858b"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2136,
+        "path": "actions.json",
+        "sha256": "b2781fb4468db4a7dadcaa5379d40d590f92d83c16619904301c44c8b6521c98"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66638,
+        "path": "workflow-13-horizontal-slider/capture.json",
+        "sha256": "8fba14e975ca332b41decf515f29ff00048d476ea5e97fa5665e6dd4f26e7a1a"
+      },
+      "captured_at_utc": "2026-08-21T09:25:02.644Z",
+      "case_id": "workflow-13-horizontal-slider",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [],
+      "final_url": "https://the-internet.herokuapp.com/horizontal_slider",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/horizontal_slider",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.06068069999999716,
+          "median": 0.039708849999999074
+        },
+        "effective_average_fps": 15.00970104650151,
+        "elapsed_seconds": 11.925620600000002,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.09109304999999601,
+          "median": 0.06126989999999921,
+          "minimum": 0.04891445000001049,
+          "p95": 0.0837350199999994
+        }
+      },
+      "verification_artifact": {
+        "bytes": 126737,
+        "path": "workflow-13-horizontal-slider/verification.json",
+        "sha256": "86fcb754838c86f17100d45affd4e0f0b5469f388336b0172bc29820ccedc0e1"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 1375,
+        "path": "actions.json",
+        "sha256": "532f0e12a7cb1491fc3ff8968a4bcb1fa168ccaa589e4f3b8b3181df8e019971"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66249,
+        "path": "workflow-14-infinite-scroll/capture.json",
+        "sha256": "7e1950ca518924d31163833efa4323e720971996b637e17e27952837f656d5b0"
+      },
+      "captured_at_utc": "2026-08-21T09:25:39.117Z",
+      "case_id": "workflow-14-infinite-scroll",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [],
+      "final_url": "https://the-internet.herokuapp.com/infinite_scroll",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://the-internet.herokuapp.com/infinite_scroll",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.06585729999999602,
+          "median": 0.04749764999999752
+        },
+        "effective_average_fps": 15.005997054507207,
+        "elapsed_seconds": 11.928564250000003,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08343944999999753,
+          "median": 0.06774735000000143,
+          "minimum": 0.050946950000005486,
+          "p95": 0.07880059000000043
+        }
+      },
+      "verification_artifact": {
+        "bytes": 126581,
+        "path": "workflow-14-infinite-scroll/verification.json",
+        "sha256": "a61d1f7aa1949aa99c59ef5a36e295e2a4598f7b2fb2d9999ab671ae1856041f"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 1930,
+        "path": "actions.json",
+        "sha256": "e7b93575d9783aa9fa1ab05098cf626334b222ebdbb99b5f2bcc52976902c807"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 67336,
+        "path": "workflow-15-disappearing-elements/capture.json",
+        "sha256": "0c2c7830472b7d948e23fe3586f1f6bbb335c9b442a32f590944c06ea89be28c"
+      },
+      "captured_at_utc": "2026-08-21T09:26:15.612Z",
+      "case_id": "workflow-15-disappearing-elements",
+      "collection_status": "invalid",
+      "eligible_for_claim": false,
+      "failed_actions": [
+        {
+          "expected_outcome": "success",
+          "failure": "locator.waitFor: Error: strict mode violation: locator('ul li') resolved to 5 elements:\n    1) <li>…</li> aka getByRole('listitem').filter({ hasText: 'Home' })\n    2) <li>…</li> aka getByRole('listitem').filter({ hasText: 'About' })\n    3) <li>…</li> aka getByRole('listitem').filter({ hasText: 'Contact Us' })\n    4) <li>…</li> aka getByRole('listitem').filter({ hasText: 'Portfolio' })\n    5) <li>…</li> aka getByRole('listitem').filter({ hasText: 'Gallery' })\n\nCall log:\n\u001b[2m  - waiting for locator('ul li') to be visible\u001b[22m\n",
+          "failure_type": "PlaywrightError",
+          "id": "wait-navigation",
+          "required": true
+        }
+      ],
+      "final_url": "https://the-internet.herokuapp.com/disappearing_elements",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "one or more required actions failed"
+      ],
+      "policy_valid": false,
+      "required_action_failures": [
+        "wait-navigation"
+      ],
+      "source_url": "https://the-internet.herokuapp.com/disappearing_elements",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.25745529999999783,
+          "median": 0.03803349999999591
+        },
+        "effective_average_fps": 15.02892200594414,
+        "elapsed_seconds": 11.91036855,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.18359749999999941,
+          "median": 0.06055014999999919,
+          "minimum": 0.02952915000000189,
+          "p95": 0.08691743499999782
+        }
+      },
+      "verification_artifact": {
+        "bytes": 127673,
+        "path": "workflow-15-disappearing-elements/verification.json",
+        "sha256": "1fd9a4950f4f294ed5a250588d9acb791e507e46934a2a9a7d241cca0e842591"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2560,
+        "path": "actions.json",
+        "sha256": "f63ce6d725b80fd20363e680d7c948ba630b4eb2d166fde7c951623dca47424d"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 67298,
+        "path": "workflow-16-selenium-form-valid/capture.json",
+        "sha256": "9eb7b28879725438e71664a4098777133b6dadae0655acd521cc577d2becefa9"
+      },
+      "captured_at_utc": "2026-08-21T09:26:49.974Z",
+      "case_id": "workflow-16-selenium-form-valid",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [],
+      "final_url": "https://www.selenium.dev/selenium/web/submitted-form.html?my-text=Signum+valid+form&my-password=public-test-value&my-textarea=timestamped+capture&my-readonly=Readonly+input&my-select=2&my-datalist=&my-file=&my-check=on&my-radio=on&my-colors=%23563d7c&my-date=&my-range=5&my-hidden=",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.24285559999999895,
+          "median": 0.03127135000000089
+        },
+        "effective_average_fps": 14.998641428924758,
+        "elapsed_seconds": 11.93441425,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.16498320000000177,
+          "median": 0.06751600000000302,
+          "minimum": 0.03332590000000035,
+          "p95": 0.08363126999999863
+        }
+      },
+      "verification_artifact": {
+        "bytes": 127051,
+        "path": "workflow-16-selenium-form-valid/verification.json",
+        "sha256": "adcfef62078bf1beace6de38f28f178d3e1a91a007efa08b80400d6a6654e9ff"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2225,
+        "path": "actions.json",
+        "sha256": "483cddea151d652c988085cb0b8908495b63c1308da73fd0ed6a7b0cd126bebe"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 68934,
+        "path": "workflow-17-selenium-form-invalid/capture.json",
+        "sha256": "d2166c3883cd909bc71ecc6ecede3fac4e39861683195434ce1166304da7845c"
+      },
+      "captured_at_utc": "2026-08-21T09:27:24.154Z",
+      "case_id": "workflow-17-selenium-form-invalid",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.fill: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=my-disabled]')\u001b[22m\n\u001b[2m    - locator resolved to <input disabled type=\"text\" name=\"my-disabled\" class=\"form-control\" placeholder=\"Disabled input\"/>\u001b[22m\n\u001b[2m    - fill(\"rejected\")\u001b[22m\n\u001b[2m  - attempting fill action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and editable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying fill action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and editable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying fill action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and editable\u001b[22m\n\u001b[2m    - element is not enabled\u001b[22m\n\u001b[2m  - retrying fill action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "fill-disabled",
+          "required": false
+        },
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.fill: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=my-readonly]')\u001b[22m\n\u001b[2m    - locator resolved to <input readonly type=\"text\" name=\"my-readonly\" class=\"form-control\" value=\"Readonly input\"/>\u001b[22m\n\u001b[2m    - fill(\"rejected\")\u001b[22m\n\u001b[2m  - attempting fill action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and editable\u001b[22m\n\u001b[2m      - element is not editable\u001b[22m\n\u001b[2m    - retrying fill action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and editable\u001b[22m\n\u001b[2m      - element is not editable\u001b[22m\n\u001b[2m    - retrying fill action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and editable\u001b[22m\n\u001b[2m    - element is not editable\u001b[22m\n\u001b[2m  - retrying fill action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "fill-readonly",
+          "required": false
+        }
+      ],
+      "final_url": "https://www.selenium.dev/selenium/web/submitted-form.html?my-text=&my-password=&my-textarea=&my-readonly=Readonly+input&my-select=Open+this+select+menu&my-datalist=&my-file=&my-check=on&my-radio=on&my-colors=%23563d7c&my-date=&my-range=5&my-hidden=",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.061042600000000675,
+          "median": 0.037619049999999335
+        },
+        "effective_average_fps": 15.008520248906496,
+        "elapsed_seconds": 11.926558850000001,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08145289999999683,
+          "median": 0.06776900000000374,
+          "minimum": 0.053141050000002465,
+          "p95": 0.07081692500000103
+        }
+      },
+      "verification_artifact": {
+        "bytes": 127375,
+        "path": "workflow-17-selenium-form-invalid/verification.json",
+        "sha256": "f7eccb22b221f1c6c7e74cae76b4a9457da347c1a026bc23cb676dd3dc6e0531"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 1803,
+        "path": "actions.json",
+        "sha256": "80c64667a3a035a020cfa22db1421c6fcb422639bf4112cf7cd9d26af05fabb2"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66716,
+        "path": "workflow-18-selenium-small-controls/capture.json",
+        "sha256": "48773409039cb6e4f09d514e959dfac5cdf72ec9170fbb9136220484f5b2a066"
+      },
+      "captured_at_utc": "2026-08-21T09:27:58.319Z",
+      "case_id": "workflow-18-selenium-small-controls",
+      "collection_status": "invalid",
+      "eligible_for_claim": false,
+      "failed_actions": [
+        {
+          "expected_outcome": "success",
+          "failure": "locator.uncheck: Error: strict mode violation: locator('input[type=checkbox]:checked') resolved to 2 elements:\n    1) <input checked type=\"checkbox\" name=\"my-check\" id=\"my-check-1\" class=\"form-check-input\"/> aka getByRole('checkbox', { name: 'Checked checkbox' })\n    2) <input type=\"checkbox\" name=\"my-check\" id=\"my-check-2\" class=\"form-check-input\"/> aka getByRole('checkbox', { name: 'Default checkbox' })\n\nCall log:\n\u001b[2m  - waiting for locator('input[type=checkbox]:checked')\u001b[22m\n",
+          "failure_type": "PlaywrightError",
+          "id": "uncheck-checked-checkbox",
+          "required": true
+        }
+      ],
+      "final_url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "one or more required actions failed"
+      ],
+      "policy_valid": false,
+      "required_action_failures": [
+        "uncheck-checked-checkbox"
+      ],
+      "source_url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.05652999999999884,
+          "median": 0.04066545000000042
+        },
+        "effective_average_fps": 15.01344772965427,
+        "elapsed_seconds": 11.922644500000002,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.08401159999999841,
+          "median": 0.06765440000000389,
+          "minimum": 0.049982250000000936,
+          "p95": 0.082024730000002
+        }
+      },
+      "verification_artifact": {
+        "bytes": 127872,
+        "path": "workflow-18-selenium-small-controls/verification.json",
+        "sha256": "4082ba78ee604e7a4fbf6f7e524c004c108e7341f2bdf40b4c11512fa7768216"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2118,
+        "path": "actions.json",
+        "sha256": "1c9ecb181da5051df25f1c369cfa605fb65b10c7f6ecb7db9b2d8a1bb9198352"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66570,
+        "path": "workflow-19-selenium-range/capture.json",
+        "sha256": "648957d94fd00c4a368b8c8e5c3e1b92708b2c7528bd6c0aa23434c0a23ac574"
+      },
+      "captured_at_utc": "2026-08-21T09:28:32.465Z",
+      "case_id": "workflow-19-selenium-range",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [],
+      "final_url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.13076550000000134,
+          "median": 0.04114999999999964
+        },
+        "effective_average_fps": 15.007244831281668,
+        "elapsed_seconds": 11.927572449999992,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.1251293000000011,
+          "median": 0.06345730000000138,
+          "minimum": 0.04190159999999743,
+          "p95": 0.08614168999999894
+        }
+      },
+      "verification_artifact": {
+        "bytes": 126142,
+        "path": "workflow-19-selenium-range/verification.json",
+        "sha256": "b7c7850a380d47331e0476087e23957c0c5aedce7bb8e79eb235289405b31208"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 1836,
+        "path": "actions.json",
+        "sha256": "0428e9e8cacc725f32b00e9f7194db246162385d92821645fb8175a99d748376"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66302,
+        "path": "workflow-20-selenium-datalist/capture.json",
+        "sha256": "be07f22db4ac41fa796988cecfa1f5b719907665eeb6b7ba5184ed9fb14374fb"
+      },
+      "captured_at_utc": "2026-08-21T09:29:06.647Z",
+      "case_id": "workflow-20-selenium-datalist",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [],
+      "final_url": "https://www.selenium.dev/selenium/web/submitted-form.html?my-text=&my-password=&my-textarea=&my-readonly=Readonly+input&my-select=1&my-datalist=Not+in+list&my-file=&my-check=on&my-radio=on&my-colors=%23563d7c&my-date=&my-range=5&my-hidden=",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://www.selenium.dev/selenium/web/web-form.html",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.06062290000000212,
+          "median": 0.03933024999999907
+        },
+        "effective_average_fps": 15.021416322770294,
+        "elapsed_seconds": 11.916319749999998,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.09093259999999659,
+          "median": 0.06147929999999935,
+          "minimum": 0.04503449999999809,
+          "p95": 0.08398084500000054
+        }
+      },
+      "verification_artifact": {
+        "bytes": 126557,
+        "path": "workflow-20-selenium-datalist/verification.json",
+        "sha256": "31ab79ee72ed7757a8452d0d7ea1bab9863f997abf80474430a578d6196e0ee5"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2359,
+        "path": "actions.json",
+        "sha256": "758e339fc895c583a5fbc70f6778e43f289c62ba98c94caa4658a02273c62b0d"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 66995,
+        "path": "workflow-21-todomvc-react-add/capture.json",
+        "sha256": "ab6384b78df42fd9af4d0bd83b39ba60fadc5adc9ba0e1e26b799fa20a0017d1"
+      },
+      "captured_at_utc": "2026-08-21T09:29:41.226Z",
+      "case_id": "workflow-21-todomvc-react-add",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [],
+      "final_url": "https://todomvc.com/examples/react/dist/",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://todomvc.com/examples/react/dist/",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.06399610000000029,
+          "median": 0.03365970000000015
+        },
+        "effective_average_fps": 15.0083966109833,
+        "elapsed_seconds": 11.926657100000005,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.09095190000000031,
+          "median": 0.06754370000000165,
+          "minimum": 0.050400450000001484,
+          "p95": 0.08336934499999776
+        }
+      },
+      "verification_artifact": {
+        "bytes": 126774,
+        "path": "workflow-21-todomvc-react-add/verification.json",
+        "sha256": "12862520e03f951d1a3316843a6dec82e838e69cef531dd93a967d186a57254b"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2673,
+        "path": "actions.json",
+        "sha256": "b87790dd94476d49ea391873e9f9380ad5c7680de216b5af66bad9bf0d790d39"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 67428,
+        "path": "workflow-22-todomvc-vue-complete-filter/capture.json",
+        "sha256": "b742aea82516d95276cb91fcec5ce4af0aadfb8e39d29ee87772170df3667128"
+      },
+      "captured_at_utc": "2026-08-21T09:30:15.732Z",
+      "case_id": "workflow-22-todomvc-vue-complete-filter",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [],
+      "final_url": "https://todomvc.com/examples/vue/dist/#/active",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://todomvc.com/examples/vue/dist/",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.057756799999999206,
+          "median": 0.03337819999999919
+        },
+        "effective_average_fps": 15.002177955851678,
+        "elapsed_seconds": 11.931600899999998,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.09175184999999697,
+          "median": 0.06131034999999985,
+          "minimum": 0.04493690000000061,
+          "p95": 0.0840548550000002
+        }
+      },
+      "verification_artifact": {
+        "bytes": 128725,
+        "path": "workflow-22-todomvc-vue-complete-filter/verification.json",
+        "sha256": "c6cef7dd5688bcc073db6a4650c0681f37ed7a6645ba7633d6b8232eb421a7b9"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2695,
+        "path": "actions.json",
+        "sha256": "5f85750693b8a05ede1859cca86f6ba6cb1be9ea0fbbef26a015684b749a6db9"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 46493,
+        "path": "workflow-23-todomvc-svelte-edit/capture.json",
+        "sha256": "2ef67bbeb5958a94aa00390ab91f5bee7ec4c7a02ffc073edb71af2b03093de1"
+      },
+      "captured_at_utc": "2026-08-21T09:30:50.252Z",
+      "case_id": "workflow-23-todomvc-svelte-edit",
+      "collection_status": "invalid",
+      "eligible_for_claim": false,
+      "failed_actions": [],
+      "final_url": "https://todomvc.com/examples/svelte/dist/",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "effective average frame rate is below the frozen minimum",
+        "maximum frame gap exceeds the frozen capture limit"
+      ],
+      "policy_valid": false,
+      "required_action_failures": [],
+      "source_url": "https://todomvc.com/examples/svelte/dist/",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 1.8637583999999987,
+          "median": 0.043033400000000256
+        },
+        "effective_average_fps": 9.862247635321358,
+        "elapsed_seconds": 11.964818200000005,
+        "frame_count": 119,
+        "interval_seconds": {
+          "maximum": 1.1151809499999992,
+          "median": 0.06817294999999984,
+          "minimum": 0.0518638999999963,
+          "p95": 0.20331367750000354
+        }
+      },
+      "verification_artifact": {
+        "bytes": 85691,
+        "path": "workflow-23-todomvc-svelte-edit/verification.json",
+        "sha256": "63741cd097b5175af59f2ec79b2705b12527e9c8ffc75a97b695fb00092652eb"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2613,
+        "path": "actions.json",
+        "sha256": "fb20749f941a9e36d91f954c8ec3c19ad3b7a8accd0d08434f39789a18de428b"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 68328,
+        "path": "workflow-24-todomvc-preact-clear/capture.json",
+        "sha256": "6e308012e0332b3aecb7ece4579f1e1e0e050425c439a46e9fa41f400a3b69d4"
+      },
+      "captured_at_utc": "2026-08-21T09:31:25.489Z",
+      "case_id": "workflow-24-todomvc-preact-clear",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.clear-completed')\u001b[22m\n\u001b[2m    - locator resolved to <button hidden=\"\" class=\"clear-completed\">Clear completed</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not visible\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "clear-again",
+          "required": false
+        }
+      ],
+      "final_url": "https://todomvc.com/examples/preact/dist/",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://todomvc.com/examples/preact/dist/",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.08928509999999369,
+          "median": 0.02961185000000114
+        },
+        "effective_average_fps": 15.016506916200402,
+        "elapsed_seconds": 11.920215600000004,
+        "frame_count": 180,
+        "interval_seconds": {
+          "maximum": 0.09386830000000224,
+          "median": 0.06256784999999976,
+          "minimum": 0.04403555000000736,
+          "p95": 0.07889662000000257
+        }
+      },
+      "verification_artifact": {
+        "bytes": 127323,
+        "path": "workflow-24-todomvc-preact-clear/verification.json",
+        "sha256": "31d41e1d2663beba407d60cb2f6f9be973ee100852ae41c44e2adb59c13998d0"
+      }
+    },
+    {
+      "case_id": "workflow-25-todomvc-lit-filter",
+      "collection_status": "startup_failed",
+      "eligible_for_claim": false,
+      "failure": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://todomvc.com/examples/lit/dist/\", waiting until \"domcontentloaded\"\u001b[22m\n",
+      "failure_artifact": {
+        "bytes": 1082,
+        "path": "workflow-25-todomvc-lit-filter/failure.json",
+        "sha256": "59caa963f9d6c6161e1683f9296a839cb6a2cc608312ec7fc5b8bbf69bfbb68c"
+      },
+      "failure_type": "TimeoutError2"
+    },
+    {
+      "action_spec": {
+        "bytes": 2302,
+        "path": "actions.json",
+        "sha256": "f555873d58ceaea43d97dca7dad707ded05db7f345f4ae4a3fc0afb6b6e945b2"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 60982,
+        "path": "workflow-26-w3-modal/capture.json",
+        "sha256": "64a8bd96da82f55de0683f06bcafe5d71d64519b36e161d36396801244bcc44f"
+      },
+      "captured_at_utc": "2026-08-21T09:33:21.517Z",
+      "case_id": "workflow-26-w3-modal",
+      "collection_status": "invalid",
+      "eligible_for_claim": false,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('iframe#iframeResult').contentFrame().locator('.close')\u001b[22m\n\u001b[2m    - locator resolved to <span class=\"close\">×</span>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not visible\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "close-hidden-modal",
+          "required": false
+        }
+      ],
+      "final_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "maximum frame gap exceeds the frozen capture limit"
+      ],
+      "policy_valid": false,
+      "required_action_failures": [],
+      "source_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_modal",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.4443967000000048,
+          "median": 0.04208899999999994
+        },
+        "effective_average_fps": 13.409261488611063,
+        "elapsed_seconds": 11.932051599999998,
+        "frame_count": 161,
+        "interval_seconds": {
+          "maximum": 0.2999706500000041,
+          "median": 0.06726552500000071,
+          "minimum": 0.04077790000000081,
+          "p95": 0.11430622750000037
+        }
+      },
+      "verification_artifact": {
+        "bytes": 112373,
+        "path": "workflow-26-w3-modal/verification.json",
+        "sha256": "02e775e0f9c0c39036039607b2b09e4b9d1f1663d2375cb079def98aafa99bf8"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2228,
+        "path": "actions.json",
+        "sha256": "535e49b500acbf2546e7f035505a2e28f3d9aeefa69529a1e274486a87ebdcd2"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 59775,
+        "path": "workflow-27-w3-tabs/capture.json",
+        "sha256": "50fadf4e53e3226d769837660f3e08e306105d4df10ae676322c1be82ae89d60"
+      },
+      "captured_at_utc": "2026-08-21T09:33:56.391Z",
+      "case_id": "workflow-27-w3-tabs",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('iframe#iframeResult').contentFrame().locator('.tablinks:nth-of-type(4)')\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "click-missing-tab",
+          "required": false
+        }
+      ],
+      "final_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_tabs",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_tabs",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.30015869999999994,
+          "median": 0.048267350000000084
+        },
+        "effective_average_fps": 13.249948435617336,
+        "elapsed_seconds": 12.000046700000002,
+        "frame_count": 160,
+        "interval_seconds": {
+          "maximum": 0.21255244999999512,
+          "median": 0.07063934999999777,
+          "minimum": 0.03578889999999957,
+          "p95": 0.10388151999999586
+        }
+      },
+      "verification_artifact": {
+        "bytes": 111257,
+        "path": "workflow-27-w3-tabs/verification.json",
+        "sha256": "3923f375516341ed99f7369ae81acb7e83ea23224d2cad7c99ef6ffd512db316"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2040,
+        "path": "actions.json",
+        "sha256": "f7d37206064c0063fd583534c0a14904f777374834da85beafaed6d62b3b7b83"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 59268,
+        "path": "workflow-28-w3-snackbar/capture.json",
+        "sha256": "788dcc25ac2a60cd4e73744dcb9a124cbb86f859b3434c4f3dc9cefd35fd3539"
+      },
+      "captured_at_utc": "2026-08-21T09:34:31.275Z",
+      "case_id": "workflow-28-w3-snackbar",
+      "collection_status": "valid",
+      "eligible_for_claim": true,
+      "failed_actions": [],
+      "final_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_snackbar",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "required_action_failures": [],
+      "source_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_snackbar",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.23945100000000094,
+          "median": 0.04278485
+        },
+        "effective_average_fps": 13.235524196889822,
+        "elapsed_seconds": 12.013124500000005,
+        "frame_count": 160,
+        "interval_seconds": {
+          "maximum": 0.18162159999999972,
+          "median": 0.06980965000000294,
+          "minimum": 0.03888134999999959,
+          "p95": 0.1159818950000021
+        }
+      },
+      "verification_artifact": {
+        "bytes": 112030,
+        "path": "workflow-28-w3-snackbar/verification.json",
+        "sha256": "546781286b039cefb7900ea4e60aaf1b36114ec72c602a2cbd3e02ba467af775"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2270,
+        "path": "actions.json",
+        "sha256": "67c990ca192ff5243d179c040fe3848aa1776bb3f6905e46d5b6dfbe41a0f4b8"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 57641,
+        "path": "workflow-29-w3-accordion/capture.json",
+        "sha256": "ca415df7711eed7cdc1e617972aea350669b80a6c267fc6399886d200ba82289"
+      },
+      "captured_at_utc": "2026-08-21T09:35:06.181Z",
+      "case_id": "workflow-29-w3-accordion",
+      "collection_status": "invalid",
+      "eligible_for_claim": false,
+      "failed_actions": [
+        {
+          "expected_outcome": "failure",
+          "failure": "locator.click: Timeout 600ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('iframe#iframeResult').contentFrame().locator('.accordion:nth-of-type(4)')\u001b[22m\n",
+          "failure_type": "TimeoutError2",
+          "id": "click-missing-fourth",
+          "required": false
+        }
+      ],
+      "final_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_accordion",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "maximum frame gap exceeds the frozen capture limit"
+      ],
+      "policy_valid": false,
+      "required_action_failures": [],
+      "source_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_accordion",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.9343372000000018,
+          "median": 0.04311710000000312
+        },
+        "effective_average_fps": 12.902533856047235,
+        "elapsed_seconds": 11.780631750000001,
+        "frame_count": 153,
+        "interval_seconds": {
+          "maximum": 0.6310279999999988,
+          "median": 0.06904359999999876,
+          "minimum": 0.03192225000000326,
+          "p95": 0.11781233249999892
+        }
+      },
+      "verification_artifact": {
+        "bytes": 107713,
+        "path": "workflow-29-w3-accordion/verification.json",
+        "sha256": "aa43737129b3e2982338edc8c411b72aa205dc5bc31bd4ab405d371c7527e8fb"
+      }
+    },
+    {
+      "action_spec": {
+        "bytes": 2260,
+        "path": "actions.json",
+        "sha256": "be7a0ccf7c0f0cea935bfdd7a4ab31c34a33a1287f89391dc6e2b9817589918f"
+      },
+      "browser": {
+        "architecture": "x64",
+        "executable_bytes": 4038808,
+        "executable_sha256": "b73b9e817990d5d6e6167e1011dadb4b53f7e37392fc658f1e809df07ea6b2b7",
+        "headless": true,
+        "node_version": "v24.19.0",
+        "platform": "win32",
+        "playwright_version": "1.62.1",
+        "version": "151.0.7922.138"
+      },
+      "capture_artifact": {
+        "bytes": 39737,
+        "path": "workflow-30-w3-filter-list/capture.json",
+        "sha256": "edb860211e31bd1e8e323268e9468834c66a6f27b6536f86a0d7b8e086ff3efe"
+      },
+      "captured_at_utc": "2026-08-21T09:35:41.848Z",
+      "case_id": "workflow-30-w3-filter-list",
+      "collection_status": "invalid",
+      "eligible_for_claim": false,
+      "failed_actions": [],
+      "final_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_filter_list",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "effective average frame rate is below the frozen minimum",
+        "maximum frame gap exceeds the frozen capture limit"
+      ],
+      "policy_valid": false,
+      "required_action_failures": [],
+      "source_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_filter_list",
+      "statistics": {
+        "capture_duration_seconds": {
+          "maximum": 0.8448582999999998,
+          "median": 0.07933495000000039
+        },
+        "effective_average_fps": 8.42932656687087,
+        "elapsed_seconds": 11.981977349999998,
+        "frame_count": 102,
+        "interval_seconds": {
+          "maximum": 0.6942834499999995,
+          "median": 0.09036490000000086,
+          "minimum": 0.03963825000000343,
+          "p95": 0.30320555000000216
+        }
+      },
+      "verification_artifact": {
+        "bytes": 73293,
+        "path": "workflow-30-w3-filter-list/verification.json",
+        "sha256": "5071719c115f4c30762cb3b11fba723f6fc8fe8bae6ada513573345ba8013178"
+      }
+    }
+  ],
+  "claim180_collection_complete": false,
+  "collection_id": "f6ab76db72c0f8cb565cd84eba79b31f6283acaf05f85c29ba5ee1d103293877",
+  "counts": {
+    "invalid": 10,
+    "missing": 0,
+    "startup_failed": 1,
+    "valid": 19
+  },
+  "generated_at_utc": "2026-08-21T09:41:34.301726+00:00",
+  "kind": "signum_claim180_collection_summary",
+  "plan": {
+    "bytes": 9789,
+    "path": "claim180-plan-v2.json",
+    "sha256": "572dc0d96b906e5a6e16981da1ebd2d6ad9429d3c1798f11b0b01be6d1763030"
+  },
+  "preregistration": {
+    "bytes": 10367,
+    "path": "claim180-preregistration-v2.json",
+    "sha256": "92170f427cb55562b3a1003d01e6363f355696b58b914f09ec08d7ecc8b0ce62"
+  },
+  "preregistration_id": "db988e9ae6de8bbc90f5c058df00ddc0f1599a7258d3049f7d7bd3a4caf10cab",
+  "schema_version": 1,
+  "unexpected_case_directories": []
+}

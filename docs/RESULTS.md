@@ -138,11 +138,23 @@ eight real failed actions, so it is complete as a regression set. It remains
 ineligible for the comparative claim because the deficits were known before
 its final collection.
 
-The next measurement is a separately preregistered Claim 180 suite: 180
-eligible independent transitions, 30 workflow recordings, 24 failed actions,
-two blind reviewers, and three paired cost runs. The native OpenAI and Claude
-event-checkpoint adapters are implemented, including screenshot retry, Claude
-zoom, usage normalization, and visible failure recording. They have not made a
-paid request because the required API keys are absent. Until collection,
-review, and provider execution finish, Signum cannot support an accuracy or
-cost claim against either provider.
+The first one-shot Claim 180 v2 collection has now run under its public,
+action-bound preregistration. Independent verification found 19 valid captures,
+10 invalid captures, and one startup failure. No planned case was missing.
+Required-action failures invalidated four captures; capture-rate or frame-gap
+limits invalidated five; one capture had both a screenshot error and a missing
+frame sequence number; one W3 capture combined a required-action failure with
+a frame-gap violation; and the TodoMVC Lit page timed out during navigation.
+The exact case-level artifact hashes and failure messages are preserved in
+`benchmark-protocol/claim180-v2-collection-result.json` under collection id
+`f6ab76db72c0f8cb565cd84eba79b31f6283acaf05f85c29ba5ee1d103293877`.
+
+This failed collection does not satisfy Claim 180 and will not be repaired,
+retried, or submitted to models. The next protocol revision must preregister an
+ordered candidate pool and an objective inclusion rule before collection so
+site or capture failures cannot be replaced selectively after their results are
+known. The native OpenAI and Claude event-checkpoint adapters are implemented,
+including screenshot retry, Claude zoom, usage normalization, and visible
+failure recording. They have not made a paid request because the required API
+keys are absent. Until a new collection, labels, review, and provider execution
+finish, Signum cannot support an accuracy or cost claim against either provider.
