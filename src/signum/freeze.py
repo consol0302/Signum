@@ -97,6 +97,9 @@ def preregister_heldout(
         plan.get("actions_manifest"),
         case_ids,
     )
+    collection_selection = _validate_collection_selection(
+        plan.get("collection_selection"), len(case_ids)
+    )
 
     destination = Path(output_path).resolve()
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -124,6 +127,8 @@ def preregister_heldout(
             "collector_revision": actions_manifest["collector_revision"],
             "case_count": actions_manifest["case_count"],
         }
+    if collection_selection is not None:
+        payload["collection_selection"] = collection_selection
     payload["preregistration_id"] = _fingerprint(
         {key: value for key, value in payload.items() if key != "created_at_utc"}
     )
@@ -137,6 +142,8 @@ def freeze_manifest(
     *,
     role: str,
     preregistration_path: Path | str | None = None,
+    collection_summary_path: Path | str | None = None,
+    collection_root_path: Path | str | None = None,
 ) -> dict[str, Any]:
     if role not in FREEZE_ROLES:
         raise EvaluationError(f"freeze role must be one of {sorted(FREEZE_ROLES)}")
@@ -146,20 +153,56 @@ def freeze_manifest(
         raise EvaluationError(
             "development freezes cannot use a held-out preregistration"
         )
+    if role == "development" and (
+        collection_summary_path is not None or collection_root_path is not None
+    ):
+        raise EvaluationError(
+            "development freezes cannot use held-out collection evidence"
+        )
     manifest = load_manifest(manifest_path)
     destination = Path(output_path).resolve()
     destination.parent.mkdir(parents=True, exist_ok=True)
     preregistration = None
     preregistration_source = None
+    collection_evidence = None
     if preregistration_path is not None:
         preregistration_source = Path(preregistration_path).resolve()
         preregistration = _verify_preregistration(preregistration_source)
         manifest_case_ids = [case.id for case in manifest.cases]
-        if manifest_case_ids != preregistration["case_ids"]:
-            raise EvaluationError(
-                "held-out manifest case ids or order differ from the preregistered plan"
+        selection = preregistration.get("collection_selection")
+        if selection is None:
+            if collection_summary_path is not None or collection_root_path is not None:
+                raise EvaluationError(
+                    "exact held-out plans cannot use candidate-pool collection evidence"
+                )
+            if manifest_case_ids != preregistration["case_ids"]:
+                raise EvaluationError(
+                    "held-out manifest case ids or order differ from the preregistered plan"
+                )
+        else:
+            if collection_summary_path is None or collection_root_path is None:
+                raise EvaluationError(
+                    "candidate-pool freezes require a collection summary and root"
+                )
+            collection_evidence = _validate_collection_evidence(
+                Path(collection_summary_path).resolve(),
+                Path(collection_root_path).resolve(),
+                preregistration,
+                manifest_case_ids,
             )
         preregistration_mtime = preregistration_source.stat().st_mtime_ns
+        if collection_evidence is not None:
+            evidence_paths = [
+                collection_evidence["summary_path"],
+                *(artifact["path"] for artifact in collection_evidence["artifacts"]),
+            ]
+            if any(
+                preregistration_mtime > evidence_path.stat().st_mtime_ns
+                for evidence_path in evidence_paths
+            ):
+                raise EvaluationError(
+                    "held-out collection evidence predates its preregistration lock"
+                )
         if preregistration_mtime > manifest.path.stat().st_mtime_ns:
             raise EvaluationError(
                 "held-out manifest predates its preregistration lock"
@@ -241,6 +284,28 @@ def freeze_manifest(
             payload["preregistration"]["actions_manifest"] = preregistration[
                 "actions_manifest"
             ]
+        if collection_evidence is not None:
+            payload["collection_evidence"] = {
+                "summary": {
+                    "path": _relative_to_lock(
+                        collection_evidence["summary_path"], destination
+                    ),
+                    "bytes": collection_evidence["summary_bytes"],
+                    "sha256": collection_evidence["summary_sha256"],
+                    "collection_id": collection_evidence["collection_id"],
+                },
+                "selected_case_ids": collection_evidence["selected_case_ids"],
+                "artifacts": [
+                    {
+                        **{
+                            key: artifact[key]
+                            for key in ("kind", "case_id", "bytes", "sha256")
+                        },
+                        "path": _relative_to_lock(artifact["path"], destination),
+                    }
+                    for artifact in collection_evidence["artifacts"]
+                ],
+            }
     payload["freeze_id"] = _fingerprint(
         {key: value for key, value in payload.items() if key != "created_at_utc"}
     )
@@ -284,6 +349,70 @@ def verify_freeze(lock_path: Path | str) -> dict[str, Any]:
                 "preregistration_id"
             ):
                 raise EvaluationError("held-out preregistration id does not match")
+            raw_collection = lock.get("collection_evidence")
+            if preregistration.get("collection_selection") is None:
+                if raw_collection is not None:
+                    raise EvaluationError(
+                        "exact held-out freeze has unexpected collection evidence"
+                    )
+            else:
+                if not isinstance(raw_collection, dict):
+                    raise EvaluationError(
+                        "candidate-pool freeze is missing collection evidence"
+                    )
+                raw_summary = raw_collection.get("summary")
+                if not isinstance(raw_summary, dict):
+                    raise EvaluationError(
+                        "candidate-pool freeze is missing its collection summary"
+                    )
+                summary_path = (
+                    path.parent / _required_string(raw_summary, "path")
+                ).resolve()
+                summary_check = _file_check(
+                    "collection-summary",
+                    summary_path,
+                    _required_string(raw_summary, "sha256"),
+                    _required_integer(raw_summary, "bytes"),
+                )
+                checks.append(summary_check)
+                if summary_check["valid"]:
+                    summary = _read_object(summary_path, "held-out collection summary")
+                    expected_id = _fingerprint(
+                        {
+                            key: value
+                            for key, value in summary.items()
+                            if key not in {"generated_at_utc", "collection_id"}
+                        }
+                    )
+                    if (
+                        summary.get("collection_id") != expected_id
+                        or raw_summary.get("collection_id") != expected_id
+                    ):
+                        raise EvaluationError(
+                            "held-out collection summary fingerprint does not match"
+                        )
+                raw_artifacts = raw_collection.get("artifacts")
+                if not isinstance(raw_artifacts, list):
+                    raise EvaluationError(
+                        "candidate-pool freeze has invalid collection artifacts"
+                    )
+                for raw_artifact in raw_artifacts:
+                    if not isinstance(raw_artifact, dict):
+                        raise EvaluationError(
+                            "candidate-pool collection artifacts must be objects"
+                        )
+                    artifact_path = (
+                        path.parent / _required_string(raw_artifact, "path")
+                    ).resolve()
+                    checks.append(
+                        _file_check(
+                            f"collection-{_required_string(raw_artifact, 'kind')}:"
+                            f"{_required_string(raw_artifact, 'case_id')}",
+                            artifact_path,
+                            _required_string(raw_artifact, "sha256"),
+                            _required_integer(raw_artifact, "bytes"),
+                        )
+                    )
     manifest_path = (path.parent / _required_string(lock, "manifest")).resolve()
     checks.append(
         _file_check(
@@ -296,6 +425,17 @@ def verify_freeze(lock_path: Path | str) -> dict[str, Any]:
     raw_cases = lock.get("cases")
     if not isinstance(raw_cases, list):
         raise EvaluationError("freeze file must contain a cases array")
+    if lock.get("role") == "held_out" and isinstance(
+        lock.get("collection_evidence"), dict
+    ):
+        selected = lock["collection_evidence"].get("selected_case_ids")
+        frozen_case_ids = [
+            raw.get("case_id") if isinstance(raw, dict) else None for raw in raw_cases
+        ]
+        if selected != frozen_case_ids:
+            raise EvaluationError(
+                "candidate-pool selected case ids differ from frozen cases"
+            )
     for raw in raw_cases:
         if not isinstance(raw, dict):
             raise EvaluationError("freeze cases must be objects")
@@ -332,12 +472,22 @@ def _verify_preregistration(path: Path) -> dict[str, Any]:
     )
     if not check["valid"]:
         raise EvaluationError("held-out preregistration plan integrity check failed")
+    case_ids = lock.get("case_ids")
+    if not isinstance(case_ids, list) or any(
+        not isinstance(value, str) for value in case_ids
+    ):
+        raise EvaluationError("held-out preregistration has invalid case_ids")
     plan = _read_object(plan_path, "held-out preregistration plan")
     actions_manifest = _validate_actions_manifest(
         plan_path,
         plan.get("actions_manifest"),
-        lock.get("case_ids"),
+        case_ids,
     )
+    collection_selection = _validate_collection_selection(
+        plan.get("collection_selection"), len(case_ids)
+    )
+    if lock.get("collection_selection") != collection_selection:
+        raise EvaluationError("held-out collection selection lock does not match")
     locked_actions = lock.get("actions_manifest")
     if actions_manifest is None:
         if locked_actions is not None:
@@ -363,12 +513,199 @@ def _verify_preregistration(path: Path) -> dict[str, Any]:
     )
     if lock.get("preregistration_id") != expected_id:
         raise EvaluationError("held-out preregistration fingerprint is invalid")
-    case_ids = lock.get("case_ids")
-    if not isinstance(case_ids, list) or any(
-        not isinstance(value, str) for value in case_ids
-    ):
-        raise EvaluationError("held-out preregistration has invalid case_ids")
     return lock
+
+
+def _validate_collection_selection(
+    raw: object,
+    candidate_count: int,
+) -> dict[str, Any] | None:
+    if raw is None:
+        return None
+    if not isinstance(raw, dict):
+        raise EvaluationError("held-out collection_selection must be an object")
+    expected = {
+        "mode": "first_valid_in_plan_order",
+        "validity_source": "independent_capture_verification",
+        "retain_all_attempts": True,
+        "model_outputs_forbidden_before_selection": True,
+    }
+    for key, value in expected.items():
+        if raw.get(key) != value:
+            raise EvaluationError(
+                f"held-out collection_selection {key!r} must equal {value!r}"
+            )
+    required_valid_cases = raw.get("required_valid_cases")
+    if (
+        not isinstance(required_valid_cases, int)
+        or isinstance(required_valid_cases, bool)
+        or required_valid_cases < 30
+        or required_valid_cases > candidate_count
+    ):
+        raise EvaluationError(
+            "held-out collection_selection required_valid_cases must be between 30 and the candidate count"
+        )
+    if raw.get("candidate_count") != candidate_count:
+        raise EvaluationError(
+            "held-out collection_selection candidate_count must match case_ids"
+        )
+    return {
+        **expected,
+        "required_valid_cases": required_valid_cases,
+        "candidate_count": candidate_count,
+    }
+
+
+def _validate_collection_evidence(
+    summary_path: Path,
+    collection_root: Path,
+    preregistration: dict[str, Any],
+    manifest_case_ids: list[str],
+) -> dict[str, Any]:
+    selection = preregistration.get("collection_selection")
+    if not isinstance(selection, dict):
+        raise EvaluationError("candidate-pool preregistration has no selection rule")
+    summary = _read_object(summary_path, "held-out collection summary")
+    if (
+        summary.get("schema_version") != 1
+        or summary.get("kind") != "signum_claim180_collection_summary"
+    ):
+        raise EvaluationError("invalid held-out collection summary")
+    expected_collection_id = _fingerprint(
+        {
+            key: value
+            for key, value in summary.items()
+            if key not in {"generated_at_utc", "collection_id"}
+        }
+    )
+    if summary.get("collection_id") != expected_collection_id:
+        raise EvaluationError("held-out collection summary fingerprint is invalid")
+    if summary.get("preregistration_id") != preregistration.get(
+        "preregistration_id"
+    ):
+        raise EvaluationError(
+            "held-out collection summary uses a different preregistration"
+        )
+    rows = summary.get("cases")
+    planned_case_ids = preregistration.get("case_ids")
+    if not isinstance(rows, list) or not isinstance(planned_case_ids, list):
+        raise EvaluationError("held-out collection summary has invalid cases")
+    if [row.get("case_id") if isinstance(row, dict) else None for row in rows] != planned_case_ids:
+        raise EvaluationError(
+            "held-out collection summary case ids or order differ from preregistration"
+        )
+    if summary.get("unexpected_case_directories") != []:
+        raise EvaluationError(
+            "held-out collection contains unexpected candidate directories"
+        )
+    artifacts = []
+    valid_case_ids = []
+    observed_counts = {
+        "valid": 0,
+        "invalid": 0,
+        "startup_failed": 0,
+        "missing": 0,
+    }
+    for row in rows:
+        if not isinstance(row, dict):
+            raise EvaluationError("held-out collection rows must be objects")
+        case_id = _required_string(row, "case_id")
+        status = row.get("collection_status")
+        if status not in observed_counts:
+            raise EvaluationError(
+                f"held-out collection has invalid status for {case_id!r}"
+            )
+        observed_counts[status] += 1
+        if status == "missing":
+            raise EvaluationError(
+                f"held-out candidate {case_id!r} was not attempted"
+            )
+        if row.get("eligible_for_claim") is not (status == "valid"):
+            raise EvaluationError(
+                f"held-out candidate eligibility disagrees with status for {case_id!r}"
+            )
+        if status == "valid":
+            valid_case_ids.append(case_id)
+        artifact_fields = (
+            (("failure_artifact", "failure"),)
+            if status == "startup_failed"
+            else (
+                ("capture_artifact", "capture"),
+                ("verification_artifact", "verification"),
+            )
+        )
+        resolved_by_kind = {}
+        for field, kind in artifact_fields:
+            raw_artifact = row.get(field)
+            if not isinstance(raw_artifact, dict):
+                raise EvaluationError(
+                    f"held-out candidate {case_id!r} is missing {field}"
+                )
+            artifact_path = (
+                collection_root / _required_string(raw_artifact, "path")
+            ).resolve()
+            try:
+                artifact_path.relative_to(collection_root.resolve())
+            except ValueError as error:
+                raise EvaluationError(
+                    f"held-out artifact escapes the collection root for {case_id!r}"
+                ) from error
+            artifact_check = _file_check(
+                f"collection-{kind}:{case_id}",
+                artifact_path,
+                _required_string(raw_artifact, "sha256"),
+                _required_integer(raw_artifact, "bytes"),
+            )
+            if not artifact_check["valid"]:
+                raise EvaluationError(
+                    f"held-out collection artifact integrity failed for {case_id!r}"
+                )
+            resolved_by_kind[kind] = artifact_path
+            artifacts.append(
+                {
+                    "kind": kind,
+                    "case_id": case_id,
+                    "path": artifact_path,
+                    "bytes": raw_artifact["bytes"],
+                    "sha256": raw_artifact["sha256"],
+                }
+            )
+        if status in {"valid", "invalid"}:
+            capture = _read_object(
+                resolved_by_kind["capture"], f"capture for {case_id!r}"
+            )
+            verification = _read_object(
+                resolved_by_kind["verification"],
+                f"capture verification for {case_id!r}",
+            )
+            if (
+                capture.get("case_id") != case_id
+                or verification.get("case_id") != case_id
+                or (verification.get("valid") is True) != (status == "valid")
+            ):
+                raise EvaluationError(
+                    f"held-out capture status does not match evidence for {case_id!r}"
+                )
+    if summary.get("counts") != observed_counts:
+        raise EvaluationError("held-out collection summary counts are invalid")
+    required = selection["required_valid_cases"]
+    if len(valid_case_ids) < required:
+        raise EvaluationError(
+            f"held-out collection has {len(valid_case_ids)} valid candidates; {required} required"
+        )
+    selected = valid_case_ids[:required]
+    if manifest_case_ids != selected:
+        raise EvaluationError(
+            "held-out manifest must use the first valid candidates in preregistered order"
+        )
+    return {
+        "summary_path": summary_path,
+        "summary_bytes": summary_path.stat().st_size,
+        "summary_sha256": _sha256_file(summary_path),
+        "collection_id": summary["collection_id"],
+        "selected_case_ids": selected,
+        "artifacts": artifacts,
+    }
 
 
 def _validate_actions_manifest(

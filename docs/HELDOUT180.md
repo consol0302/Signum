@@ -84,6 +84,35 @@ source transition is reused. The pushed pre-collection Git history is still
 required as independent chronological evidence because filesystem timestamps
 can be altered.
 
+### Ordered candidate pools
+
+If public-site or capture failures could leave fewer than 30 valid workflows,
+the plan may preregister a larger ordered pool. The only accepted rule is
+`first_valid_in_plan_order`, with at least 30 required valid cases, validity
+determined by the independent capture verifier, every attempt retained, and no
+model output produced before selection. Candidate count, order, sources, action
+files, and the rule must all be pushed before collection.
+
+After every candidate is attempted once, build the collection summary. The
+held-out manifest must contain exactly the first required number of valid cases
+in preregistered order. Freeze it with both the summary and the complete raw
+collection root:
+
+```bash
+signum freeze-manifest held-out/manifest.json \
+  --output held-out/freeze.json \
+  --role held_out \
+  --preregistration held-out/preregistration.json \
+  --collection-summary held-out/collection-summary.json \
+  --collection-root held-out/captures
+```
+
+The freeze hashes every valid capture, invalid capture, verification, and
+startup-failure artifact. It rejects missing attempts, changed artifacts,
+hand-reordered selections, an insufficient number of valid candidates, or a
+summary tied to a different preregistration. This mechanism is for collection
+reliability only; it cannot use detector or provider results for selection.
+
 ## Execute and review
 
 Run every compared system on every eligible frozen event under the plan's

@@ -114,6 +114,16 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         help="required preregistration lock for a held_out freeze",
     )
+    freeze.add_argument(
+        "--collection-summary",
+        type=Path,
+        help="candidate-pool collection summary used for objective case selection",
+    )
+    freeze.add_argument(
+        "--collection-root",
+        type=Path,
+        help="root containing every retained candidate capture or failure artifact",
+    )
     preregister = subparsers.add_parser(
         "preregister-heldout",
         help="hash-lock the claim180 collection plan before recording held-out data",
@@ -297,6 +307,8 @@ def _freeze_manifest_command(args: argparse.Namespace) -> int:
             args.output,
             role=args.role,
             preregistration_path=args.preregistration,
+            collection_summary_path=args.collection_summary,
+            collection_root_path=args.collection_root,
         )
     except EvaluationError as error:
         print(f"signum: error: {error}", file=sys.stderr)

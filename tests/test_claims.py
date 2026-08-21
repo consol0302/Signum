@@ -8,7 +8,12 @@ from pathlib import Path
 
 from signum.claims import assess_claim
 from signum.evaluation import CLAIM180_TARGETS, EvaluationError
-from signum.freeze import freeze_manifest, preregister_heldout
+from signum.freeze import (
+    _validate_collection_evidence,
+    _validate_collection_selection,
+    freeze_manifest,
+    preregister_heldout,
+)
 from signum.synthetic import generate_suite
 
 
@@ -143,6 +148,127 @@ class ClaimAssessmentTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(EvaluationError, "action file integrity"):
             preregister_heldout(plan, self.root / "tampered-lock.json")
+
+    def test_candidate_pool_selects_first_valid_cases_and_preserves_failures(self) -> None:
+        selection = _validate_collection_selection(
+            {
+                "mode": "first_valid_in_plan_order",
+                "validity_source": "independent_capture_verification",
+                "retain_all_attempts": True,
+                "model_outputs_forbidden_before_selection": True,
+                "required_valid_cases": 30,
+                "candidate_count": 31,
+            },
+            31,
+        )
+        self.assertIsNotNone(selection)
+        case_ids = [f"candidate-{index:02d}" for index in range(31)]
+        collection_root = self.root / "candidate-captures"
+        collection_root.mkdir()
+        rows = []
+
+        def identity(path: Path) -> dict[str, object]:
+            return {
+                "path": path.relative_to(collection_root).as_posix(),
+                "bytes": path.stat().st_size,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            }
+
+        for case_id in case_ids[:30]:
+            case_root = collection_root / case_id
+            case_root.mkdir()
+            capture = case_root / "capture.json"
+            verification = case_root / "verification.json"
+            capture.write_text(json.dumps({"case_id": case_id}), encoding="utf-8")
+            verification.write_text(
+                json.dumps({"case_id": case_id, "valid": True}),
+                encoding="utf-8",
+            )
+            rows.append(
+                {
+                    "case_id": case_id,
+                    "collection_status": "valid",
+                    "eligible_for_claim": True,
+                    "capture_artifact": identity(capture),
+                    "verification_artifact": identity(verification),
+                }
+            )
+        failed_id = case_ids[-1]
+        failed_root = collection_root / failed_id
+        failed_root.mkdir()
+        failure = failed_root / "failure.json"
+        failure.write_text(
+            json.dumps({"case_id": failed_id, "failure": "startup failed"}),
+            encoding="utf-8",
+        )
+        rows.append(
+            {
+                "case_id": failed_id,
+                "collection_status": "startup_failed",
+                "eligible_for_claim": False,
+                "failure_artifact": identity(failure),
+            }
+        )
+        preregistration = {
+            "preregistration_id": "candidate-preregistration",
+            "case_ids": case_ids,
+            "collection_selection": selection,
+        }
+        summary = {
+            "schema_version": 1,
+            "kind": "signum_claim180_collection_summary",
+            "generated_at_utc": "2026-08-21T00:00:00Z",
+            "preregistration_id": "candidate-preregistration",
+            "counts": {
+                "valid": 30,
+                "invalid": 0,
+                "startup_failed": 1,
+                "missing": 0,
+            },
+            "unexpected_case_directories": [],
+            "cases": rows,
+        }
+        summary["collection_id"] = hashlib.sha256(
+            json.dumps(
+                {
+                    key: value
+                    for key, value in summary.items()
+                    if key not in {"generated_at_utc", "collection_id"}
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+            ).encode("utf-8")
+        ).hexdigest()
+        summary_path = self.root / "candidate-summary.json"
+        summary_path.write_text(json.dumps(summary), encoding="utf-8")
+
+        evidence = _validate_collection_evidence(
+            summary_path,
+            collection_root,
+            preregistration,
+            case_ids[:30],
+        )
+        self.assertEqual(case_ids[:30], evidence["selected_case_ids"])
+        self.assertEqual(61, len(evidence["artifacts"]))
+
+        with self.assertRaisesRegex(EvaluationError, "first valid candidates"):
+            _validate_collection_evidence(
+                summary_path,
+                collection_root,
+                preregistration,
+                list(reversed(case_ids[:30])),
+            )
+        (collection_root / case_ids[0] / "capture.json").write_text(
+            "tampered", encoding="utf-8"
+        )
+        with self.assertRaisesRegex(EvaluationError, "artifact integrity"):
+            _validate_collection_evidence(
+                summary_path,
+                collection_root,
+                preregistration,
+                case_ids[:30],
+            )
 
     def test_claim_is_blocked_when_a_run_artifact_changes(self) -> None:
         manifest, events, preregistration = self._claim_manifest()
