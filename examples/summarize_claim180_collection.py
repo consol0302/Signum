@@ -141,13 +141,19 @@ def build_summary(
         path.name for path in root.iterdir() if path.is_dir() and path.name not in case_ids
     )
     selection = plan.get("collection_selection")
+    if preregistration.get("collection_selection") != selection:
+        raise RuntimeError("preregistration collection selection differs from the plan")
     if selection is None:
         required_valid_cases = len(case_ids)
         selection_mode = "all_planned_cases_valid"
     else:
         if (
             not isinstance(selection, dict)
-            or selection.get("mode") != "first_valid_in_plan_order"
+            or selection.get("mode")
+            not in {
+                "first_valid_in_plan_order",
+                "first_valid_per_slot_in_plan_order",
+            }
             or selection.get("candidate_count") != len(case_ids)
             or not isinstance(selection.get("required_valid_cases"), int)
         ):
@@ -157,14 +163,58 @@ def build_summary(
     valid_case_ids = [
         row["case_id"] for row in cases if row["collection_status"] == "valid"
     ]
-    collection_complete = (
-        len(valid_case_ids) >= required_valid_cases
-        and counts["missing"] == 0
-        and not unexpected
-    )
-    selected_case_ids = (
-        valid_case_ids[:required_valid_cases] if collection_complete else []
-    )
+    selected_by_slot = None
+    if selection_mode == "first_valid_per_slot_in_plan_order":
+        slots = selection.get("slots")
+        if not isinstance(slots, list) or len(slots) != required_valid_cases:
+            raise RuntimeError("slot selection must define every required slot")
+        valid = set(valid_case_ids)
+        selected_by_slot = []
+        for slot in slots:
+            if not isinstance(slot, dict) or not isinstance(
+                slot.get("candidate_ids"), list
+            ):
+                raise RuntimeError("slot selection contains an invalid slot")
+            selected_case_id = next(
+                (
+                    case_id
+                    for case_id in slot["candidate_ids"]
+                    if case_id in valid
+                ),
+                None,
+            )
+            if selected_case_id is None:
+                selected_by_slot = []
+                break
+            selected_by_slot.append(
+                {"slot_id": slot.get("slot_id"), "case_id": selected_case_id}
+            )
+        collection_complete = (
+            len(selected_by_slot) == required_valid_cases
+            and counts["missing"] == 0
+            and not unexpected
+        )
+        selected_case_ids = (
+            [row["case_id"] for row in selected_by_slot]
+            if collection_complete
+            else []
+        )
+    else:
+        collection_complete = (
+            len(valid_case_ids) >= required_valid_cases
+            and counts["missing"] == 0
+            and not unexpected
+        )
+        selected_case_ids = (
+            valid_case_ids[:required_valid_cases] if collection_complete else []
+        )
+    selection_summary = {
+        "mode": selection_mode,
+        "required_valid_cases": required_valid_cases,
+        "selected_case_ids": selected_case_ids,
+    }
+    if selected_by_slot is not None:
+        selection_summary["selected_by_slot"] = selected_by_slot
     payload: dict[str, Any] = {
         "schema_version": 1,
         "kind": "signum_claim180_collection_summary",
@@ -181,11 +231,7 @@ def build_summary(
             "sha256": sha256_file(preregistration_path),
         },
         "counts": counts,
-        "selection": {
-            "mode": selection_mode,
-            "required_valid_cases": required_valid_cases,
-            "selected_case_ids": selected_case_ids,
-        },
+        "selection": selection_summary,
         "claim180_collection_complete": collection_complete,
         "unexpected_case_directories": unexpected,
         "cases": cases,
