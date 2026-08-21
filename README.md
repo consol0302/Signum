@@ -29,6 +29,14 @@ screen recording
 
 The CLI accepts video files. The Python streaming runtime also accepts live frames supplied by a controller such as Petasos. Desktop capture, audio, action execution, and non-Codex model providers are not implemented inside Signum.
 
+## Current evidence
+
+The latest local public-web run has 60 labels but only 55 independent source transitions. Four failed-action labels are constructed identical-frame checks, so the Pilot 60 audit correctly remains incomplete. On that development set, Signum triggered 60/60 labels while equal-budget uniform sampling triggered 17/60. This is a detector regression result, not a production accuracy claim: the replays use fixed state durations, the workflows are correlated, and the set was used to correct annotation errors.
+
+A final stratified Codex batch described 18/18 sampled states consistently with the saved evidence and returned the expected verdict for four action checks, with zero provisional false confirmations across two failed actions. Those judgments are not yet independently human-reviewed. OpenAI and Anthropic paid API comparisons were not run because no API keys were available.
+
+See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
+
 ## Install
 
 Signum requires Python 3.11 or newer.
@@ -155,6 +163,17 @@ python examples/build_live_web_pilot.py `
   --output benchmark-output/live-web-pilot
 ```
 
+A larger local replay can be built from the fixed-viewport public-web captures:
+
+```powershell
+python examples/build_pilot60_from_captures.py `
+  --captures benchmark-output/pilot60-captures `
+  --selenium-frames benchmark-output/live-web `
+  --output benchmark-output/pilot60-suite
+```
+
+The builder records source transition ids, excludes constructed cases from real-world eligibility, and keeps raw captures and generated videos in ignored output directories.
+
 ## How selection works
 
 Frames are decoded sequentially. Signum performs the regular analysis at 4 Hz by default and keeps a 16×9 grayscale signature for every decoded frame. That tiny per-frame check acts as a guard for abrupt changes which happen between scheduled candidates; it does not require a second decode pass.
@@ -226,7 +245,7 @@ python -m unittest discover -s tests -v
 
 The test suite covers the CLI, budget handling, timestamps, duplicate handling, deterministic selection, between-sample flash recovery, small and thin UI changes, transient peak preservation, forced action verification, end-of-stream flushing, observation serialization, runtime usage accounting, labeled replay evaluation, equal-budget comparison, confidence intervals, category coverage auditing, false-confirmation scoring, human review scoring, non-blocking streaming, overload visibility, requested detail, retries, and the isolated Codex command and verification contracts. Tests do not spend Codex subscription usage.
 
-The evaluator is ready for a small manually labeled screen-recording suite. The repository still contains no real recordings, so synthetic results alone cannot establish real computer-use detection success.
+The evaluator has been exercised on local public-web captures, but raw recordings remain outside the repository and the first 60-label manifest does not yet meet the independent-transition or real failed-action requirements. Synthetic results and this development pilot cannot establish real computer-use success.
 
 ## Project notes
 
@@ -237,6 +256,7 @@ The evaluator is ready for a small manually labeled screen-recording suite. The 
 - [Codex-mode improvement roadmap](docs/ROADMAP.md)
 - [Real-world perception evaluation](docs/REAL_WORLD_EVALUATION.md)
 - [Pilot 60 perception suite](docs/PILOT60.md)
+- [Pilot 60 local measurement](docs/PILOT60_RESULTS.md)
 - [Streaming perception runtime](docs/STREAMING.md)
 - [Measuring live Codex perception](docs/CODEX_LIVE_MEASUREMENT.md)
 

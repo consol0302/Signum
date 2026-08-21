@@ -39,7 +39,8 @@ For a decodable non-empty video, output count is `min(budget, analyzed candidate
 - Camera movement and animated backgrounds can consume the importance budget.
 - OpenCV-reported timestamps and frame counts depend on the codec backend.
 - Synthetic results validate mechanics, not downstream VLM accuracy or real-world token savings.
-- Codex mode currently starts one CLI process per event; startup latency is measured but not yet benchmarked on a labeled real suite.
+- Default Codex mode starts one CLI process per event. A resumed session was slower and used more reported tokens on the five-event fixture; batching was cheaper but is not suitable for every immediate verification.
+- The first public-web development suite has 60 labels but only 55 independent transitions and four constructed failures. It is not a completed real-world benchmark.
 - The global gateway path uses one bounding rectangle for changed pixels, so multiple distant changes can create an unnecessarily large detail region. The local guard keeps only the largest connected component.
 - UI changes smaller than the configured local component threshold can still be missed.
 - Consecutive animation can delay emission until the active timeout and may consume more Codex calls than a static workflow.

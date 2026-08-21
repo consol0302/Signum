@@ -138,6 +138,161 @@ class CodexExecInterpreter:
         return command
 
 
+class CodexSessionInterpreter(CodexExecInterpreter):
+    """Interpret ordered events in one persisted, read-only Codex session.
+
+    This transport is experimental. It keeps provider state outside the
+    deterministic detector and is intended for measured streaming comparisons.
+    """
+
+    def __init__(
+        self,
+        *,
+        command: str = "codex",
+        model: str | None = None,
+        timeout_seconds: float = 120.0,
+        runner: CommandRunner | None = None,
+    ) -> None:
+        super().__init__(
+            command=command,
+            model=model,
+            timeout_seconds=timeout_seconds,
+            runner=runner,
+        )
+        self._temp_context = tempfile.TemporaryDirectory(prefix="signum-codex-session-")
+        self._root = Path(self._temp_context.name)
+        self._session_id: str | None = None
+        self._turn_index = 0
+        self._closed = False
+
+    def metadata(self) -> dict[str, object]:
+        return {
+            **super().metadata(),
+            "type": "codex_exec_session",
+            "persistent": True,
+            "session_started": self._session_id is not None,
+        }
+
+    def close(self) -> None:
+        if self._closed:
+            return
+        self._closed = True
+        self._temp_context.cleanup()
+
+    def __enter__(self) -> CodexSessionInterpreter:
+        return self
+
+    def __exit__(self, *_: object) -> None:
+        self.close()
+
+    def interpret(
+        self,
+        event: PerceptionEvent,
+        goal: str,
+        previous: SemanticResult | None,
+    ) -> SemanticResult:
+        if self._closed:
+            raise InterpreterError("Codex session interpreter is closed")
+        prompt = _build_prompt(event, goal, previous)
+        started = time.perf_counter()
+        turn_dir = self._root / f"turn-{self._turn_index:05d}"
+        turn_dir.mkdir()
+        self._turn_index += 1
+        image_paths = _write_images(event, turn_dir)
+        schema_path = turn_dir / "observation.schema.json"
+        output_path = turn_dir / "observation.json"
+        schema_path.write_text(
+            json.dumps(_observation_schema(), indent=2, sort_keys=True),
+            encoding="utf-8",
+        )
+        command = self.build_command(image_paths, schema_path, output_path)
+        try:
+            completed = self._runner(
+                command,
+                input=prompt,
+                cwd=self._root,
+                capture_output=True,
+                text=True,
+                timeout=self.timeout_seconds,
+                check=False,
+            )
+        except FileNotFoundError as error:
+            raise InterpreterError(f"Codex CLI was not found: {self.command!r}") from error
+        except subprocess.TimeoutExpired as error:
+            raise InterpreterError(
+                f"Codex did not finish within {self.timeout_seconds:g} seconds"
+            ) from error
+        except OSError as error:
+            raise InterpreterError(f"Codex CLI could not start: {error}") from error
+
+        if completed.returncode != 0:
+            detail = (completed.stderr or completed.stdout or "no error output").strip()
+            raise InterpreterError(
+                f"Codex exited with status {completed.returncode}: {detail[:800]}"
+            )
+        if self._session_id is None:
+            self._session_id = _parse_codex_session_id(completed.stdout)
+            if self._session_id is None:
+                raise InterpreterError("Codex did not report a resumable session id")
+        usage = _parse_codex_usage(completed.stdout)
+        try:
+            output_text = output_path.read_text(encoding="utf-8")
+        except FileNotFoundError as error:
+            raise InterpreterError(
+                "Codex completed without writing the structured observation"
+            ) from error
+        parsed = _parse_observation(output_text)
+        return SemanticResult(
+            **parsed,
+            **usage,
+            latency_seconds=time.perf_counter() - started,
+        )
+
+    def build_command(
+        self,
+        image_paths: Sequence[Path],
+        schema_path: Path,
+        output_path: Path,
+    ) -> list[str]:
+        if self._session_id is None:
+            command = [
+                self.command,
+                "exec",
+                "--ignore-user-config",
+                "--sandbox",
+                "read-only",
+                "--skip-git-repo-check",
+                "--color",
+                "never",
+                "--json",
+                "--output-schema",
+                str(schema_path),
+                "--output-last-message",
+                str(output_path),
+            ]
+        else:
+            command = [
+                self.command,
+                "exec",
+                "resume",
+                "--ignore-user-config",
+                "--skip-git-repo-check",
+                "--json",
+                "--output-schema",
+                str(schema_path),
+                "--output-last-message",
+                str(output_path),
+            ]
+        if self.model:
+            command.extend(("--model", self.model))
+        for image_path in image_paths:
+            command.extend(("--image", str(image_path)))
+        if self._session_id is not None:
+            command.append(self._session_id)
+        command.append("-")
+        return command
+
+
 def _resolve_codex_command(
     command: str,
     *,
@@ -284,6 +439,20 @@ def _parse_observation(output_text: str) -> dict[str, object]:
         "recommended_action": parsed["recommended_action"],
         "evidence": tuple(evidence),
     }
+
+
+def _parse_codex_session_id(output_text: str) -> str | None:
+    for line in output_text.splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(event, dict) or event.get("type") != "thread.started":
+            continue
+        thread_id = event.get("thread_id")
+        if isinstance(thread_id, str) and thread_id.strip():
+            return thread_id
+    return None
 
 
 def _parse_codex_usage(output_text: str) -> dict[str, int | None]:

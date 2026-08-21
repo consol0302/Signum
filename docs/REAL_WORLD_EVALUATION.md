@@ -41,6 +41,8 @@ Copy `examples/real-evaluation.example.json`, place the recordings at the refere
 
 Times are seconds on the source timeline. `tolerance` is only for annotation uncertainty; do not enlarge it to improve results. Regions use normalized full-frame coordinates. `acceptable_states` is optional and produces an exact normalized state diagnostic when Codex is enabled. The human semantic verdict remains authoritative because free-form state names are not a complete accuracy measure.
 
+For Pilot 60 collection, add a stable `source_transition_id` to every event. If two labels refer to the same captured transition, reuse the id so the audit exposes the dependency. Set `real_world_eligible` to `false` for constructed identical-frame checks, synthetic events, or any label without a distinct traceable real interaction. `profile_complete` requires both eligible category coverage and 60 independent transition ids.
+
 Schema version 2 requires every event to declare one of the benchmark categories and accepts a `risk` of `low`, `normal`, `high`, or `critical`. Version 1 remains readable as legacy input and assigns its events to `other`; new suites should use version 2.
 
 `action_success` and `action_failure` events also require explicit verification inputs:

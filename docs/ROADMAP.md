@@ -15,9 +15,9 @@ Also record false calls per minute, Codex calls per minute, prepared image bytes
 
 ## Priority 0: establish a real screen-recording benchmark
 
-The labeled replay evaluator, equal-budget uniform baseline, saved review artifacts, and human-review scoring contract are implemented. The remaining work is to build a real suite containing dialogs, toasts, progress completion, disabled/enabled controls, small text changes, cursor and caret motion, loading animation, scrolling, and rapid open-close transitions. Event intervals and evidence regions must be labeled before looking at predictions.
+The labeled replay evaluator, equal-budget uniform baseline, saved review artifacts, and human-review scoring contract are implemented. A local 60-label development suite now covers dialogs or messages, progress completion, disabled/enabled controls, small text changes, cursor or hover changes, scrolling, loading, and repeated HUD-like values. It has only 55 independent transitions and four constructed failed actions, so it remains an incomplete pilot rather than a real benchmark.
 
-No detection-success claim should be made before this suite exists.
+The next collection must add at least four real failed actions and five independent transitions, then freeze a held-out suite before tuning. No broad detection-success claim should be made before that suite and its blind review exist.
 
 ## Priority 1: validate and tune small-region recall
 
@@ -39,9 +39,9 @@ Acceptance criterion: an interrupted run can resume without repeating successful
 
 ## Priority 4: reduce interpreter startup latency
 
-The current adapter intentionally uses one stable `codex exec` process per event. Measure process startup separately from model latency. Consider a persistent Codex SDK or app-server session only if startup is a material share of end-to-end latency and the simpler adapter has already met accuracy targets.
+The current default adapter intentionally uses one isolated `codex exec` process per event. A measured resumed-session experiment was slower and used more reported tokens, so it is not the default. A single structured batch was substantially cheaper on five events and passed the provisional semantic checks, but it delays each observation until the batch is submitted.
 
-Acceptance criterion: a measured latency improvement with unchanged semantic test cases and no weaker isolation.
+Acceptance criterion: add an explicit batching policy only after measuring batch size, maximum wait, semantic accuracy, and false confirmations on the frozen suite. High-risk action verification must keep a bounded immediate path.
 
 ## Implemented runtime foundation
 

@@ -67,15 +67,17 @@ After a controller action, `verify_after_action` compares explicit pre-action an
 
 ## Codex boundary
 
-`codex exec` is started once per gated observation. Runs are ephemeral, read-only, non-interactive, and validated with a JSON Schema. The adapter enables Codex's JSONL event stream and reads usage from the final `turn.completed` record. Signum stores input, cached-input, output, and reasoning-output fields without trying to reconstruct missing values. Aggregate reported tokens are input plus output; reasoning output is retained as a separate diagnostic and is not added again. Signum passes the goal, previous semantic summary, event metadata, and local JPEG paths. It does not access Codex credentials or call the OpenAI API directly.
+The default `CodexExecInterpreter` starts `codex exec` once per gated observation. Runs are ephemeral, read-only, non-interactive, and validated with a JSON Schema. The adapter enables Codex's JSONL event stream and reads usage from the final `turn.completed` record. Signum stores input, cached-input, output, and reasoning-output fields without trying to reconstruct missing values. Aggregate reported tokens are input plus output; reasoning output is retained as a separate diagnostic and is not added again. Signum passes the goal, previous semantic summary, event metadata, and local JPEG paths. It does not access Codex credentials or call the OpenAI API directly.
 
-This process-per-event implementation is intentionally simple and testable. A persistent SDK or app-server session could reduce startup latency later, but it is not justified until real recordings show that Codex startup dominates the useful observation budget.
+`CodexSessionInterpreter` is an experimental transport that starts one read-only Codex session and resumes its reported id. It is not wired into the CLI default. On the measured five-event fixture it increased both tokens and latency, so the default remains process-per-event. Separate example scripts measure deferred structured batching without changing the live streaming contract.
 
 ## Evaluation boundary
 
 The replay evaluator uses source-timeline event intervals and both current and preserved-peak image timestamps. A gateway call is a trigger hit when one of those image timestamps falls inside the labeled interval plus its declared annotation tolerance. Each recording's uniform baseline receives exactly the number of observations emitted by Signum, placed at equal-bin centers. Initial context is included rather than silently removed from Signum's cost.
 
 Temporal matching cannot establish that resized text is legible or that a model's description is correct. The evaluator therefore generates a review contract with separate visible-evidence, semantic-correctness, and task-state-correctness verdicts. Missing human verdicts remain unavailable; they are never inferred from detector geometry or model confidence. End-to-end success requires all three verdicts, while an unmatched event is an automatic failure.
+
+Pilot manifests can record `source_transition_id` and `real_world_eligible`. The audit reports reused transitions and excludes constructed evidence from eligible category coverage. A filled category table is not considered complete unless it also contains 60 independent eligible transitions.
 
 ## Streaming boundary
 
@@ -85,4 +87,4 @@ The recent-frame ring is bounded independently from event history. Requested cro
 
 ## Explicit non-goals
 
-There is no database, server, plugin framework, GPU requirement, audio pipeline, action executor, or desktop-capture implementation in this milestone. There are also no API or non-Codex model adapters. Petasos or another controller must supply frames and own actions.
+There is no database, server, plugin framework, GPU requirement, audio pipeline, action executor, or desktop-capture implementation in this milestone. There are no API or non-Codex adapters in the runtime package. A standalone example can submit saved evidence to external provider APIs for controlled comparison, but it is not part of detection or live execution. Petasos or another controller must supply frames and own actions.

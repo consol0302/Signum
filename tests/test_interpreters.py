@@ -9,7 +9,11 @@ from pathlib import Path
 import numpy as np
 
 from signum.gateway import GatewayConfig, PerceptionGateway
-from signum.interpreters import CodexExecInterpreter, _resolve_codex_command
+from signum.interpreters import (
+    CodexExecInterpreter,
+    CodexSessionInterpreter,
+    _resolve_codex_command,
+)
 
 
 class CodexExecInterpreterTests(unittest.TestCase):
@@ -163,6 +167,60 @@ class CodexExecInterpreterTests(unittest.TestCase):
         self.assertIsNone(result.input_tokens)
         self.assertIsNone(result.output_tokens)
         self.assertIsNone(result.reported_total_tokens)
+
+    def test_persistent_interpreter_resumes_reported_session(self) -> None:
+        commands: list[list[str]] = []
+
+        def fake_runner(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
+            commands.append(command)
+            output_path = Path(command[command.index("--output-last-message") + 1])
+            output_path.write_text(
+                json.dumps(
+                    {
+                        "state": "stable",
+                        "summary": "The screen is stable.",
+                        "relevant": True,
+                        "confidence": 0.8,
+                        "verification": "not_applicable",
+                        "recommended_action": "Continue.",
+                        "evidence": ["Visible screen"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            stdout = "\n".join(
+                [
+                    json.dumps(
+                        {"type": "thread.started", "thread_id": "session-123"}
+                    ),
+                    json.dumps(
+                        {
+                            "type": "turn.completed",
+                            "usage": {"input_tokens": 10, "output_tokens": 2},
+                        }
+                    ),
+                ]
+            )
+            return subprocess.CompletedProcess(command, 0, stdout=stdout, stderr="")
+
+        frame = np.zeros((32, 32, 3), dtype=np.uint8)
+        event = PerceptionGateway(GatewayConfig(analysis_width=32)).observe_frame(
+            frame, 0.0, goal="inspect", frame_index=0
+        )
+        assert event is not None
+        with CodexSessionInterpreter(
+            command="codex-test", model="test-model", runner=fake_runner
+        ) as interpreter:
+            interpreter.interpret(event.event, "inspect", None)
+            interpreter.interpret(event.event, "inspect", None)
+            self.assertTrue(interpreter.metadata()["session_started"])
+
+        self.assertEqual(["codex-test", "exec"], commands[0][:2])
+        self.assertNotIn("--ephemeral", commands[0])
+        self.assertEqual("read-only", commands[0][commands[0].index("--sandbox") + 1])
+        self.assertEqual(["codex-test", "exec", "resume"], commands[1][:3])
+        self.assertIn("session-123", commands[1])
+        self.assertNotIn("--sandbox", commands[1])
 
 
 if __name__ == "__main__":

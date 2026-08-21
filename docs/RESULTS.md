@@ -117,6 +117,20 @@ Codex described all four Signum labels correctly in a provisional AI-assisted vi
 
 The 95% Wilson interval for Signum's 4/4 trigger result is approximately 0.51–1.00. All labels come from one simple public page, so they are correlated and much weaker evidence than four independent workflows.
 
+## Pilot 60 development run
+
+The local suite was expanded to the target 60-label category distribution across 14 replay cases. The manifest contains only 55 independent source transitions and four constructed failed-action checks, so `audit-manifest` reports `profile_complete: false`. This distinction prevents a filled category table from being presented as 60 independent real interactions.
+
+With equal passive observation budgets and identical forced action checks, Signum triggered 60/60 labels and uniform triggered 17/60. Signum emitted 80 observations: 14 unmatched initial states, six unmatched non-initial observations, and 60 matched labels. Uniform also emitted 80 observations, with 63 unmatched. These are development-set detector numbers, not evidence of downstream task success.
+
+Codex review found two bad Selenium labels before the final run. The immediate post-click captures named `box-added.png` and `input-revealed.png` did not yet contain the box or input. The labels were moved to the first settled frames containing visible evidence; detector thresholds were unchanged.
+
+A final 18-event stratified `gpt-5.6-sol` batch reported 26,097 input and 1,837 output tokens and completed in 41.45 seconds. All 18 structured descriptions were consistent with the labels in an AI-assisted audit. Four action verdicts were correct and neither of the two failed actions was falsely confirmed. Independent blind review remains pending.
+
+The five-event transport comparison rejected session reuse: a resumed Codex session increased reported total tokens from 75,795 to 85,866 and wall time from 36.26 to 47.33 seconds. A single structured batch reduced the same fixture to 17,218 tokens and 17.58 seconds while preserving the five provisional judgments. Batching is not yet the streaming default because it delays individual high-risk verifications.
+
+The complete audit, confidence intervals, category distribution, transport table, and external-provider blockers are in [Pilot 60 local measurement](PILOT60_RESULTS.md).
+
 ## Next experiment
 
-Expand the labeled browser suite from 4 to the documented 60-event pilot with independent recordings, negative cursor/focus cases, rapid transitions, scroll, animation, and more small text changes. The most important unresolved risk remains that pixel-level novelty may not correlate with semantic importance. The current page establishes evaluator operation but is too small and too correlated to estimate production accuracy.
+Collect four additional real failed actions and at least five additional independent transitions, freeze a held-out suite, and complete blind human review. After that, run pinned OpenAI and Claude models with the same saved-evidence and equal-budget policies. Until those steps are complete, Signum cannot support a claim that it is more accurate or cheaper than either provider's computer-use perception.

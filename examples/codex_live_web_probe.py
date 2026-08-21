@@ -8,7 +8,7 @@ from pathlib import Path
 import cv2
 
 from signum.gateway import GatewayConfig
-from signum.interpreters import CodexExecInterpreter
+from signum.interpreters import CodexExecInterpreter, CodexSessionInterpreter
 from signum.streaming import StreamingConfig, StreamingPerceptionGateway
 
 
@@ -26,6 +26,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--codex-command", default="codex")
     parser.add_argument("--model", required=True)
     parser.add_argument("--codex-timeout", type=float, default=180.0)
+    parser.add_argument(
+        "--transport",
+        choices=("ephemeral", "session"),
+        default="ephemeral",
+        help="start one isolated Codex turn per event or resume one read-only session",
+    )
     return parser.parse_args()
 
 
@@ -45,7 +51,12 @@ def main() -> None:
     if initial.shape != box.shape or initial.shape != input_visible.shape:
         raise RuntimeError("captured frames must have the same dimensions")
 
-    interpreter = CodexExecInterpreter(
+    interpreter_type = (
+        CodexSessionInterpreter
+        if args.transport == "session"
+        else CodexExecInterpreter
+    )
+    interpreter = interpreter_type(
         command=args.codex_command,
         model=args.model,
         timeout_seconds=args.codex_timeout,
@@ -137,6 +148,8 @@ def main() -> None:
         json.dumps(report, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    if isinstance(interpreter, CodexSessionInterpreter):
+        interpreter.close()
     summary = {
         "output": str(report_path.resolve()),
         "calls": len(results),

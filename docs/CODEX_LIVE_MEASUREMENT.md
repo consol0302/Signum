@@ -91,4 +91,14 @@ These six judgments came from one simple page. Report them as an end-to-end smok
 
 The five-event replay transmitted only 37,894 bytes of JPEG data, but Codex reported 75,795 total tokens. Each event used a new ephemeral `codex exec` process, so agent context dominated the small image payload and cached input remained zero.
 
-This result justifies a controlled comparison with a persistent Codex session or carefully batched events. Keep the detector, images, labels, model, and observation count fixed when testing either option. A cheaper transport is only an improvement if semantic accuracy and action-verification safety do not regress.
+The controlled transport comparison has now been run on these same five evidence events with `gpt-5.6-sol`:
+
+| Transport | Calls | Reported total tokens | Time |
+| --- | ---: | ---: | ---: |
+| Ephemeral event turns | 5 | 75,795 | 36.26 s |
+| Resumed session | 5 | 85,866 | 47.33 s |
+| One structured batch | 1 | 17,218 | 17.58 s |
+
+The resumed session is rejected for this workload. Its 47,616 cached-input tokens did not offset the growing conversation context. The structured batch preserved all five provisional judgments while reducing reported tokens 77.3% and time 51.5%, but it is suitable only when the controller can wait for a batch. Immediate high-risk action verification still needs an unbatched path or an explicit maximum-wait policy.
+
+The larger stratified result is documented in [Pilot 60 local measurement](PILOT60_RESULTS.md).

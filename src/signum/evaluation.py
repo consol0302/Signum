@@ -77,6 +77,8 @@ class LabeledEvent:
     after_timestamp: float | None = None
     action: str | None = None
     expected_result: str | None = None
+    source_transition_id: str | None = None
+    real_world_eligible: bool = True
     notes: str = ""
 
     @property
@@ -101,6 +103,10 @@ class LabeledEvent:
             )
         if self.risk not in RISK_LEVELS:
             raise EvaluationError(f"event {self.id!r} has unknown risk {self.risk!r}")
+        if self.source_transition_id is not None and not self.source_transition_id.strip():
+            raise EvaluationError(
+                f"event {self.id!r} has an empty source_transition_id"
+            )
         action_fields = (
             self.before_timestamp,
             self.after_timestamp,
@@ -196,19 +202,37 @@ def audit_manifest(
         raise EvaluationError(f"unknown evaluation profile: {profile!r}")
     manifest = load_manifest(path)
     counts = {category: 0 for category in sorted(EVENT_CATEGORIES)}
+    eligible_counts = {category: 0 for category in sorted(EVENT_CATEGORIES)}
     risk_counts = {risk: 0 for risk in sorted(RISK_LEVELS)}
     events_with_regions = 0
     events_with_states = 0
+    transition_events: dict[str, list[str]] = {}
     for case in manifest.cases:
         for event in case.events:
             counts[event.category] += 1
+            if event.real_world_eligible:
+                eligible_counts[event.category] += 1
             risk_counts[event.risk] += 1
             events_with_regions += int(event.region is not None)
             events_with_states += int(bool(event.acceptable_states))
+            transition_id = event.source_transition_id or f"{case.id}/{event.id}"
+            transition_events.setdefault(transition_id, []).append(
+                f"{case.id}/{event.id}"
+            )
     deficits = {
         category: max(0, target - counts[category])
         for category, target in PILOT60_TARGETS.items()
     }
+    eligible_deficits = {
+        category: max(0, target - eligible_counts[category])
+        for category, target in PILOT60_TARGETS.items()
+    }
+    duplicated_transitions = {
+        transition_id: event_ids
+        for transition_id, event_ids in sorted(transition_events.items())
+        if len(event_ids) > 1
+    }
+    independent_transition_count = len(transition_events)
     return {
         "schema_version": 1,
         "manifest": str(manifest.path),
@@ -217,15 +241,24 @@ def audit_manifest(
         "case_count": len(manifest.cases),
         "event_count": sum(counts.values()),
         "category_counts": counts,
+        "eligible_category_counts": eligible_counts,
         "risk_counts": risk_counts,
         "events_with_regions": events_with_regions,
         "events_with_acceptable_states": events_with_states,
         "targets": dict(PILOT60_TARGETS),
         "deficits": deficits,
-        "profile_complete": all(value == 0 for value in deficits.values()),
+        "eligible_deficits": eligible_deficits,
+        "independent_transition_count": independent_transition_count,
+        "duplicated_transition_count": len(duplicated_transitions),
+        "duplicated_transitions": duplicated_transitions,
+        "profile_complete": (
+            all(value == 0 for value in eligible_deficits.values())
+            and independent_transition_count >= sum(PILOT60_TARGETS.values())
+        ),
         "notes": [
-            "Profile completion checks label coverage, not recording quality.",
-            "Synthetic or duplicated events must not be reported as real-world evidence.",
+            "Raw category_counts report label coverage only.",
+            "Profile completion requires eligible labels and 60 independent source transitions.",
+            "Synthetic, constructed, or duplicated events are not real-world evidence.",
         ],
     }
 
@@ -571,6 +604,12 @@ def _parse_event(raw: object, schema_version: int) -> LabeledEvent:
     notes = raw.get("notes", "")
     if not isinstance(notes, str):
         raise EvaluationError("event notes must be a string")
+    source_transition_id = raw.get("source_transition_id")
+    if source_transition_id is not None and not isinstance(source_transition_id, str):
+        raise EvaluationError("event source_transition_id must be a string")
+    real_world_eligible = raw.get("real_world_eligible", True)
+    if not isinstance(real_world_eligible, bool):
+        raise EvaluationError("event real_world_eligible must be a boolean")
     category = raw.get("category", "other" if schema_version == 1 else None)
     if not isinstance(category, str) or not category.strip():
         raise EvaluationError("schema_version 2 events must provide a category")
@@ -590,6 +629,8 @@ def _parse_event(raw: object, schema_version: int) -> LabeledEvent:
         after_timestamp=_optional_nullable_number(raw, "after_timestamp"),
         action=_optional_string(raw, "action"),
         expected_result=_optional_string(raw, "expected_result"),
+        source_transition_id=source_transition_id,
+        real_world_eligible=real_world_eligible,
         notes=notes,
     )
 
@@ -818,11 +859,17 @@ def _score_method(
         )
     event_count = len(case.events)
     triggered = sum(int(row["triggered"]) for row in matches)
-    false_calls = sum(
-        1
+    unmatched_observations = [
+        observation
         for observation in observations
         if int(observation["event"]["sequence"]) not in matched_sequences
+    ]
+    false_calls = len(unmatched_observations)
+    unmatched_initial = sum(
+        int(observation["event"].get("reason") == "initial")
+        for observation in unmatched_observations
     )
+    unmatched_non_initial = false_calls - unmatched_initial
     duration_minutes = (
         metadata.duration_seconds / 60 if metadata.duration_seconds > 0 else 0.0
     )
@@ -833,6 +880,8 @@ def _score_method(
             "trigger_recall": _rate(triggered, event_count, empty=1.0),
             "observations": len(observations),
             "false_observations": false_calls,
+            "unmatched_initial_observations": unmatched_initial,
+            "unmatched_non_initial_observations": unmatched_non_initial,
             "false_calls_per_minute": (
                 false_calls / duration_minutes if duration_minutes else 0.0
             ),
@@ -917,6 +966,12 @@ def _aggregate_method(case_rows: list[dict[str, Any]], method: str) -> dict[str,
     triggered = sum(int(row["triggered_events"]) for row in metrics)
     observations = sum(int(row["observations"]) for row in metrics)
     false_observations = sum(int(row["false_observations"]) for row in metrics)
+    unmatched_initial = sum(
+        int(row["unmatched_initial_observations"]) for row in metrics
+    )
+    unmatched_non_initial = sum(
+        int(row["unmatched_non_initial_observations"]) for row in metrics
+    )
     duration_minutes = sum(float(row["duration_seconds"]) for row in case_rows) / 60
     state_events = sum(int(row["exact_state_events"]) for row in metrics)
     state_correct = sum(int(row["exact_state_correct"]) for row in metrics)
@@ -938,6 +993,8 @@ def _aggregate_method(case_rows: list[dict[str, Any]], method: str) -> dict[str,
         "trigger_recall_ci95": _wilson_interval(triggered, events),
         "observations": observations,
         "false_observations": false_observations,
+        "unmatched_initial_observations": unmatched_initial,
+        "unmatched_non_initial_observations": unmatched_non_initial,
         "false_calls_per_minute": (
             false_observations / duration_minutes if duration_minutes else 0.0
         ),

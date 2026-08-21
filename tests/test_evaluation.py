@@ -75,6 +75,11 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(signum["observations"], uniform["observations"])
         self.assertEqual(1.0, signum["trigger_recall"])
         self.assertEqual(0.0, uniform["trigger_recall"])
+        self.assertEqual(1, signum["unmatched_initial_observations"])
+        self.assertEqual(
+            signum["false_observations"] - 1,
+            signum["unmatched_non_initial_observations"],
+        )
         match = result["cases"][0]["methods"]["signum"]["matches"][0]
         self.assertEqual("change_peak", match["matched_image_role"])
         self.assertTrue((output / "evaluation.json").is_file())
@@ -199,6 +204,9 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(1, audit["event_count"])
         self.assertEqual(1, audit["category_counts"]["action_failure"])
         self.assertEqual(1, audit["risk_counts"]["high"])
+        self.assertEqual(1, audit["independent_transition_count"])
+        self.assertEqual(0, audit["duplicated_transition_count"])
+        self.assertEqual(1, audit["eligible_category_counts"]["action_failure"])
         self.assertEqual(
             PILOT60_TARGETS["action_failure"] - 1,
             audit["deficits"]["action_failure"],
@@ -287,6 +295,43 @@ class EvaluationTests(unittest.TestCase):
             score["by_category"]["signum"]["action_failure"][
                 "false_confirmation_rate"
             ],
+        )
+
+    def test_audit_exposes_ineligible_and_reused_transitions(self) -> None:
+        manifest = self._manifest("audit-transition-provenance")
+        payload = json.loads(manifest.read_text(encoding="utf-8"))
+        payload["schema_version"] = 2
+        event = payload["cases"][0]["events"][0]
+        original_id = event["id"]
+        event.update(
+            {
+                "category": "action_failure",
+                "risk": "high",
+                "before_timestamp": 0.0,
+                "after_timestamp": event["start"],
+                "action": "clicked Submit",
+                "expected_result": "a result appears",
+                "source_transition_id": "shared-transition",
+                "real_world_eligible": False,
+            }
+        )
+        duplicate = dict(event)
+        duplicate["id"] = "second-label"
+        payload["cases"][0]["events"].append(duplicate)
+        manifest.write_text(json.dumps(payload), encoding="utf-8")
+
+        audit = audit_manifest(manifest)
+
+        self.assertEqual(2, audit["category_counts"]["action_failure"])
+        self.assertEqual(0, audit["eligible_category_counts"]["action_failure"])
+        self.assertEqual(1, audit["independent_transition_count"])
+        self.assertEqual(1, audit["duplicated_transition_count"])
+        self.assertEqual(
+            [
+                f"audit-transition-provenance/{original_id}",
+                "audit-transition-provenance/second-label",
+            ],
+            audit["duplicated_transitions"]["shared-transition"],
         )
 
     def test_evaluate_cli_writes_machine_readable_summary(self) -> None:
