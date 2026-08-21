@@ -1,0 +1,216 @@
+{
+  "activation_deficit": {
+    "category": "cursor_hover_focus",
+    "count": 2,
+    "v4_event_keys": [
+      "v4-09a-testpages/15-hover-calculation-control",
+      "v4-27a-testpages/15-hover-calculation-control"
+    ]
+  },
+  "case_ids": [
+    "v4r-01a-qah",
+    "v4r-01b-playlab",
+    "v4r-01c-qah",
+    "v4r-01d-playlab",
+    "v4r-02a-qah",
+    "v4r-02b-playlab",
+    "v4r-02c-qah",
+    "v4r-02d-playlab"
+  ],
+  "development_templates": [
+    {
+      "case_id": "v4r-01a-qah",
+      "development_template": "v4-07b-qah",
+      "target_action_id": "22-hover-feedback-button"
+    },
+    {
+      "case_id": "v4r-01b-playlab",
+      "development_template": "v4-07a-playlab",
+      "target_action_id": "15-hover-tooltip"
+    },
+    {
+      "case_id": "v4r-01c-qah",
+      "development_template": "v4-17a-qah",
+      "target_action_id": "21-hover-feedback-button"
+    },
+    {
+      "case_id": "v4r-01d-playlab",
+      "development_template": "v4-18b-playlab",
+      "target_action_id": "12-hover-tooltip"
+    },
+    {
+      "case_id": "v4r-02a-qah",
+      "development_template": "v4-08a-qah",
+      "target_action_id": "22-hover-feedback-button"
+    },
+    {
+      "case_id": "v4r-02b-playlab",
+      "development_template": "v4-10a-playlab",
+      "target_action_id": "15-hover-tooltip"
+    },
+    {
+      "case_id": "v4r-02c-qah",
+      "development_template": "v4-20a-qah",
+      "target_action_id": "21-hover-feedback-button"
+    },
+    {
+      "case_id": "v4r-02d-playlab",
+      "development_template": "v4-19a-playlab",
+      "target_action_id": "12-hover-tooltip"
+    }
+  ],
+  "kind": "signum_claim180_v4_visibility_reserve_sources",
+  "schema_version": 1,
+  "slots": [
+    {
+      "candidate_ids": [
+        "v4r-01a-qah",
+        "v4r-01b-playlab",
+        "v4r-01c-qah",
+        "v4r-01d-playlab"
+      ],
+      "slot_id": "v4-reserve-slot-01"
+    },
+    {
+      "candidate_ids": [
+        "v4r-02a-qah",
+        "v4r-02b-playlab",
+        "v4r-02c-qah",
+        "v4r-02d-playlab"
+      ],
+      "slot_id": "v4-reserve-slot-02"
+    }
+  ],
+  "target_events": [
+    {
+      "case_id": "v4r-01a-qah",
+      "events": [
+        {
+          "action_id": "22-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-reserve-slot-01"
+    },
+    {
+      "case_id": "v4r-01b-playlab",
+      "events": [
+        {
+          "action_id": "15-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-reserve-slot-01"
+    },
+    {
+      "case_id": "v4r-01c-qah",
+      "events": [
+        {
+          "action_id": "21-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-reserve-slot-01"
+    },
+    {
+      "case_id": "v4r-01d-playlab",
+      "events": [
+        {
+          "action_id": "12-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-reserve-slot-01"
+    },
+    {
+      "case_id": "v4r-02a-qah",
+      "events": [
+        {
+          "action_id": "22-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-reserve-slot-02"
+    },
+    {
+      "case_id": "v4r-02b-playlab",
+      "events": [
+        {
+          "action_id": "15-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-reserve-slot-02"
+    },
+    {
+      "case_id": "v4r-02c-qah",
+      "events": [
+        {
+          "action_id": "21-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-reserve-slot-02"
+    },
+    {
+      "case_id": "v4r-02d-playlab",
+      "events": [
+        {
+          "action_id": "12-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-reserve-slot-02"
+    }
+  ],
+  "workflow_sources": [
+    {
+      "case_id": "v4r-01a-qah",
+      "goal": "Collect one fresh visible hover/focus reserve event for v4-reserve-slot-01.",
+      "slot_id": "v4-reserve-slot-01",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4r-01b-playlab",
+      "goal": "Collect one fresh visible hover/focus reserve event for v4-reserve-slot-01.",
+      "slot_id": "v4-reserve-slot-01",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4r-01c-qah",
+      "goal": "Collect one fresh visible hover/focus reserve event for v4-reserve-slot-01.",
+      "slot_id": "v4-reserve-slot-01",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4r-01d-playlab",
+      "goal": "Collect one fresh visible hover/focus reserve event for v4-reserve-slot-01.",
+      "slot_id": "v4-reserve-slot-01",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4r-02a-qah",
+      "goal": "Collect one fresh visible hover/focus reserve event for v4-reserve-slot-02.",
+      "slot_id": "v4-reserve-slot-02",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4r-02b-playlab",
+      "goal": "Collect one fresh visible hover/focus reserve event for v4-reserve-slot-02.",
+      "slot_id": "v4-reserve-slot-02",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4r-02c-qah",
+      "goal": "Collect one fresh visible hover/focus reserve event for v4-reserve-slot-02.",
+      "slot_id": "v4-reserve-slot-02",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4r-02d-playlab",
+      "goal": "Collect one fresh visible hover/focus reserve event for v4-reserve-slot-02.",
+      "slot_id": "v4-reserve-slot-02",
+      "url": "https://playwrightlab.github.io/index.html"
+    }
+  ]
+}
