@@ -58,6 +58,28 @@ def preregister_heldout(
         raise EvaluationError(
             "held-out plan category_targets must exactly match CLAIM180_TARGETS"
         )
+    workflow_sources = plan.get("workflow_sources")
+    if not isinstance(workflow_sources, list) or len(workflow_sources) != len(
+        case_ids
+    ):
+        raise EvaluationError(
+            "held-out plan workflow_sources must contain one entry per case id"
+        )
+    source_case_ids = []
+    for source in workflow_sources:
+        if not isinstance(source, dict):
+            raise EvaluationError("held-out workflow sources must be objects")
+        source_case_ids.append(
+            _required_nonempty(source, "case_id", "held-out workflow source")
+        )
+        url = _required_nonempty(source, "url", "held-out workflow source")
+        _required_nonempty(source, "goal", "held-out workflow source")
+        if not url.startswith("https://"):
+            raise EvaluationError("held-out workflow source URLs must use https")
+    if source_case_ids != case_ids:
+        raise EvaluationError(
+            "held-out workflow source case ids and order must match case_ids"
+        )
     evidence_policy = plan.get("evidence_policy")
     observation_budget = plan.get("observation_budget")
     if not isinstance(evidence_policy, dict) or not evidence_policy:
@@ -86,6 +108,7 @@ def preregister_heldout(
         "category_targets": category_targets,
         "evidence_policy": evidence_policy,
         "observation_budget": observation_budget,
+        "workflow_sources": workflow_sources,
     }
     payload["preregistration_id"] = _fingerprint(
         {key: value for key, value in payload.items() if key != "created_at_utc"}

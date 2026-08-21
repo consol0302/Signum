@@ -68,5 +68,157 @@
     "max_screenshots": 3,
     "max_zooms": 2,
     "same_policy_for_all_compared_systems": true
-  }
+  },
+  "workflow_sources": [
+    {
+      "case_id": "workflow-01",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-01",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-02",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-02",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-03",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-03",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-04",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-04",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-05",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-05",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-06",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-06",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-07",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-07",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-08",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-08",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-09",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-09",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-10",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-10",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-11",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-11",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-12",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-12",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-13",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-13",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-14",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-14",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-15",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-15",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-16",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-16",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-17",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-17",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-18",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-18",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-19",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-19",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-20",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-20",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-21",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-21",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-22",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-22",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-23",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-23",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-24",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-24",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-25",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-25",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-26",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-26",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-27",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-27",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-28",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-28",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-29",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-29",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    },
+    {
+      "case_id": "workflow-30",
+      "url": "https://REPLACE_WITH_SOURCE_URL.example/workflow-30",
+      "goal": "REPLACE WITH THE EXACT WORKFLOW GOAL"
+    }
+  ]
 }

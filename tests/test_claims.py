@@ -113,6 +113,14 @@ class ClaimAssessmentTests(unittest.TestCase):
                     "observation_budget": {
                         "policy": "same maximum screenshots, zooms, and turns"
                     },
+                    "workflow_sources": [
+                        {
+                            "case_id": case_id,
+                            "url": f"https://example.invalid/{case_id}",
+                            "goal": "complete the frozen test workflow",
+                        }
+                        for case_id in case_ids
+                    ],
                 }
             ),
             encoding="utf-8",
