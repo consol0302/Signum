@@ -1,0 +1,347 @@
+{
+  "actions_manifest": {
+    "bytes": 10863,
+    "path": "claim180-v3-actions-manifest.json",
+    "sha256": "4bdd299dbd3fca7b7d2c6f8b01dc2ab1308bab81df76ccd573166dd904ceecff"
+  },
+  "case_ids": [
+    "v3-01-expand-inputs",
+    "v3-02-expand-login-success",
+    "v3-03-expand-login-bad-user",
+    "v3-04-expand-login-bad-password",
+    "v3-05-expand-radio",
+    "v3-06-expand-form-invalid",
+    "v3-07-expand-add-remove",
+    "v3-08-expand-notification",
+    "v3-09-expand-autocomplete",
+    "v3-10-expand-challenging-dom",
+    "v3-11-expand-checkboxes",
+    "v3-12-expand-keypress",
+    "v3-13-expand-dropdowns",
+    "v3-14-expand-slider",
+    "v3-15-expand-hovers",
+    "v3-16-expand-tooltips",
+    "v3-17-expand-scrollbars",
+    "v3-18-expand-random",
+    "v3-19-expand-bmi",
+    "v3-20-expand-bmi-clear",
+    "v3-21-expand-password",
+    "v3-22-expand-dynamic-table",
+    "v3-23-expand-infinite-scroll",
+    "v3-24-expand-floating-menu",
+    "v3-25-expand-add-remove-alt",
+    "v3-26-practice-delay",
+    "v3-27-practice-slider",
+    "v3-28-practice-click-events",
+    "v3-29-practice-iframes",
+    "v3-30-practice-accordion",
+    "v3-31-practice-form",
+    "v3-32-practice-modals",
+    "v3-33-practice-hover",
+    "v3-34-practice-ads",
+    "v3-35-practice-popup-tooltip",
+    "v3-36-todo-add",
+    "v3-37-todo-complete",
+    "v3-38-todo-edit",
+    "v3-39-todo-delete",
+    "v3-40-todo-toggle-all",
+    "v3-41-todo-clear-completed",
+    "v3-42-todo-active-filter",
+    "v3-43-todo-completed-filter",
+    "v3-44-todo-edit-cancel",
+    "v3-45-todo-filter-cycle"
+  ],
+  "category_targets": {
+    "action_failure": 24,
+    "action_success": 24,
+    "animation_game_hud": 18,
+    "cursor_hover_focus": 15,
+    "loading_completion": 18,
+    "popup_notification": 18,
+    "scroll_navigation": 15,
+    "small_ui": 30,
+    "transient_event": 18
+  },
+  "collection_selection": {
+    "candidate_count": 45,
+    "mode": "first_valid_in_plan_order",
+    "model_outputs_forbidden_before_selection": true,
+    "required_valid_cases": 30,
+    "retain_all_attempts": true,
+    "validity_source": "independent_capture_verification"
+  },
+  "evidence_policy": {
+    "capture": {
+      "fixed_duration_state_reconstruction": false,
+      "format": "original timestamped browser recording",
+      "minimum_frame_rate": 10,
+      "viewport": "1280x720"
+    },
+    "event_checkpoint_native_replay": {
+      "action_event": "original frames at frozen before and after timestamps",
+      "allowed_requests": [
+        "screenshot",
+        "zoom_when_documented_by_provider"
+      ],
+      "disallowed_requests": [
+        "click",
+        "type",
+        "scroll",
+        "navigate",
+        "wait"
+      ],
+      "passive_event": "original frame at the frozen event midpoint",
+      "provider_failures_count_as_failures": true
+    },
+    "labels": {
+      "ambiguous_or_corrupted_events_retained_as_ineligible": true,
+      "constructed_failures_eligible": false,
+      "created_before_any_model_run": true,
+      "labels_hidden_from_models": true,
+      "unique_source_transition_per_eligible_event": true
+    },
+    "review": "two independent human-blind reviewers plus adjudication",
+    "scope": "computer-use perception only; no action-execution score"
+  },
+  "failed_predecessor_collection_id": "f6ab76db72c0f8cb565cd84eba79b31f6283acaf05f85c29ba5ee1d103293877",
+  "observation_budget": {
+    "all_requests_count_toward_cost_and_latency": true,
+    "max_screenshots": 3,
+    "max_turns": 6,
+    "max_zooms": 2,
+    "same_frozen_prompt_and_output_schema": true,
+    "unit": "per eligible event"
+  },
+  "protocol_id": "signum-claim180-public-web-v3",
+  "protocol_repository": "https://github.com/consol0302/Signum",
+  "protocol_revision": "307d443c6d64c58a74fbefc253a5fe505dadbc16",
+  "schema_version": 1,
+  "supersedes_preregistration_id": "db988e9ae6de8bbc90f5c058df00ddc0f1599a7258d3049f7d7bd3a4caf10cab",
+  "workflow_sources": [
+    {
+      "case_id": "v3-01-expand-inputs",
+      "goal": "Enter four input types, display their values, and clear the form.",
+      "url": "https://practice.expandtesting.com/inputs"
+    },
+    {
+      "case_id": "v3-02-expand-login-success",
+      "goal": "Log in with the site's published practice credentials and verify the secure state.",
+      "url": "https://practice.expandtesting.com/login"
+    },
+    {
+      "case_id": "v3-03-expand-login-bad-user",
+      "goal": "Submit an invalid username and verify that access is rejected.",
+      "url": "https://practice.expandtesting.com/login"
+    },
+    {
+      "case_id": "v3-04-expand-login-bad-password",
+      "goal": "Submit an invalid password and verify that access is rejected.",
+      "url": "https://practice.expandtesting.com/login"
+    },
+    {
+      "case_id": "v3-05-expand-radio",
+      "goal": "Change color and sport radio selections and observe the small control states.",
+      "url": "https://practice.expandtesting.com/radio-buttons"
+    },
+    {
+      "case_id": "v3-06-expand-form-invalid",
+      "goal": "Submit an empty validation form, then partially fill it and retain visible errors.",
+      "url": "https://practice.expandtesting.com/form-validation"
+    },
+    {
+      "case_id": "v3-07-expand-add-remove",
+      "goal": "Add three elements and remove them one by one.",
+      "url": "https://practice.expandtesting.com/add-remove-elements"
+    },
+    {
+      "case_id": "v3-08-expand-notification",
+      "goal": "Request successive notification messages and observe transient feedback.",
+      "url": "https://practice.expandtesting.com/notification-message"
+    },
+    {
+      "case_id": "v3-09-expand-autocomplete",
+      "goal": "Type country prefixes, choose a suggestion, and submit it.",
+      "url": "https://practice.expandtesting.com/autocomplete"
+    },
+    {
+      "case_id": "v3-10-expand-challenging-dom",
+      "goal": "Exercise small generated controls and table actions on a dense page.",
+      "url": "https://practice.expandtesting.com/challenging-dom"
+    },
+    {
+      "case_id": "v3-11-expand-checkboxes",
+      "goal": "Toggle both checkboxes through opposite states.",
+      "url": "https://practice.expandtesting.com/checkboxes"
+    },
+    {
+      "case_id": "v3-12-expand-keypress",
+      "goal": "Send several keys and observe the reported key after each press.",
+      "url": "https://practice.expandtesting.com/key-presses"
+    },
+    {
+      "case_id": "v3-13-expand-dropdowns",
+      "goal": "Change the simple, page-size, and country dropdown selections.",
+      "url": "https://practice.expandtesting.com/dropdown"
+    },
+    {
+      "case_id": "v3-14-expand-slider",
+      "goal": "Move the focused range control right and left while observing its value.",
+      "url": "https://practice.expandtesting.com/horizontal-slider"
+    },
+    {
+      "case_id": "v3-15-expand-hovers",
+      "goal": "Reveal each user card's small hover overlay in sequence.",
+      "url": "https://practice.expandtesting.com/hovers"
+    },
+    {
+      "case_id": "v3-16-expand-tooltips",
+      "goal": "Reveal tooltips at several small button positions.",
+      "url": "https://practice.expandtesting.com/tooltips"
+    },
+    {
+      "case_id": "v3-17-expand-scrollbars",
+      "goal": "Locate and click the button hidden inside a small scroll area.",
+      "url": "https://practice.expandtesting.com/scrollbars"
+    },
+    {
+      "case_id": "v3-18-expand-random",
+      "goal": "Observe a generated number, reload once, and observe its replacement.",
+      "url": "https://practice.expandtesting.com/random-number"
+    },
+    {
+      "case_id": "v3-19-expand-bmi",
+      "goal": "Calculate a BMI after changing age, height, and weight.",
+      "url": "https://practice.expandtesting.com/bmi"
+    },
+    {
+      "case_id": "v3-20-expand-bmi-clear",
+      "goal": "Calculate a different BMI and then clear the calculator.",
+      "url": "https://practice.expandtesting.com/bmi"
+    },
+    {
+      "case_id": "v3-21-expand-password",
+      "goal": "Enter weak and strong passwords and observe live requirement indicators.",
+      "url": "https://practice.expandtesting.com/secure-password-checker"
+    },
+    {
+      "case_id": "v3-22-expand-dynamic-table",
+      "goal": "Observe the shuffled process table before and after one reload.",
+      "url": "https://practice.expandtesting.com/dynamic-table"
+    },
+    {
+      "case_id": "v3-23-expand-infinite-scroll",
+      "goal": "Scroll through successive dynamically appended content regions.",
+      "url": "https://practice.expandtesting.com/infinite-scroll"
+    },
+    {
+      "case_id": "v3-24-expand-floating-menu",
+      "goal": "Scroll a long page while verifying the floating navigation remains available.",
+      "url": "https://practice.expandtesting.com/floating-menu"
+    },
+    {
+      "case_id": "v3-25-expand-add-remove-alt",
+      "goal": "Add two controls, attempt an unavailable third delete after removal, and preserve the failure.",
+      "url": "https://practice.expandtesting.com/add-remove-elements"
+    },
+    {
+      "case_id": "v3-26-practice-delay",
+      "goal": "Start the countdown and observe the delayed Liftoff state.",
+      "url": "https://practice-automation.com/javascript-delays/"
+    },
+    {
+      "case_id": "v3-27-practice-slider",
+      "goal": "Move the range slider and observe its live value.",
+      "url": "https://practice-automation.com/slider/"
+    },
+    {
+      "case_id": "v3-28-practice-click-events",
+      "goal": "Click four animal controls and observe their changing response text.",
+      "url": "https://practice-automation.com/click-events/"
+    },
+    {
+      "case_id": "v3-29-practice-iframes",
+      "goal": "Move focus among embedded frame regions and scroll the surrounding page.",
+      "url": "https://practice-automation.com/iframes/"
+    },
+    {
+      "case_id": "v3-30-practice-accordion",
+      "goal": "Expand and collapse the accordion while observing its content.",
+      "url": "https://practice-automation.com/accordions/"
+    },
+    {
+      "case_id": "v3-31-practice-form",
+      "goal": "Fill a mixed-control form and submit it.",
+      "url": "https://practice-automation.com/form-fields/"
+    },
+    {
+      "case_id": "v3-32-practice-modals",
+      "goal": "Open and close the simple modal, then open the form modal.",
+      "url": "https://practice-automation.com/modals/"
+    },
+    {
+      "case_id": "v3-33-practice-hover",
+      "goal": "Reveal and dismiss the hover transformation several times.",
+      "url": "https://practice-automation.com/hover/"
+    },
+    {
+      "case_id": "v3-34-practice-ads",
+      "goal": "Observe and close the page advertisement if it appears.",
+      "url": "https://practice-automation.com/ads/"
+    },
+    {
+      "case_id": "v3-35-practice-popup-tooltip",
+      "goal": "Reveal and dismiss the non-dialog tooltip without accepting browser popups.",
+      "url": "https://practice-automation.com/popups/"
+    },
+    {
+      "case_id": "v3-36-todo-add",
+      "goal": "Add three todos and leave all active.",
+      "url": "https://demo.playwright.dev/todomvc/"
+    },
+    {
+      "case_id": "v3-37-todo-complete",
+      "goal": "Add two todos and complete the first one.",
+      "url": "https://demo.playwright.dev/todomvc/"
+    },
+    {
+      "case_id": "v3-38-todo-edit",
+      "goal": "Add a todo, edit its text, and leave the edited state visible.",
+      "url": "https://demo.playwright.dev/todomvc/"
+    },
+    {
+      "case_id": "v3-39-todo-delete",
+      "goal": "Add two todos and delete the first via its hover control.",
+      "url": "https://demo.playwright.dev/todomvc/"
+    },
+    {
+      "case_id": "v3-40-todo-toggle-all",
+      "goal": "Add three todos, toggle all complete, then return all to active.",
+      "url": "https://demo.playwright.dev/todomvc/"
+    },
+    {
+      "case_id": "v3-41-todo-clear-completed",
+      "goal": "Add two todos, complete both, and clear the completed list.",
+      "url": "https://demo.playwright.dev/todomvc/"
+    },
+    {
+      "case_id": "v3-42-todo-active-filter",
+      "goal": "Create active and completed todos, then show only active items.",
+      "url": "https://demo.playwright.dev/todomvc/"
+    },
+    {
+      "case_id": "v3-43-todo-completed-filter",
+      "goal": "Create active and completed todos, then show only completed items.",
+      "url": "https://demo.playwright.dev/todomvc/"
+    },
+    {
+      "case_id": "v3-44-todo-edit-cancel",
+      "goal": "Enter edit mode, change text, cancel it, and retain the original todo.",
+      "url": "https://demo.playwright.dev/todomvc/"
+    },
+    {
+      "case_id": "v3-45-todo-filter-cycle",
+      "goal": "Create mixed todo states and cycle through all filters.",
+      "url": "https://demo.playwright.dev/todomvc/"
+    }
+  ]
+}

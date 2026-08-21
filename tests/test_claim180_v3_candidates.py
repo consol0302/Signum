@@ -21,6 +21,46 @@ SPEC.loader.exec_module(MODULE)
 
 
 class Claim180V3CandidateTests(unittest.TestCase):
+    def test_v3_plan_and_preregistration_bind_ordered_selection(self) -> None:
+        plan_path = ROOT / "benchmark-protocol" / "claim180-plan-v3.json"
+        preregistration_path = (
+            ROOT / "benchmark-protocol" / "claim180-preregistration-v3.json"
+        )
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        preregistration = json.loads(
+            preregistration_path.read_text(encoding="utf-8")
+        )
+
+        self.assertEqual(45, len(plan["case_ids"]))
+        self.assertEqual(
+            {
+                "mode": "first_valid_in_plan_order",
+                "validity_source": "independent_capture_verification",
+                "retain_all_attempts": True,
+                "model_outputs_forbidden_before_selection": True,
+                "required_valid_cases": 30,
+                "candidate_count": 45,
+            },
+            plan["collection_selection"],
+        )
+        self.assertEqual(plan["collection_selection"], preregistration["collection_selection"])
+        self.assertEqual(plan["case_ids"], preregistration["case_ids"])
+        self.assertEqual(plan_path.stat().st_size, preregistration["plan_bytes"])
+        self.assertEqual(self._sha256(plan_path), preregistration["plan_sha256"])
+        expected_id = hashlib.sha256(
+            json.dumps(
+                {
+                    key: value
+                    for key, value in preregistration.items()
+                    if key not in {"created_at_utc", "preregistration_id"}
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+            ).encode("utf-8")
+        ).hexdigest()
+        self.assertEqual(expected_id, preregistration["preregistration_id"])
+
     def test_public_candidate_pool_and_action_hashes_are_frozen(self) -> None:
         candidates = MODULE.build_candidates()
         sources_path = ROOT / "benchmark-protocol" / "claim180-v3-sources.json"

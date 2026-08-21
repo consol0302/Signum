@@ -5,11 +5,12 @@ after the protocol and plan are public, and must not be used to tune Signum.
 Any workflow inspected while changing detector thresholds belongs in a new
 development set instead.
 
-The authoritative pre-collection lock is
-`benchmark-protocol/claim180-preregistration-v2.json`. It supersedes the v1
-lock by binding the development-validated collector plus all 30 action files
-through `claim180-actions-manifest.json`. The v1 files remain tracked as
-chronological evidence and must not be rewritten.
+The v2 lock bound the development-validated collector plus all 30 action files,
+but its one-shot collection produced only 19 valid captures. Those files and
+the failure summary remain tracked as chronological evidence and must not be
+rewritten. The next authoritative pre-collection lock is
+`benchmark-protocol/claim180-preregistration-v3.json`. It binds an ordered pool
+of 45 new candidates and requires the first 30 independently valid captures.
 
 ## Fixed distribution
 
