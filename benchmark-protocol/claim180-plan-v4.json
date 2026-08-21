@@ -1,0 +1,2766 @@
+{
+  "actions_manifest": {
+    "bytes": 13288,
+    "path": "claim180-v4-actions-manifest.json",
+    "sha256": "9b3e6958299f4c11a099a74f12c090f59c00d3a2480612b396c7e1b9239288de"
+  },
+  "candidate_source_catalog": {
+    "bytes": 72346,
+    "path": "claim180-v4-candidate-sources.json",
+    "sha256": "77a76cdd57aa728958184e8bd2dcf1a736ca228d9010b923b42711dfec86da5d"
+  },
+  "case_ids": [
+    "v4-01a-playlab",
+    "v4-01b-qah",
+    "v4-02a-qah",
+    "v4-02b-testpages",
+    "v4-03a-testpages",
+    "v4-03b-playlab",
+    "v4-04a-playlab",
+    "v4-04b-qah",
+    "v4-05a-qah",
+    "v4-05b-testpages",
+    "v4-06a-testpages",
+    "v4-06b-playlab",
+    "v4-07a-playlab",
+    "v4-07b-qah",
+    "v4-08a-qah",
+    "v4-08b-testpages",
+    "v4-09a-testpages",
+    "v4-09b-playlab",
+    "v4-10a-playlab",
+    "v4-10b-qah",
+    "v4-11a-qah",
+    "v4-11b-testpages",
+    "v4-12a-testpages",
+    "v4-12b-playlab",
+    "v4-13a-playlab",
+    "v4-13b-qah",
+    "v4-14a-qah",
+    "v4-14b-testpages",
+    "v4-15a-testpages",
+    "v4-15b-playlab",
+    "v4-16a-playlab",
+    "v4-16b-qah",
+    "v4-17a-qah",
+    "v4-17b-testpages",
+    "v4-18a-testpages",
+    "v4-18b-playlab",
+    "v4-19a-playlab",
+    "v4-19b-qah",
+    "v4-20a-qah",
+    "v4-20b-testpages",
+    "v4-21a-testpages",
+    "v4-21b-playlab",
+    "v4-22a-playlab",
+    "v4-22b-qah",
+    "v4-23a-qah",
+    "v4-23b-testpages",
+    "v4-24a-testpages",
+    "v4-24b-playlab",
+    "v4-25a-playlab",
+    "v4-25b-qah",
+    "v4-26a-qah",
+    "v4-26b-testpages",
+    "v4-27a-testpages",
+    "v4-27b-playlab",
+    "v4-28a-playlab",
+    "v4-28b-qah",
+    "v4-29a-qah",
+    "v4-29b-testpages",
+    "v4-30a-testpages",
+    "v4-30b-playlab"
+  ],
+  "category_targets": {
+    "action_failure": 24,
+    "action_success": 24,
+    "animation_game_hud": 18,
+    "cursor_hover_focus": 15,
+    "loading_completion": 18,
+    "popup_notification": 18,
+    "scroll_navigation": 15,
+    "small_ui": 30,
+    "transient_event": 18
+  },
+  "collection_selection": {
+    "candidate_count": 60,
+    "mode": "first_valid_per_slot_in_plan_order",
+    "model_outputs_forbidden_before_selection": true,
+    "required_valid_cases": 30,
+    "retain_all_attempts": true,
+    "slots": [
+      {
+        "candidate_ids": [
+          "v4-01a-playlab",
+          "v4-01b-qah"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-01"
+      },
+      {
+        "candidate_ids": [
+          "v4-02a-qah",
+          "v4-02b-testpages"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-02"
+      },
+      {
+        "candidate_ids": [
+          "v4-03a-testpages",
+          "v4-03b-playlab"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-03"
+      },
+      {
+        "candidate_ids": [
+          "v4-04a-playlab",
+          "v4-04b-qah"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-04"
+      },
+      {
+        "candidate_ids": [
+          "v4-05a-qah",
+          "v4-05b-testpages"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-05"
+      },
+      {
+        "candidate_ids": [
+          "v4-06a-testpages",
+          "v4-06b-playlab"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-06"
+      },
+      {
+        "candidate_ids": [
+          "v4-07a-playlab",
+          "v4-07b-qah"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-07"
+      },
+      {
+        "candidate_ids": [
+          "v4-08a-qah",
+          "v4-08b-testpages"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-08"
+      },
+      {
+        "candidate_ids": [
+          "v4-09a-testpages",
+          "v4-09b-playlab"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-09"
+      },
+      {
+        "candidate_ids": [
+          "v4-10a-playlab",
+          "v4-10b-qah"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-10"
+      },
+      {
+        "candidate_ids": [
+          "v4-11a-qah",
+          "v4-11b-testpages"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-11"
+      },
+      {
+        "candidate_ids": [
+          "v4-12a-testpages",
+          "v4-12b-playlab"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-12"
+      },
+      {
+        "candidate_ids": [
+          "v4-13a-playlab",
+          "v4-13b-qah"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-13"
+      },
+      {
+        "candidate_ids": [
+          "v4-14a-qah",
+          "v4-14b-testpages"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-14"
+      },
+      {
+        "candidate_ids": [
+          "v4-15a-testpages",
+          "v4-15b-playlab"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-15"
+      },
+      {
+        "candidate_ids": [
+          "v4-16a-playlab",
+          "v4-16b-qah"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-16"
+      },
+      {
+        "candidate_ids": [
+          "v4-17a-qah",
+          "v4-17b-testpages"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-17"
+      },
+      {
+        "candidate_ids": [
+          "v4-18a-testpages",
+          "v4-18b-playlab"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-18"
+      },
+      {
+        "candidate_ids": [
+          "v4-19a-playlab",
+          "v4-19b-qah"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-19"
+      },
+      {
+        "candidate_ids": [
+          "v4-20a-qah",
+          "v4-20b-testpages"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-20"
+      },
+      {
+        "candidate_ids": [
+          "v4-21a-testpages",
+          "v4-21b-playlab"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "loading_completion",
+          "animation_game_hud",
+          "transient_event",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-21"
+      },
+      {
+        "candidate_ids": [
+          "v4-22a-playlab",
+          "v4-22b-qah"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "loading_completion",
+          "animation_game_hud",
+          "transient_event",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-22"
+      },
+      {
+        "candidate_ids": [
+          "v4-23a-qah",
+          "v4-23b-testpages"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "loading_completion",
+          "animation_game_hud",
+          "transient_event",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-23"
+      },
+      {
+        "candidate_ids": [
+          "v4-24a-testpages",
+          "v4-24b-playlab"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "loading_completion",
+          "animation_game_hud",
+          "transient_event",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-24"
+      },
+      {
+        "candidate_ids": [
+          "v4-25a-playlab",
+          "v4-25b-qah"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "loading_completion",
+          "animation_game_hud",
+          "transient_event",
+          "scroll_navigation"
+        ],
+        "slot_id": "v4-slot-25"
+      },
+      {
+        "candidate_ids": [
+          "v4-26a-qah",
+          "v4-26b-testpages"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-26"
+      },
+      {
+        "candidate_ids": [
+          "v4-27a-testpages",
+          "v4-27b-playlab"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-27"
+      },
+      {
+        "candidate_ids": [
+          "v4-28a-playlab",
+          "v4-28b-qah"
+        ],
+        "category_template": [
+          "popup_notification",
+          "small_ui",
+          "action_failure",
+          "loading_completion",
+          "action_success",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-28"
+      },
+      {
+        "candidate_ids": [
+          "v4-29a-qah",
+          "v4-29b-testpages"
+        ],
+        "category_template": [
+          "small_ui",
+          "action_failure",
+          "animation_game_hud",
+          "action_success",
+          "transient_event",
+          "cursor_hover_focus"
+        ],
+        "slot_id": "v4-slot-29"
+      },
+      {
+        "candidate_ids": [
+          "v4-30a-testpages",
+          "v4-30b-playlab"
+        ],
+        "category_template": [
+          "small_ui",
+          "cursor_hover_focus",
+          "animation_game_hud",
+          "animation_game_hud",
+          "transient_event",
+          "transient_event"
+        ],
+        "slot_id": "v4-slot-30"
+      }
+    ],
+    "validity_source": "independent_capture_verification"
+  },
+  "collector_revision": "b6025b84d4498c682a76273e8540c63032d8e83e",
+  "development_only_predecessors": [
+    "claim180-v3",
+    "claim180-deficit-supplement-v1",
+    "claim180-composite-v1"
+  ],
+  "evidence_policy": {
+    "capture": {
+      "fixed_duration_state_reconstruction": false,
+      "format": "original timestamped browser recording",
+      "full_duration_endpoint_coverage_required": true,
+      "maximum_retained_frame_gap_seconds": 0.75,
+      "minimum_frame_rate": 10,
+      "per_screenshot_timeout_ms": 200,
+      "screenshot_attempt_errors_preserved": true,
+      "target_post_action_frame_required": true,
+      "viewport": "1280x720"
+    },
+    "event_checkpoint_native_replay": {
+      "action_event": "original frames at frozen before and after timestamps",
+      "allowed_requests": [
+        "screenshot",
+        "zoom_when_documented_by_provider"
+      ],
+      "disallowed_requests": [
+        "click",
+        "type",
+        "scroll",
+        "navigate",
+        "wait"
+      ],
+      "passive_event": "original frame at the frozen event midpoint",
+      "provider_failures_count_as_failures": true
+    },
+    "labels": {
+      "ambiguous_or_corrupted_events_retained_as_ineligible": true,
+      "constructed_failures_eligible": false,
+      "created_before_any_model_run": true,
+      "labels_hidden_from_models": true,
+      "unique_source_transition_per_eligible_event": true
+    },
+    "review": "two independent human-blind reviewers plus adjudication",
+    "scope": "computer-use perception only; no action-execution score"
+  },
+  "observation_budget": {
+    "all_requests_count_toward_cost_and_latency": true,
+    "max_screenshots": 3,
+    "max_turns": 6,
+    "max_zooms": 2,
+    "same_frozen_prompt_and_output_schema": true,
+    "unit": "per eligible event"
+  },
+  "protocol_id": "signum-claim180-public-web-v4",
+  "protocol_repository": "https://github.com/consol0302/Signum",
+  "protocol_revision": "67c821dc38bc07e38816a5f39030a607222a0f83",
+  "schema_version": 1,
+  "supersedes_preregistration_id": "bef6d49c3090daab2f06278875ecbee68508b767d7ffaa5e390b7416ea760470",
+  "target_events": [
+    {
+      "case_id": "v4-01a-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-bold",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "07-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "13-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "14-scroll-document",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-01"
+    },
+    {
+      "case_id": "v4-01b-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "12-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "16-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "19-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "22-scroll-products",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-01"
+    },
+    {
+      "case_id": "v4-02a-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "12-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "16-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "19-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "22-scroll-products",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-02"
+    },
+    {
+      "case_id": "v4-02b-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-complete-valid-calculation",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-scroll-test-page",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-02"
+    },
+    {
+      "case_id": "v4-03a-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-complete-valid-calculation",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-scroll-test-page",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-03"
+    },
+    {
+      "case_id": "v4-03b-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-bold",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "07-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "13-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "14-scroll-document",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-03"
+    },
+    {
+      "case_id": "v4-04a-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-italic",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "07-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "13-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "14-scroll-document",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-04"
+    },
+    {
+      "case_id": "v4-04b-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "12-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "16-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "19-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "22-scroll-products",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-04"
+    },
+    {
+      "case_id": "v4-05a-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "12-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "16-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "19-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "22-scroll-products",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-05"
+    },
+    {
+      "case_id": "v4-05b-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-complete-valid-calculation",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-scroll-test-page",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-05"
+    },
+    {
+      "case_id": "v4-06a-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-complete-valid-calculation",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-calculation-control",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-06"
+    },
+    {
+      "case_id": "v4-06b-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-italic",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "07-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "13-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-06"
+    },
+    {
+      "case_id": "v4-07a-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-bold",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "07-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "13-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-07"
+    },
+    {
+      "case_id": "v4-07b-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "12-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "16-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "19-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "22-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-07"
+    },
+    {
+      "case_id": "v4-08a-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "12-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "16-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "19-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "22-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-08"
+    },
+    {
+      "case_id": "v4-08b-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-complete-valid-calculation",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-calculation-control",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-08"
+    },
+    {
+      "case_id": "v4-09a-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-complete-valid-calculation",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-calculation-control",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-09"
+    },
+    {
+      "case_id": "v4-09b-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-bold",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "07-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "13-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-09"
+    },
+    {
+      "case_id": "v4-10a-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-italic",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "07-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "13-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-10"
+    },
+    {
+      "case_id": "v4-10b-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "12-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "16-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "19-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "22-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-10"
+    },
+    {
+      "case_id": "v4-11a-qah",
+      "events": [
+        {
+          "action_id": "04-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "12-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "15-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "18-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "21-scroll-products",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-11"
+    },
+    {
+      "case_id": "v4-11b-testpages",
+      "events": [
+        {
+          "action_id": "01-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "08-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "10-accept-timer-reset",
+          "category": "action_success"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-test-page",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-11"
+    },
+    {
+      "case_id": "v4-12a-testpages",
+      "events": [
+        {
+          "action_id": "01-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "08-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "10-accept-timer-reset",
+          "category": "action_success"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-test-page",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-12"
+    },
+    {
+      "case_id": "v4-12b-playlab",
+      "events": [
+        {
+          "action_id": "02-toggle-italic",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "06-advance-carousel",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "08-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "10-success-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "11-scroll-document",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-12"
+    },
+    {
+      "case_id": "v4-13a-playlab",
+      "events": [
+        {
+          "action_id": "02-toggle-bold",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "06-start-live-timer",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "08-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "10-warning-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "11-scroll-document",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-13"
+    },
+    {
+      "case_id": "v4-13b-qah",
+      "events": [
+        {
+          "action_id": "04-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "12-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "15-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "18-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "21-scroll-products",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-13"
+    },
+    {
+      "case_id": "v4-14a-qah",
+      "events": [
+        {
+          "action_id": "04-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "12-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "15-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "18-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "21-scroll-products",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-14"
+    },
+    {
+      "case_id": "v4-14b-testpages",
+      "events": [
+        {
+          "action_id": "01-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "08-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "10-accept-timer-reset",
+          "category": "action_success"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-test-page",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-14"
+    },
+    {
+      "case_id": "v4-15a-testpages",
+      "events": [
+        {
+          "action_id": "01-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "08-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "10-accept-timer-reset",
+          "category": "action_success"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-test-page",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-15"
+    },
+    {
+      "case_id": "v4-15b-playlab",
+      "events": [
+        {
+          "action_id": "02-toggle-bold",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "06-start-live-timer",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "08-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "10-success-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "11-scroll-document",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-15"
+    },
+    {
+      "case_id": "v4-16a-playlab",
+      "events": [
+        {
+          "action_id": "02-toggle-italic",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "06-start-download-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "08-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "10-warning-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "12-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-16"
+    },
+    {
+      "case_id": "v4-16b-qah",
+      "events": [
+        {
+          "action_id": "04-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "12-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "15-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "18-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "21-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-16"
+    },
+    {
+      "case_id": "v4-17a-qah",
+      "events": [
+        {
+          "action_id": "04-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "12-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "15-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "18-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "21-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-17"
+    },
+    {
+      "case_id": "v4-17b-testpages",
+      "events": [
+        {
+          "action_id": "01-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "08-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "10-accept-timer-reset",
+          "category": "action_success"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-hover-timer-control",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-17"
+    },
+    {
+      "case_id": "v4-18a-testpages",
+      "events": [
+        {
+          "action_id": "01-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "08-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "10-accept-timer-reset",
+          "category": "action_success"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-hover-timer-control",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-18"
+    },
+    {
+      "case_id": "v4-18b-playlab",
+      "events": [
+        {
+          "action_id": "02-toggle-italic",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "06-start-download-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "08-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "10-success-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "12-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-18"
+    },
+    {
+      "case_id": "v4-19a-playlab",
+      "events": [
+        {
+          "action_id": "02-toggle-bold",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "06-toggle-spinner",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "08-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "10-warning-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "12-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-19"
+    },
+    {
+      "case_id": "v4-19b-qah",
+      "events": [
+        {
+          "action_id": "04-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "12-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "15-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "18-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "21-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-19"
+    },
+    {
+      "case_id": "v4-20a-qah",
+      "events": [
+        {
+          "action_id": "04-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "12-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "15-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "18-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "21-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-20"
+    },
+    {
+      "case_id": "v4-20b-testpages",
+      "events": [
+        {
+          "action_id": "01-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "08-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "10-accept-timer-reset",
+          "category": "action_success"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-hover-timer-control",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-20"
+    },
+    {
+      "case_id": "v4-21a-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "12-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-test-page",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-21"
+    },
+    {
+      "case_id": "v4-21b-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-bold",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "11-toggle-spinner",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "13-success-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-document",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-21"
+    },
+    {
+      "case_id": "v4-22a-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-italic",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "11-advance-carousel",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "13-warning-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-document",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-22"
+    },
+    {
+      "case_id": "v4-22b-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "11-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "17-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "20-scroll-products",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-22"
+    },
+    {
+      "case_id": "v4-23a-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "11-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "17-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "20-scroll-products",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-23"
+    },
+    {
+      "case_id": "v4-23b-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "12-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-test-page",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-23"
+    },
+    {
+      "case_id": "v4-24a-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "12-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-test-page",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-24"
+    },
+    {
+      "case_id": "v4-24b-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-italic",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "11-advance-carousel",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "13-success-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-document",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-24"
+    },
+    {
+      "case_id": "v4-25a-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-bold",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "11-start-live-timer",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "13-warning-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-scroll-document",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-25"
+    },
+    {
+      "case_id": "v4-25b-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "11-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "17-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "20-scroll-products",
+          "category": "scroll_navigation"
+        }
+      ],
+      "slot_id": "v4-slot-25"
+    },
+    {
+      "case_id": "v4-26a-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "12-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "16-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "19-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "22-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-26"
+    },
+    {
+      "case_id": "v4-26b-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-complete-valid-calculation",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-calculation-control",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-26"
+    },
+    {
+      "case_id": "v4-27a-testpages",
+      "events": [
+        {
+          "action_id": "01-open-fake-alert",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "08-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-calculate-on-server",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "14-complete-valid-calculation",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-calculation-control",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-27"
+    },
+    {
+      "case_id": "v4-27b-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-bold",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "07-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "13-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-27"
+    },
+    {
+      "case_id": "v4-28a-playlab",
+      "events": [
+        {
+          "action_id": "02-open-modal",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "05-toggle-italic",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "07-reject-empty-registration",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "11-observe-delayed-content",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "13-add-dynamic-element",
+          "category": "action_success"
+        },
+        {
+          "action_id": "15-hover-tooltip",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-28"
+    },
+    {
+      "case_id": "v4-28b-qah",
+      "events": [
+        {
+          "action_id": "04-open-click-info",
+          "category": "popup_notification"
+        },
+        {
+          "action_id": "07-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "12-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "16-observe-loaded-data",
+          "category": "loading_completion"
+        },
+        {
+          "action_id": "19-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "22-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-28"
+    },
+    {
+      "case_id": "v4-29a-qah",
+      "events": [
+        {
+          "action_id": "04-toggle-small-skill",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "09-reject-login",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "12-increase-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "15-add-list-item",
+          "category": "action_success"
+        },
+        {
+          "action_id": "18-hover-info",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "21-hover-feedback-button",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-29"
+    },
+    {
+      "case_id": "v4-29b-testpages",
+      "events": [
+        {
+          "action_id": "01-enter-compact-number",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-reject-invalid-calculation",
+          "category": "action_failure"
+        },
+        {
+          "action_id": "08-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "10-accept-timer-reset",
+          "category": "action_success"
+        },
+        {
+          "action_id": "13-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "14-hover-timer-control",
+          "category": "cursor_hover_focus"
+        }
+      ],
+      "slot_id": "v4-slot-29"
+    },
+    {
+      "case_id": "v4-30a-testpages",
+      "events": [
+        {
+          "action_id": "01-set-compact-timer",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "02-hover-timer-control",
+          "category": "cursor_hover_focus"
+        },
+        {
+          "action_id": "04-start-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "06-reset-countdown",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "07-stop-countdown",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "10-clear-countdown",
+          "category": "transient_event"
+        }
+      ],
+      "slot_id": "v4-slot-30"
+    },
+    {
+      "case_id": "v4-30b-playlab",
+      "events": [
+        {
+          "action_id": "02-toggle-italic",
+          "category": "small_ui"
+        },
+        {
+          "action_id": "04-hover-tooltip",
+          "category": "cursor_hover_focus"
+        },
+        {
+          "action_id": "06-start-download-progress",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "08-start-live-timer",
+          "category": "animation_game_hud"
+        },
+        {
+          "action_id": "10-success-toast",
+          "category": "transient_event"
+        },
+        {
+          "action_id": "12-warning-toast",
+          "category": "transient_event"
+        }
+      ],
+      "slot_id": "v4-slot-30"
+    }
+  ],
+  "workflow_sources": [
+    {
+      "case_id": "v4-01a-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-01.",
+      "slot_id": "v4-slot-01",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-01b-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-01.",
+      "slot_id": "v4-slot-01",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-02a-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-02.",
+      "slot_id": "v4-slot-02",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-02b-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-02.",
+      "slot_id": "v4-slot-02",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-03a-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-03.",
+      "slot_id": "v4-slot-03",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-03b-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-03.",
+      "slot_id": "v4-slot-03",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-04a-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-04.",
+      "slot_id": "v4-slot-04",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-04b-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-04.",
+      "slot_id": "v4-slot-04",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-05a-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-05.",
+      "slot_id": "v4-slot-05",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-05b-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-05.",
+      "slot_id": "v4-slot-05",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-06a-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-06.",
+      "slot_id": "v4-slot-06",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-06b-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-06.",
+      "slot_id": "v4-slot-06",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-07a-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-07.",
+      "slot_id": "v4-slot-07",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-07b-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-07.",
+      "slot_id": "v4-slot-07",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-08a-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-08.",
+      "slot_id": "v4-slot-08",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-08b-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-08.",
+      "slot_id": "v4-slot-08",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-09a-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-09.",
+      "slot_id": "v4-slot-09",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-09b-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-09.",
+      "slot_id": "v4-slot-09",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-10a-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-10.",
+      "slot_id": "v4-slot-10",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-10b-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-10.",
+      "slot_id": "v4-slot-10",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-11a-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-11.",
+      "slot_id": "v4-slot-11",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-11b-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-11.",
+      "slot_id": "v4-slot-11",
+      "url": "https://testpages.eviltester.com/apps/server-side-calculator/"
+    },
+    {
+      "case_id": "v4-12a-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-12.",
+      "slot_id": "v4-slot-12",
+      "url": "https://testpages.eviltester.com/apps/server-side-calculator/"
+    },
+    {
+      "case_id": "v4-12b-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-12.",
+      "slot_id": "v4-slot-12",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-13a-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-13.",
+      "slot_id": "v4-slot-13",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-13b-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-13.",
+      "slot_id": "v4-slot-13",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-14a-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-14.",
+      "slot_id": "v4-slot-14",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-14b-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-14.",
+      "slot_id": "v4-slot-14",
+      "url": "https://testpages.eviltester.com/apps/server-side-calculator/"
+    },
+    {
+      "case_id": "v4-15a-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-15.",
+      "slot_id": "v4-slot-15",
+      "url": "https://testpages.eviltester.com/apps/server-side-calculator/"
+    },
+    {
+      "case_id": "v4-15b-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-15.",
+      "slot_id": "v4-slot-15",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-16a-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-16.",
+      "slot_id": "v4-slot-16",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-16b-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-16.",
+      "slot_id": "v4-slot-16",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-17a-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-17.",
+      "slot_id": "v4-slot-17",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-17b-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-17.",
+      "slot_id": "v4-slot-17",
+      "url": "https://testpages.eviltester.com/apps/server-side-calculator/"
+    },
+    {
+      "case_id": "v4-18a-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-18.",
+      "slot_id": "v4-slot-18",
+      "url": "https://testpages.eviltester.com/apps/server-side-calculator/"
+    },
+    {
+      "case_id": "v4-18b-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-18.",
+      "slot_id": "v4-slot-18",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-19a-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-19.",
+      "slot_id": "v4-slot-19",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-19b-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-19.",
+      "slot_id": "v4-slot-19",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-20a-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-20.",
+      "slot_id": "v4-slot-20",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-20b-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-20.",
+      "slot_id": "v4-slot-20",
+      "url": "https://testpages.eviltester.com/apps/server-side-calculator/"
+    },
+    {
+      "case_id": "v4-21a-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-21.",
+      "slot_id": "v4-slot-21",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-21b-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-21.",
+      "slot_id": "v4-slot-21",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-22a-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-22.",
+      "slot_id": "v4-slot-22",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-22b-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-22.",
+      "slot_id": "v4-slot-22",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-23a-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-23.",
+      "slot_id": "v4-slot-23",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-23b-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-23.",
+      "slot_id": "v4-slot-23",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-24a-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-24.",
+      "slot_id": "v4-slot-24",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-24b-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-24.",
+      "slot_id": "v4-slot-24",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-25a-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-25.",
+      "slot_id": "v4-slot-25",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-25b-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-25.",
+      "slot_id": "v4-slot-25",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-26a-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-26.",
+      "slot_id": "v4-slot-26",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-26b-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-26.",
+      "slot_id": "v4-slot-26",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-27a-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-27.",
+      "slot_id": "v4-slot-27",
+      "url": "https://testpages.eviltester.com/pages/basics/alerts-not-javascript/"
+    },
+    {
+      "case_id": "v4-27b-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-27.",
+      "slot_id": "v4-slot-27",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-28a-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-28.",
+      "slot_id": "v4-slot-28",
+      "url": "https://playwrightlab.github.io/index.html"
+    },
+    {
+      "case_id": "v4-28b-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-28.",
+      "slot_id": "v4-slot-28",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-29a-qah",
+      "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-29.",
+      "slot_id": "v4-slot-29",
+      "url": "https://qapracticehub.com/"
+    },
+    {
+      "case_id": "v4-29b-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-29.",
+      "slot_id": "v4-slot-29",
+      "url": "https://testpages.eviltester.com/apps/server-side-calculator/"
+    },
+    {
+      "case_id": "v4-30a-testpages",
+      "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-30.",
+      "slot_id": "v4-slot-30",
+      "url": "https://testpages.eviltester.com/apps/countdown-timer/"
+    },
+    {
+      "case_id": "v4-30b-playlab",
+      "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-30.",
+      "slot_id": "v4-slot-30",
+      "url": "https://playwrightlab.github.io/index.html"
+    }
+  ]
+}

@@ -70,6 +70,18 @@ run; `examples/compare_ground_truth_reviews.py` sends every disagreement or
 negative verdict to adjudication. This protects the labels from detector and
 provider-output leakage, but it does not itself establish a comparative claim.
 
+The fresh V4 candidate plan is now generated but not yet collected. It contains
+30 balanced slots with two ordered candidates per slot, exactly six target
+events per candidate, and the fixed 180-event category distribution. The 60
+candidates are split evenly across three domains absent from earlier plans:
+PlayLab, QA Practice Hub, and TestPages. Reconnaissance covered all 17 unique
+domain/template combinations without running Signum or any provider model;
+17/17 captures passed independent integrity, timing, action, and target-frame
+checks. This validates collection mechanics only. The collector revision is
+`b6025b84d4498c682a76273e8540c63032d8e83e` and the plan-builder revision is
+`67c821dc38bc07e38816a5f39030a607222a0f83`. Final recording remains forbidden
+until the generated plan and its preregistration lock are pushed.
+
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 
 ## Install
@@ -316,6 +328,32 @@ The command rejects changed base artifacts, unplanned categories, failure
 targets without a preregistered failed outcome, and loading targets that are not
 successful asynchronous `wait_for` actions. It creates an acquisition lock; it
 does not turn mechanically anchored events into reviewed ground truth.
+
+V4 replaces the global first-valid rule with balanced per-slot selection. Every
+slot has a primary and alternate workflow with the same six category targets.
+Both candidates are attempted once and retained; the first independently valid
+candidate in that slot is selected. A valid capture must cover the full
+requested interval, stay within its frozen frame-gap bound, complete all
+required actions, and retain at least one post-completion frame for every target
+before the following action starts. Model outputs remain forbidden until all 60
+attempts are collected, verified, and selected by that frozen rule.
+
+```powershell
+python examples/build_claim180_v4_candidates.py `
+  --sources benchmark-protocol/claim180-v4-candidate-sources.json `
+  --actions benchmark-protocol/actions-v4 `
+  --manifest benchmark-protocol/claim180-v4-actions-manifest.json `
+  --collector-revision b6025b84d4498c682a76273e8540c63032d8e83e `
+  --check
+
+python examples/build_claim180_v4_plan.py `
+  --template benchmark-protocol/claim180-plan-v3.json `
+  --sources benchmark-protocol/claim180-v4-candidate-sources.json `
+  --actions-manifest benchmark-protocol/claim180-v4-actions-manifest.json `
+  --output benchmark-protocol/claim180-plan-v4.json `
+  --protocol-revision 67c821dc38bc07e38816a5f39030a607222a0f83 `
+  --check
+```
 
 The repository now also contains the deterministic supplement candidate
 builder and its generated 52-case action pool: 26 loading-completion candidates

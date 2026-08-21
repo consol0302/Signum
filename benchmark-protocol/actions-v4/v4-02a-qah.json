@@ -1,0 +1,309 @@
+{
+  "actions": [
+    {
+      "at_seconds": 0.9,
+      "expected_outcome": "success",
+      "expected_result": "preparation step dismiss-cookie-banner completes",
+      "id": "01-dismiss-cookie-banner",
+      "locator": {
+        "by": "css",
+        "value": "#cookie-decline"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 1.45,
+      "expected_outcome": "success",
+      "expected_result": "preparation step open-buttons completes",
+      "id": "02-open-buttons",
+      "locator": {
+        "by": "css",
+        "value": "a[href='#buttons'] >> nth=0"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 2.0,
+      "expected_outcome": "success",
+      "expected_result": "preparation step wait-buttons completes",
+      "id": "03-wait-buttons",
+      "locator": {
+        "by": "css",
+        "value": "#buttons"
+      },
+      "required": true,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 2.55,
+      "expected_outcome": "success",
+      "expected_result": "the click information popup is visible",
+      "id": "04-open-click-info",
+      "locator": {
+        "by": "css",
+        "value": "#info-btn-click"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 3.85,
+      "expected_outcome": "success",
+      "expected_result": "preparation step open-selection completes",
+      "id": "05-open-selection",
+      "locator": {
+        "by": "css",
+        "value": "a[href='#selection'] >> nth=0"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 4.4,
+      "expected_outcome": "success",
+      "expected_result": "preparation step wait-selection completes",
+      "id": "06-wait-selection",
+      "locator": {
+        "by": "css",
+        "value": "#selection"
+      },
+      "required": true,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 4.95,
+      "expected_outcome": "success",
+      "expected_result": "one small skill checkbox becomes selected",
+      "id": "07-toggle-small-skill",
+      "locator": {
+        "by": "css",
+        "value": "#skill-cypress"
+      },
+      "required": true,
+      "type": "check"
+    },
+    {
+      "at_seconds": 6.25,
+      "expected_outcome": "success",
+      "expected_result": "preparation step open-forms completes",
+      "id": "08-open-forms",
+      "locator": {
+        "by": "css",
+        "value": "a[href='#forms'] >> nth=0"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 6.8,
+      "expected_outcome": "success",
+      "expected_result": "preparation step wait-forms completes",
+      "id": "09-wait-forms",
+      "locator": {
+        "by": "css",
+        "value": "#forms"
+      },
+      "required": true,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 7.35,
+      "expected_outcome": "success",
+      "expected_result": "preparation step fill-invalid-user completes",
+      "id": "10-fill-invalid-user",
+      "locator": {
+        "by": "css",
+        "value": "#login-username"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "invalid-2"
+    },
+    {
+      "at_seconds": 7.9,
+      "expected_outcome": "success",
+      "expected_result": "preparation step fill-invalid-password completes",
+      "id": "11-fill-invalid-password",
+      "locator": {
+        "by": "css",
+        "value": "#login-password"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "wrong-password"
+    },
+    {
+      "at_seconds": 8.45,
+      "expected_outcome": "failure",
+      "expected_result": "login remains rejected with an error message",
+      "id": "12-reject-login",
+      "locator": {
+        "by": "css",
+        "value": "#login-submit"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 9.75,
+      "expected_outcome": "success",
+      "expected_result": "preparation step open-dynamic completes",
+      "id": "13-open-dynamic",
+      "locator": {
+        "by": "css",
+        "value": "a[href='#dynamic'] >> nth=0"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 10.3,
+      "expected_outcome": "success",
+      "expected_result": "preparation step wait-dynamic completes",
+      "id": "14-wait-dynamic",
+      "locator": {
+        "by": "css",
+        "value": "#dynamic"
+      },
+      "required": true,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 10.85,
+      "expected_outcome": "success",
+      "expected_result": "preparation step start-data-load completes",
+      "id": "15-start-data-load",
+      "locator": {
+        "by": "css",
+        "value": "#btn-load-data"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 11.4,
+      "expected_outcome": "success",
+      "expected_result": "the delayed data completion message is visible",
+      "id": "16-observe-loaded-data",
+      "locator": {
+        "by": "css",
+        "value": "#loaded-data"
+      },
+      "required": true,
+      "timeout_ms": 4000,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 12.7,
+      "expected_outcome": "success",
+      "expected_result": "preparation step open-dynamic completes",
+      "id": "17-open-dynamic",
+      "locator": {
+        "by": "css",
+        "value": "a[href='#dynamic'] >> nth=0"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 13.25,
+      "expected_outcome": "success",
+      "expected_result": "preparation step wait-dynamic completes",
+      "id": "18-wait-dynamic",
+      "locator": {
+        "by": "css",
+        "value": "#dynamic"
+      },
+      "required": true,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 13.8,
+      "expected_outcome": "success",
+      "expected_result": "a new list item appears",
+      "id": "19-add-list-item",
+      "locator": {
+        "by": "css",
+        "value": "#btn-add-element"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 15.1,
+      "expected_outcome": "success",
+      "expected_result": "preparation step open-shopping completes",
+      "id": "20-open-shopping",
+      "locator": {
+        "by": "css",
+        "value": "a[href='#shopping'] >> nth=0"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 15.65,
+      "expected_outcome": "success",
+      "expected_result": "preparation step wait-shopping completes",
+      "id": "21-wait-shopping",
+      "locator": {
+        "by": "css",
+        "value": "#shopping"
+      },
+      "required": true,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 16.2,
+      "expected_outcome": "success",
+      "expected_result": "later products enter the viewport",
+      "id": "22-scroll-products",
+      "required": true,
+      "type": "scroll",
+      "x": 0,
+      "y": 620
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.75,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "screenshot_timeout_ms": 200,
+    "width": 1280
+  },
+  "case_id": "v4-02a-qah",
+  "duration_seconds": 20,
+  "goal": "Exercise six frozen QA Practice Hub states for balanced slot v4-slot-02.",
+  "schema_version": 1,
+  "slot_id": "v4-slot-02",
+  "source_url": "https://qapracticehub.com/",
+  "target_events": [
+    {
+      "action_id": "04-open-click-info",
+      "category": "popup_notification"
+    },
+    {
+      "action_id": "07-toggle-small-skill",
+      "category": "small_ui"
+    },
+    {
+      "action_id": "12-reject-login",
+      "category": "action_failure"
+    },
+    {
+      "action_id": "16-observe-loaded-data",
+      "category": "loading_completion"
+    },
+    {
+      "action_id": "19-add-list-item",
+      "category": "action_success"
+    },
+    {
+      "action_id": "22-scroll-products",
+      "category": "scroll_navigation"
+    }
+  ]
+}

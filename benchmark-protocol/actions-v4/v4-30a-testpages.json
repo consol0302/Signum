@@ -1,0 +1,168 @@
+{
+  "actions": [
+    {
+      "at_seconds": 0.9,
+      "expected_outcome": "success",
+      "expected_result": "the compact seconds field shows the configured value",
+      "id": "01-set-compact-timer",
+      "locator": {
+        "by": "css",
+        "value": "#timer-seconds"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "4"
+    },
+    {
+      "at_seconds": 2.2,
+      "expected_outcome": "success",
+      "expected_result": "the timer control receives visible pointer focus",
+      "id": "02-hover-timer-control",
+      "locator": {
+        "by": "css",
+        "value": "#start-timer"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 3.5,
+      "expected_outcome": "success",
+      "expected_result": "preparation step set-short-timer completes",
+      "id": "03-set-short-timer",
+      "locator": {
+        "by": "css",
+        "value": "#timer-seconds"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "4"
+    },
+    {
+      "at_seconds": 4.05,
+      "expected_outcome": "success",
+      "expected_result": "the countdown HUD begins updating",
+      "id": "04-start-countdown",
+      "locator": {
+        "by": "css",
+        "value": "#start-timer"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 5.35,
+      "expected_outcome": "success",
+      "expected_result": "preparation step set-short-timer completes",
+      "id": "05-set-short-timer",
+      "locator": {
+        "by": "css",
+        "value": "#timer-seconds"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "4"
+    },
+    {
+      "at_seconds": 5.9,
+      "expected_outcome": "success",
+      "expected_result": "the countdown HUD visibly resets",
+      "id": "06-reset-countdown",
+      "locator": {
+        "by": "css",
+        "value": "#reset-timer"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 7.2,
+      "expected_outcome": "success",
+      "expected_result": "the actively changing countdown briefly stops",
+      "id": "07-stop-countdown",
+      "locator": {
+        "by": "css",
+        "value": "#stop-timer"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 8.5,
+      "expected_outcome": "success",
+      "expected_result": "preparation step set-transient-timer completes",
+      "id": "08-set-transient-timer",
+      "locator": {
+        "by": "css",
+        "value": "#timer-seconds"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "5"
+    },
+    {
+      "at_seconds": 9.05,
+      "expected_outcome": "success",
+      "expected_result": "preparation step start-transient-timer completes",
+      "id": "09-start-transient-timer",
+      "locator": {
+        "by": "css",
+        "value": "#start-timer"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 9.6,
+      "expected_outcome": "success",
+      "expected_result": "the countdown display disappears",
+      "id": "10-clear-countdown",
+      "locator": {
+        "by": "css",
+        "value": "#clear-timer"
+      },
+      "required": true,
+      "type": "click"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.75,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "screenshot_timeout_ms": 200,
+    "width": 1280
+  },
+  "case_id": "v4-30a-testpages",
+  "duration_seconds": 14,
+  "goal": "Exercise six frozen TestPages states for balanced slot v4-slot-30.",
+  "schema_version": 1,
+  "slot_id": "v4-slot-30",
+  "source_url": "https://testpages.eviltester.com/apps/countdown-timer/",
+  "target_events": [
+    {
+      "action_id": "01-set-compact-timer",
+      "category": "small_ui"
+    },
+    {
+      "action_id": "02-hover-timer-control",
+      "category": "cursor_hover_focus"
+    },
+    {
+      "action_id": "04-start-countdown",
+      "category": "animation_game_hud"
+    },
+    {
+      "action_id": "06-reset-countdown",
+      "category": "animation_game_hud"
+    },
+    {
+      "action_id": "07-stop-countdown",
+      "category": "transient_event"
+    },
+    {
+      "action_id": "10-clear-countdown",
+      "category": "transient_event"
+    }
+  ]
+}

@@ -31,6 +31,39 @@ PLAN = load_module(
 
 
 class Claim180V4PlanTests(unittest.TestCase):
+    def test_published_plan_matches_generators_and_is_preregisterable(self) -> None:
+        sources = ROOT / "benchmark-protocol" / "claim180-v4-candidate-sources.json"
+        actions = ROOT / "benchmark-protocol" / "actions-v4"
+        manifest = ROOT / "benchmark-protocol" / "claim180-v4-actions-manifest.json"
+        plan_path = ROOT / "benchmark-protocol" / "claim180-plan-v4.json"
+        collector_revision = "b6025b84d4498c682a76273e8540c63032d8e83e"
+        protocol_revision = "67c821dc38bc07e38816a5f39030a607222a0f83"
+        CANDIDATES.build_outputs(
+            sources,
+            actions,
+            manifest,
+            collector_revision,
+            check=True,
+        )
+        expected = PLAN.build_plan(
+            ROOT / "benchmark-protocol" / "claim180-plan-v3.json",
+            sources,
+            manifest,
+            plan_path,
+            protocol_revision,
+        )
+        self.assertEqual(
+            PLAN.json_text(expected),
+            plan_path.read_text(encoding="utf-8"),
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            locked = preregister_heldout(
+                plan_path,
+                Path(temporary) / "preregistration.json",
+            )
+        self.assertEqual(collector_revision, locked["actions_manifest"]["collector_revision"])
+        self.assertEqual(protocol_revision, locked["protocol_revision"])
+
     def test_plan_and_preregistration_lock_slots_targets_and_actions(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

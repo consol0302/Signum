@@ -1,0 +1,214 @@
+{
+  "actions": [
+    {
+      "at_seconds": 0.9,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-modal-control completes",
+      "id": "01-show-modal-control",
+      "locator": {
+        "by": "css",
+        "value": "#openModalBtn"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 1.45,
+      "expected_outcome": "success",
+      "expected_result": "the modal dialog is visible",
+      "id": "02-open-modal",
+      "locator": {
+        "by": "css",
+        "value": "#openModalBtn"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 2.75,
+      "expected_outcome": "success",
+      "expected_result": "preparation step close-modal completes",
+      "id": "03-close-modal",
+      "locator": {
+        "by": "css",
+        "value": "#modalClose"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 3.3,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-format-controls completes",
+      "id": "04-show-format-controls",
+      "locator": {
+        "by": "css",
+        "value": "#interactions"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 3.85,
+      "expected_outcome": "success",
+      "expected_result": "the italic formatting control becomes active",
+      "id": "05-toggle-italic",
+      "locator": {
+        "by": "css",
+        "value": "#toggleItalic"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 5.15,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-delayed-loader completes",
+      "id": "06-show-delayed-loader",
+      "locator": {
+        "by": "css",
+        "value": "#loadDelayedBtn"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 5.7,
+      "expected_outcome": "success",
+      "expected_result": "preparation step select-one-second-delay completes",
+      "id": "07-select-one-second-delay",
+      "locator": {
+        "by": "css",
+        "value": "#delayTime"
+      },
+      "required": true,
+      "type": "select",
+      "value": {
+        "label": "1 second"
+      }
+    },
+    {
+      "at_seconds": 6.25,
+      "expected_outcome": "success",
+      "expected_result": "preparation step start-delayed-load completes",
+      "id": "08-start-delayed-load",
+      "locator": {
+        "by": "css",
+        "value": "#loadDelayedBtn"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 6.8,
+      "expected_outcome": "success",
+      "expected_result": "delayed content is fully visible",
+      "id": "09-observe-delayed-content",
+      "locator": {
+        "by": "css",
+        "value": "#delayedContent"
+      },
+      "required": true,
+      "timeout_ms": 3500,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 8.1,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-advance-carousel completes",
+      "id": "10-show-advance-carousel",
+      "locator": {
+        "by": "css",
+        "value": "#carouselNext"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 8.65,
+      "expected_outcome": "success",
+      "expected_result": "the carousel animates to the next slide",
+      "id": "11-advance-carousel",
+      "locator": {
+        "by": "css",
+        "value": "#carouselNext"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 9.95,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-warning-toast completes",
+      "id": "12-show-warning-toast",
+      "locator": {
+        "by": "css",
+        "value": "#toastWarning"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 10.5,
+      "expected_outcome": "success",
+      "expected_result": "a temporary warning toast appears",
+      "id": "13-warning-toast",
+      "locator": {
+        "by": "css",
+        "value": "#toastWarning"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 11.8,
+      "expected_outcome": "success",
+      "expected_result": "a later PlayLab region enters the viewport",
+      "id": "14-scroll-document",
+      "required": true,
+      "type": "scroll",
+      "x": 0,
+      "y": 640
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.75,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "screenshot_timeout_ms": 200,
+    "width": 1280
+  },
+  "case_id": "v4-22a-playlab",
+  "duration_seconds": 16,
+  "goal": "Exercise six frozen PlayLab states for balanced slot v4-slot-22.",
+  "schema_version": 1,
+  "slot_id": "v4-slot-22",
+  "source_url": "https://playwrightlab.github.io/index.html",
+  "target_events": [
+    {
+      "action_id": "02-open-modal",
+      "category": "popup_notification"
+    },
+    {
+      "action_id": "05-toggle-italic",
+      "category": "small_ui"
+    },
+    {
+      "action_id": "09-observe-delayed-content",
+      "category": "loading_completion"
+    },
+    {
+      "action_id": "11-advance-carousel",
+      "category": "animation_game_hud"
+    },
+    {
+      "action_id": "13-warning-toast",
+      "category": "transient_event"
+    },
+    {
+      "action_id": "14-scroll-document",
+      "category": "scroll_navigation"
+    }
+  ]
+}
