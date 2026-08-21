@@ -31,7 +31,7 @@ The CLI accepts video files. The Python streaming runtime also accepts live fram
 
 ## Current evidence
 
-The latest local public-web run has 60 labels but only 55 independent source transitions. Four failed-action labels are constructed identical-frame checks, so the Pilot 60 audit correctly remains incomplete. On that development set, Signum triggered 60/60 labels while equal-budget uniform sampling triggered 17/60. This is a detector regression result, not a production accuracy claim: the replays use fixed state durations, the workflows are correlated, and the set was used to correct annotation errors.
+The latest local development Pilot has 65 labels, 60 independent source transitions, and eight real failed actions. Signum triggered 65/65 labels while equal-budget uniform sampling triggered 22/65 at the same 93-observation budget. This is a detector regression result, not a production accuracy claim: the workflows are correlated, the recordings were used during development, and no native-provider comparison has completed.
 
 A final stratified Codex batch described 18/18 sampled states consistently with the saved evidence and returned the expected verdict for four action checks, with zero provisional false confirmations across two failed actions. Those judgments are not yet independently human-reviewed. OpenAI and Anthropic paid API comparisons were not run because no API keys were available.
 
@@ -237,13 +237,65 @@ New evaluation manifests use schema version 2 and label each event by category a
 signum audit-manifest real-evaluation.json
 ```
 
-Freeze a suite before running or tuning against it:
+Freeze development data before running or tuning against it:
 
 ```bash
 signum freeze-manifest real-evaluation.json \
   --output evaluation-freeze.json \
-  --role held_out
+  --role development
 ```
+
+A claim-grade held-out suite cannot be created by changing that role string.
+The 180-event plan must be locked before recording, contain 30 planned
+workflows, use the fixed category distribution, and point to an immutable
+protocol commit:
+
+```bash
+signum preregister-heldout held-out/plan.json \
+  --output held-out/preregistration.json
+
+# Record and label only after publishing the plan and preregistration lock.
+signum audit-manifest held-out/manifest.json --profile claim180
+signum freeze-manifest held-out/manifest.json \
+  --output held-out/freeze.json \
+  --role held_out \
+  --preregistration held-out/preregistration.json
+```
+
+The template is [heldout180-plan.example.json](examples/heldout180-plan.example.json),
+and the collection rules are in [Held-out 180 collection](docs/HELDOUT180.md).
+
+### Replay native computer-use perception
+
+The native benchmark adapter gives a provider its documented computer tool,
+not a generic image prompt. It replays frozen, event-checkpoint source screens,
+honors screenshot retries, honors Claude zoom crops, refuses action execution,
+and records every request, image byte, turn, token, failure, latency, and priced
+run. It selects labels independently of Signum and uniform trigger results, so
+detector misses cannot disappear from the provider sample.
+
+```powershell
+python examples/native_computer_use_probe.py `
+  --provider openai `
+  --model MODEL_NAME `
+  --evaluation evaluation-output/evaluation.json `
+  --output native-openai `
+  --case-id workflow-01
+
+python examples/native_computer_use_probe.py `
+  --provider anthropic `
+  --model MODEL_NAME `
+  --evaluation evaluation-output/evaluation.json `
+  --output native-claude `
+  --case-id workflow-01
+```
+
+The adapter reads `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`. A priced run also
+requires explicit input/output rates plus `--pricing-source` and
+`--pricing-accessed-at`; missing keys produce a machine-readable `not_run`
+artifact rather than a zero-cost result. This is an event-checkpoint,
+perception-only replay. It does not measure either provider's full autonomous
+computer-use product.
 
 Evaluation and review reports include category breakdowns, two-sided 95% Wilson confidence intervals, exact action-verification accuracy, and a separate false-confirmation rate for failed-action cases. Action labels provide before/after timestamps and are forced equally for both methods outside the passive observation budget. See [Pilot 60 perception suite](docs/PILOT60.md) for the collection contract.
 
@@ -278,6 +330,7 @@ publication threshold is documented in
 - [Pilot 60 perception suite](docs/PILOT60.md)
 - [Pilot 60 local measurement](docs/PILOT60_RESULTS.md)
 - [Comparative claim protocol](docs/CLAIM_PROTOCOL.md)
+- [Held-out 180 collection](docs/HELDOUT180.md)
 - [Streaming perception runtime](docs/STREAMING.md)
 - [Measuring live Codex perception](docs/CODEX_LIVE_MEASUREMENT.md)
 

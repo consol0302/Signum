@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "protocol_id": "signum-claim180-v1",
+  "protocol_repository": "https://github.com/consol0302/Signum",
+  "protocol_revision": "REPLACE_WITH_40_TO_64_CHARACTER_COMMIT_HASH",
+  "case_ids": [
+    "workflow-01",
+    "workflow-02",
+    "workflow-03",
+    "workflow-04",
+    "workflow-05",
+    "workflow-06",
+    "workflow-07",
+    "workflow-08",
+    "workflow-09",
+    "workflow-10",
+    "workflow-11",
+    "workflow-12",
+    "workflow-13",
+    "workflow-14",
+    "workflow-15",
+    "workflow-16",
+    "workflow-17",
+    "workflow-18",
+    "workflow-19",
+    "workflow-20",
+    "workflow-21",
+    "workflow-22",
+    "workflow-23",
+    "workflow-24",
+    "workflow-25",
+    "workflow-26",
+    "workflow-27",
+    "workflow-28",
+    "workflow-29",
+    "workflow-30"
+  ],
+  "category_targets": {
+    "small_ui": 30,
+    "action_success": 24,
+    "action_failure": 24,
+    "popup_notification": 18,
+    "loading_completion": 18,
+    "scroll_navigation": 15,
+    "cursor_hover_focus": 15,
+    "animation_game_hud": 18,
+    "transient_event": 18
+  },
+  "evidence_policy": {
+    "source": "original event-aligned video frames",
+    "labels_hidden_from_models": true,
+    "action_execution": false,
+    "provider_requests": [
+      "screenshot",
+      "zoom_when_documented"
+    ],
+    "disallowed_provider_requests": [
+      "click",
+      "type",
+      "scroll",
+      "navigate"
+    ],
+    "review": "two independent human-blind reviewers plus adjudication"
+  },
+  "observation_budget": {
+    "unit": "per event",
+    "max_turns": 6,
+    "max_screenshots": 3,
+    "max_zooms": 2,
+    "same_policy_for_all_compared_systems": true
+  }
+}

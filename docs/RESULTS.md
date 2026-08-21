@@ -133,4 +133,16 @@ The complete audit, confidence intervals, category distribution, transport table
 
 ## Next experiment
 
-Collect four additional real failed actions and at least five additional independent transitions, freeze a held-out suite, and complete blind human review. After that, run pinned OpenAI and Claude models with the same saved-evidence and equal-budget policies. Until those steps are complete, Signum cannot support a claim that it is more accurate or cheaper than either provider's computer-use perception.
+The 65-label development Pilot now contains 60 independent transitions and
+eight real failed actions, so it is complete as a regression set. It remains
+ineligible for the comparative claim because the deficits were known before
+its final collection.
+
+The next measurement is a separately preregistered Claim 180 suite: 180
+eligible independent transitions, 30 workflow recordings, 24 failed actions,
+two blind reviewers, and three paired cost runs. The native OpenAI and Claude
+event-checkpoint adapters are implemented, including screenshot retry, Claude
+zoom, usage normalization, and visible failure recording. They have not made a
+paid request because the required API keys are absent. Until collection,
+review, and provider execution finish, Signum cannot support an accuracy or
+cost claim against either provider.

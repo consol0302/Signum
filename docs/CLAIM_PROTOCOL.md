@@ -10,41 +10,61 @@ The benchmark reports two tracks and never merges them into one score.
 
 1. `controlled_vision` gives every model the same saved screenshots, prompt,
    observation budget, and output schema. This isolates visual perception.
-2. `native_computer_use` gives each provider its documented computer-use tool
-   contract and allows its normal screenshot, retry, and zoom behavior. Every
-   extra screenshot and model turn counts toward cost and latency.
+2. `event_checkpoint_native_replay` gives each provider its documented
+   computer-use tool contract at the same frozen event checkpoints and allows
+   screenshot retries plus documented zoom behavior. Every extra screenshot
+   and model turn counts toward cost and latency. Click, type, scroll, and
+   navigation requests fail visibly because action execution is outside the
+   perception comparison.
 
-OpenAI's Responses API accepts image inputs and structured JSON outputs. Its
-older `computer-use-preview` page currently marks the dated snapshot as
-deprecated, so that preview cannot be the only OpenAI comparator:
-[Responses API](https://developers.openai.com/api/reference/cli/resources/responses/methods/create),
-[computer-use-preview](https://developers.openai.com/api/docs/models/computer-use-preview).
+OpenAI's current Responses computer tool emits `computer_call` actions and
+accepts `computer_call_output` screenshots. The comparator uses that current
+contract rather than treating the deprecated preview snapshot as the product:
+[OpenAI computer-use guide](https://developers.openai.com/api/docs/guides/tools-computer-use).
 
 Claude computer use is a client-side tool loop. The current enhanced tool can
 request a full-resolution zoom region, so the native track must honor that
 request and charge the additional screenshot and turn:
 [Claude computer use](https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool).
 
-`examples/provider_api_probe.py` implements only `controlled_vision`. Its
-reports state that mode explicitly. A native runner remains a separate
-milestone.
+`examples/provider_api_probe.py` implements `controlled_vision`.
+`examples/native_computer_use_probe.py` implements the separate native event
+checkpoint replay. Native selection reads frozen eligible labels directly and
+does not consult either method's `triggered` field. Label notes, acceptable
+states, and event categories remain hidden from the provider prompt.
+
+The native track is intentionally scoped. It can support a claim about the
+specified perception replay, not a blanket claim about the full OpenAI or
+Claude autonomous computer-use product. Passive event checkpoints are
+label-aligned and therefore favorable to the baseline; that choice and its
+cost consequence must remain visible in the publication.
 
 ## Freeze before evaluation
 
-Create and verify a lock before tuning or provider execution:
+Create a public, immutable protocol anchor and preregister the collection before
+recording any held-out workflow:
 
 ```bash
+signum preregister-heldout held-out/plan.json \
+  --output held-out/preregistration.json
+
+# Commit and push the plan and preregistration before collecting recordings.
+signum audit-manifest held-out/manifest.json --profile claim180
 signum freeze-manifest held-out/manifest.json \
   --output held-out/freeze.json \
-  --role held_out
+  --role held_out \
+  --preregistration held-out/preregistration.json
 
 signum verify-freeze held-out/freeze.json
 ```
 
-The lock hashes the manifest and every referenced video, records video
-metadata, event categories, eligibility, and source transition ids. Claim
-comparisons must cover every eligible frozen event. Reused eligible transition
-ids or fewer than 30 distinct workflow recordings block a claim.
+The preregistration locks the exact case ids, Claim 180 category targets,
+evidence policy, observation budget, repository, and full protocol commit hash.
+The held-out freeze rejects recordings or manifests that predate that local
+lock, case-id changes, incomplete Claim 180 coverage, and duplicate source
+transitions. The final lock hashes the preregistration, manifest, and every
+video. A public Git history remains the external evidence that the lock really
+preceded collection; local timestamps alone are not presented as proof.
 
 Use `--role development` for data collected after inspecting a failure or
 benchmark deficit. Development locks are useful for reproducibility but are
@@ -97,3 +117,8 @@ The completed 65-label Pilot is frozen as `development`. It passes the Pilot
 coverage audit but was assembled after the first audit exposed missing failed
 actions and transitions. It is therefore useful for failure discovery and
 regression testing, not for the final comparative claim.
+
+The native replay state machine and Claim 180 preregistration gate are now
+implemented and covered by offline fixtures. Actual OpenAI and Anthropic runs
+remain `not_run` because this environment has neither provider API key. No
+accuracy or cost claim is currently supported.

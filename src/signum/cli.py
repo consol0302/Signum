@@ -13,7 +13,7 @@ from .evaluation import (
     run_evaluation,
     score_reviews,
 )
-from .freeze import freeze_manifest, verify_freeze
+from .freeze import freeze_manifest, preregister_heldout, verify_freeze
 from .gateway import GatewayConfig
 from .interpreters import CodexExecInterpreter, InterpreterError
 from .observe import observe_video
@@ -99,7 +99,9 @@ def build_parser() -> argparse.ArgumentParser:
         help="check labeled-suite coverage before running an evaluation",
     )
     audit.add_argument("manifest", type=Path)
-    audit.add_argument("--profile", choices=("pilot60",), default="pilot60")
+    audit.add_argument(
+        "--profile", choices=("pilot60", "claim180"), default="pilot60"
+    )
     freeze = subparsers.add_parser(
         "freeze-manifest",
         help="hash-lock a labeled manifest and every referenced video before evaluation",
@@ -107,6 +109,17 @@ def build_parser() -> argparse.ArgumentParser:
     freeze.add_argument("manifest", type=Path)
     freeze.add_argument("--output", type=Path, required=True)
     freeze.add_argument("--role", choices=("development", "held_out"), required=True)
+    freeze.add_argument(
+        "--preregistration",
+        type=Path,
+        help="required preregistration lock for a held_out freeze",
+    )
+    preregister = subparsers.add_parser(
+        "preregister-heldout",
+        help="hash-lock the claim180 collection plan before recording held-out data",
+    )
+    preregister.add_argument("plan", type=Path)
+    preregister.add_argument("--output", type=Path, required=True)
     verify = subparsers.add_parser(
         "verify-freeze",
         help="verify that a frozen manifest and its videos have not changed",
@@ -133,6 +146,8 @@ def main(argv: list[str] | None = None) -> int:
         return _audit_manifest_command(args)
     if args.command == "freeze-manifest":
         return _freeze_manifest_command(args)
+    if args.command == "preregister-heldout":
+        return _preregister_heldout_command(args)
     if args.command == "verify-freeze":
         return _verify_freeze_command(args)
     if args.command == "assess-claim":
@@ -277,7 +292,12 @@ def _audit_manifest_command(args: argparse.Namespace) -> int:
 
 def _freeze_manifest_command(args: argparse.Namespace) -> int:
     try:
-        result = freeze_manifest(args.manifest, args.output, role=args.role)
+        result = freeze_manifest(
+            args.manifest,
+            args.output,
+            role=args.role,
+            preregistration_path=args.preregistration,
+        )
     except EvaluationError as error:
         print(f"signum: error: {error}", file=sys.stderr)
         return 2
@@ -288,6 +308,25 @@ def _freeze_manifest_command(args: argparse.Namespace) -> int:
                 "freeze_id": result["freeze_id"],
                 "role": result["role"],
                 "profile_complete": result["audit"]["profile_complete"],
+            },
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
+def _preregister_heldout_command(args: argparse.Namespace) -> int:
+    try:
+        result = preregister_heldout(args.plan, args.output)
+    except EvaluationError as error:
+        print(f"signum: error: {error}", file=sys.stderr)
+        return 2
+    print(
+        json.dumps(
+            {
+                "output": str(args.output.resolve()),
+                "preregistration_id": result["preregistration_id"],
+                "planned_cases": len(result["case_ids"]),
             },
             sort_keys=True,
         )

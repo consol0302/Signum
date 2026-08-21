@@ -44,6 +44,29 @@ PILOT60_TARGETS = {
     "animation_game_hud": 6,
     "transient_event": 6,
 }
+CLAIM180_TARGETS = {
+    "small_ui": 30,
+    "action_success": 24,
+    "action_failure": 24,
+    "popup_notification": 18,
+    "loading_completion": 18,
+    "scroll_navigation": 15,
+    "cursor_hover_focus": 15,
+    "animation_game_hud": 18,
+    "transient_event": 18,
+}
+EVALUATION_PROFILES = {
+    "pilot60": {
+        "targets": PILOT60_TARGETS,
+        "minimum_cases": 0,
+        "require_unique_transitions": False,
+    },
+    "claim180": {
+        "targets": CLAIM180_TARGETS,
+        "minimum_cases": 30,
+        "require_unique_transitions": True,
+    },
+}
 
 
 @dataclass(frozen=True)
@@ -198,8 +221,12 @@ def audit_manifest(
 ) -> dict[str, Any]:
     """Check whether a labeled suite has the planned category coverage."""
 
-    if profile != "pilot60":
+    if profile not in EVALUATION_PROFILES:
         raise EvaluationError(f"unknown evaluation profile: {profile!r}")
+    profile_spec = EVALUATION_PROFILES[profile]
+    targets = profile_spec["targets"]
+    minimum_cases = int(profile_spec["minimum_cases"])
+    require_unique_transitions = bool(profile_spec["require_unique_transitions"])
     manifest = load_manifest(path)
     counts = {category: 0 for category in sorted(EVENT_CATEGORIES)}
     eligible_counts = {category: 0 for category in sorted(EVENT_CATEGORIES)}
@@ -207,6 +234,7 @@ def audit_manifest(
     events_with_regions = 0
     events_with_states = 0
     transition_events: dict[str, list[str]] = {}
+    eligible_transition_events: dict[str, list[str]] = {}
     for case in manifest.cases:
         for event in case.events:
             counts[event.category] += 1
@@ -219,45 +247,69 @@ def audit_manifest(
             transition_events.setdefault(transition_id, []).append(
                 f"{case.id}/{event.id}"
             )
+            if event.real_world_eligible:
+                eligible_transition_events.setdefault(transition_id, []).append(
+                    f"{case.id}/{event.id}"
+                )
     deficits = {
         category: max(0, target - counts[category])
-        for category, target in PILOT60_TARGETS.items()
+        for category, target in targets.items()
     }
     eligible_deficits = {
         category: max(0, target - eligible_counts[category])
-        for category, target in PILOT60_TARGETS.items()
+        for category, target in targets.items()
     }
     duplicated_transitions = {
         transition_id: event_ids
         for transition_id, event_ids in sorted(transition_events.items())
         if len(event_ids) > 1
     }
+    eligible_duplicated_transitions = {
+        transition_id: event_ids
+        for transition_id, event_ids in sorted(eligible_transition_events.items())
+        if len(event_ids) > 1
+    }
     independent_transition_count = len(transition_events)
+    eligible_independent_transition_count = len(eligible_transition_events)
+    case_count = len(manifest.cases)
+    case_deficit = max(0, minimum_cases - case_count)
+    profile_complete = (
+        all(value == 0 for value in eligible_deficits.values())
+        and eligible_independent_transition_count >= sum(targets.values())
+        and case_deficit == 0
+        and (not require_unique_transitions or not eligible_duplicated_transitions)
+    )
     return {
         "schema_version": 1,
         "manifest": str(manifest.path),
         "manifest_schema_version": manifest.schema_version,
         "profile": profile,
-        "case_count": len(manifest.cases),
+        "case_count": case_count,
+        "minimum_cases": minimum_cases,
+        "case_deficit": case_deficit,
         "event_count": sum(counts.values()),
         "category_counts": counts,
         "eligible_category_counts": eligible_counts,
         "risk_counts": risk_counts,
         "events_with_regions": events_with_regions,
         "events_with_acceptable_states": events_with_states,
-        "targets": dict(PILOT60_TARGETS),
+        "targets": dict(targets),
         "deficits": deficits,
         "eligible_deficits": eligible_deficits,
         "independent_transition_count": independent_transition_count,
+        "eligible_independent_transition_count": eligible_independent_transition_count,
         "duplicated_transition_count": len(duplicated_transitions),
         "duplicated_transitions": duplicated_transitions,
-        "profile_complete": (
-            all(value == 0 for value in eligible_deficits.values())
-            and independent_transition_count >= sum(PILOT60_TARGETS.values())
+        "eligible_duplicated_transition_count": len(
+            eligible_duplicated_transitions
         ),
+        "eligible_duplicated_transitions": eligible_duplicated_transitions,
+        "require_unique_transitions": require_unique_transitions,
+        "profile_complete": profile_complete,
         "notes": [
             "Raw category_counts report label coverage only.",
-            "Profile completion requires eligible labels and 60 independent source transitions.",
+            f"Profile completion requires eligible labels and {sum(targets.values())} eligible independent source transitions.",
+            f"The {profile} profile requires at least {minimum_cases} cases.",
             "Synthetic, constructed, or duplicated events are not real-world evidence.",
         ],
     }

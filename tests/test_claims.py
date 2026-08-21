@@ -6,7 +6,8 @@ import unittest
 from pathlib import Path
 
 from signum.claims import assess_claim
-from signum.freeze import freeze_manifest
+from signum.evaluation import CLAIM180_TARGETS, EvaluationError
+from signum.freeze import freeze_manifest, preregister_heldout
 from signum.synthetic import generate_suite
 
 
@@ -21,9 +22,14 @@ class ClaimAssessmentTests(unittest.TestCase):
         self.temp_context.cleanup()
 
     def test_cost_claim_requires_valid_held_out_freeze(self) -> None:
-        manifest, events = self._claim_manifest()
+        manifest, events, preregistration = self._claim_manifest()
         held_out_lock = self.root / "held-out-freeze.json"
-        frozen = freeze_manifest(manifest, held_out_lock, role="held_out")
+        frozen = freeze_manifest(
+            manifest,
+            held_out_lock,
+            role="held_out",
+            preregistration_path=preregistration,
+        )
         comparison = self._comparison(held_out_lock, frozen["freeze_id"], events)
 
         result = assess_claim(comparison)
@@ -48,31 +54,57 @@ class ClaimAssessmentTests(unittest.TestCase):
         self.assertFalse(blocked["claim_supported"])
         self.assertIn("freeze role is not held_out", blocked["global_reasons"])
 
-    def _claim_manifest(self) -> tuple[Path, list[dict[str, object]]]:
+    def test_held_out_freeze_requires_preregistration(self) -> None:
+        manifest, _, _ = self._claim_manifest()
+
+        with self.assertRaisesRegex(EvaluationError, "preregistration"):
+            freeze_manifest(
+                manifest,
+                self.root / "unregistered-freeze.json",
+                role="held_out",
+            )
+
+    def _claim_manifest(
+        self,
+    ) -> tuple[Path, list[dict[str, object]], Path]:
+        case_ids = [f"workflow-{index:02d}" for index in range(30)]
+        plan = self.root / "heldout-plan.json"
+        plan.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "protocol_id": "signum-claim180-test",
+                    "protocol_repository": "https://example.invalid/signum",
+                    "protocol_revision": "a" * 40,
+                    "case_ids": case_ids,
+                    "category_targets": CLAIM180_TARGETS,
+                    "evidence_policy": {
+                        "source": "original event-aligned frames",
+                        "review": "human blind",
+                    },
+                    "observation_budget": {
+                        "policy": "same maximum screenshots, zooms, and turns"
+                    },
+                }
+            ),
+            encoding="utf-8",
+        )
+        preregistration = self.root / "heldout-preregistration.json"
+        preregister_heldout(plan, preregistration)
         cases = []
         events_for_system = []
-        rotating = (
-            "scroll_navigation",
-            "cursor_hover_focus",
-            "animation_game_hud",
-            "transient_event",
-            "loading_completion",
-        )
+        categories = [
+            category
+            for category, count in CLAIM180_TARGETS.items()
+            for _ in range(count)
+        ]
         source_bytes = self.source_video.read_bytes()
-        for workflow_index in range(30):
-            case_id = f"workflow-{workflow_index:02d}"
+        for workflow_index, case_id in enumerate(case_ids):
             video = self.root / f"{case_id}.avi"
             video.write_bytes(source_bytes + bytes([workflow_index]))
-            categories = (
-                "action_failure",
-                "small_ui",
-                "action_success",
-                "popup_notification",
-                "loading_completion",
-                rotating[workflow_index % len(rotating)],
-            )
             manifest_events = []
-            for event_index, category in enumerate(categories):
+            case_categories = categories[workflow_index * 6 : (workflow_index + 1) * 6]
+            for event_index, category in enumerate(case_categories):
                 event_id = f"event-{event_index}"
                 event = {
                     "id": event_id,
@@ -116,7 +148,7 @@ class ClaimAssessmentTests(unittest.TestCase):
             json.dumps({"schema_version": 2, "cases": cases}),
             encoding="utf-8",
         )
-        return manifest, events_for_system
+        return manifest, events_for_system, preregistration
 
     def _comparison(
         self,

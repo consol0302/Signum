@@ -28,6 +28,11 @@ actions. It must be frozen before tuning. The claim gate, integrity lock,
 cluster-bootstrap thresholds, and cost requirements are defined in
 [Comparative claim protocol](CLAIM_PROTOCOL.md).
 
+The Claim 180 audit profile and preregistration lock now enforce the 180-event
+distribution, 30 exact planned case ids, unique transitions, an immutable
+protocol revision, and a pre-collection evidence/budget policy. The remaining
+work is real collection, not filling the manifest with generated evidence.
+
 ## Priority 1: validate and tune small-region recall
 
 The gateway now supplements its global fraction with a higher-resolution connected-component guard. Validate its width and minimum component size on labeled recordings. If it still misses compact evidence, compare it with a tiled guard at the same CPU and false-call budget. Keep the implementation CPU-only and deterministic.
@@ -60,5 +65,6 @@ The streaming gateway now separates CPU detection from semantic inference, retai
 
 Desktop action execution, audio, databases, servers, neural detectors, and GPU
 acceleration remain outside the current milestone. External provider runners
-are permitted only as isolated benchmark adapters; they remain outside the
-deterministic core.
+are isolated under `examples/` and remain outside the deterministic core. The
+controlled-vision adapter and native event-checkpoint adapter are implemented;
+actual paid provider execution and blind review remain outstanding.

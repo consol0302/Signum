@@ -58,6 +58,10 @@ def assess_claim(comparison_path: Path | str) -> dict[str, Any]:
         global_reasons.append("frozen manifest or video integrity check failed")
     if freeze["role"] != "held_out":
         global_reasons.append("freeze role is not held_out")
+    if freeze_lock.get("audit", {}).get("profile") != "claim180":
+        global_reasons.append("frozen manifest was not audited with claim180")
+    if not isinstance(freeze_lock.get("preregistration"), dict):
+        global_reasons.append("held-out collection was not preregistered")
     if not freeze_lock.get("audit", {}).get("profile_complete", False):
         global_reasons.append("frozen manifest does not pass its profile audit")
     if frozen_stats["unique_video_count"] < requirements["min_workflows"]:

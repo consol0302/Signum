@@ -10,6 +10,7 @@ from pathlib import Path
 
 from signum.cli import main
 from signum.evaluation import (
+    CLAIM180_TARGETS,
     PILOT60_TARGETS,
     EvaluationError,
     audit_manifest,
@@ -388,6 +389,17 @@ class EvaluationTests(unittest.TestCase):
         summary = json.loads(stdout.getvalue())
         self.assertEqual("pilot60", summary["profile"])
         self.assertFalse(summary["profile_complete"])
+
+    def test_claim180_profile_requires_180_events_and_30_cases(self) -> None:
+        manifest = self._manifest("claim180-audit")
+
+        audit = audit_manifest(manifest, profile="claim180")
+
+        self.assertEqual(CLAIM180_TARGETS, audit["targets"])
+        self.assertEqual(29, audit["case_deficit"])
+        self.assertEqual(1, audit["eligible_independent_transition_count"])
+        self.assertTrue(audit["require_unique_transitions"])
+        self.assertFalse(audit["profile_complete"])
 
 
 if __name__ == "__main__":
