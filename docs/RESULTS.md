@@ -207,3 +207,12 @@ seconds, and no unexpected action failed. These reconnaissance artifacts are
 diagnostic only and will not enter Claim 180. The next step is to publish the
 candidate revision, generate and publish the supplement acquisition lock from
 that immutable commit, and only then perform the one-shot evidence collection.
+
+The candidate revision is now published as
+`6f9dbd67e682c6e168e5b87a478e3cb768cf9fff`. The generated supplement plan
+binds all 52 ordered candidates, the exact 18/19 category deficits, the V3 base
+preregistration, collection summary, and event inventory, plus the unchanged
+evidence and observation-budget policies. Its acquisition lock id is
+`47b7d0f2f69164fe5362e345ddbf19821022147830314717e063235a0133b7c5`.
+The lock was recomputed independently from the published plan with an identical
+id. The one-shot supplement collection has not started yet.

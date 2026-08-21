@@ -295,6 +295,14 @@ broken locators or structurally uncapturable workflows; it is not claim
 evidence. The final collection will begin only after the candidate revision,
 supplement plan, and acquisition lock are published.
 
+The supplement plan is now bound to candidate revision
+`6f9dbd67e682c6e168e5b87a478e3cb768cf9fff`. Its acquisition lock has
+preregistration id
+`47b7d0f2f69164fe5362e345ddbf19821022147830314717e063235a0133b7c5`.
+Independent batch verification and the category-aware first-valid summarizer
+are included with the lock so their selection behavior is public before the
+one-shot collection begins.
+
 ### Replay native computer-use perception
 
 The native benchmark adapter gives a provider its documented computer tool,

@@ -1,0 +1,718 @@
+{
+  "actions_manifest": {
+    "bytes": 13134,
+    "path": "claim180-supplement-actions-manifest.json",
+    "sha256": "b7ee8bc538d99b44f832670d3daabb7f51b64a34e6038e3b0955762819846dc9"
+  },
+  "base_evidence": {
+    "collection_summary": {
+      "bytes": 99011,
+      "identity": "3ee5284d843080914b11da1e0a9160a3469c40b1a7a58f7c33cd60a58033f861",
+      "path": "claim180-v3-collection-result.json",
+      "sha256": "bf834faf20a44abcde1b83ceb3a7f354a10a62549572add1ff93ffd9c8887996"
+    },
+    "event_inventory": {
+      "bytes": 164341,
+      "identity": "488b0a0658cbd44507089ea794d117f53db135e869834ac0e88f30833ada4c63",
+      "path": "claim180-v3-event-inventory.json",
+      "sha256": "0d0115f7814162d045ae2562dc2bf796a9d2ba93a953f0b8cdbdf833c82af433"
+    },
+    "preregistration": {
+      "bytes": 13302,
+      "identity": "bef6d49c3090daab2f06278875ecbee68508b767d7ffaa5e390b7416ea760470",
+      "path": "claim180-preregistration-v3.json",
+      "sha256": "614ba88123b760739d72112b4a5cb947b581994b48cf76c6c3d4cd5fc3f7a3f9"
+    }
+  },
+  "case_ids": [
+    "s1-01-qa-delayed-element",
+    "s1-02-qa-loaded-content",
+    "s1-03-qa-spinner",
+    "s1-04-qa-three-second-wait",
+    "s1-05-qa-progress",
+    "s1-06-qa-delayed-text",
+    "s1-07-qa-dynamic-dropdown",
+    "s1-08-qa-delayed-enable",
+    "s1-09-qa-api-fast",
+    "s1-10-qa-api-medium",
+    "s1-11-qa-api-slow",
+    "s1-12-expand-hidden",
+    "s1-13-expand-rendered",
+    "s1-14-expand-remove",
+    "s1-15-expand-enable",
+    "s1-16-selenium-add",
+    "s1-17-selenium-reveal",
+    "s1-18-practice-liftoff",
+    "s1-19-demoqa-progress",
+    "s1-20-demoqa-visible",
+    "s1-21-qa-delayed-element-repeat",
+    "s1-22-qa-spinner-repeat",
+    "s1-23-qa-progress-repeat",
+    "s1-24-selenium-add-repeat",
+    "s1-25-demoqa-progress-repeat",
+    "s1-26-expand-hidden-repeat",
+    "s1-27-sauce-missing-username",
+    "s1-28-sauce-missing-password",
+    "s1-29-sauce-bad-username",
+    "s1-30-sauce-bad-password",
+    "s1-31-sauce-locked-user",
+    "s1-32-sauce-empty",
+    "s1-33-qa-empty",
+    "s1-34-qa-missing-password",
+    "s1-35-qa-missing-username",
+    "s1-36-qa-bad-both",
+    "s1-37-qa-bad-username",
+    "s1-38-qa-bad-password",
+    "s1-39-qa-api-error",
+    "s1-40-expand-form-empty",
+    "s1-41-expand-form-phone",
+    "s1-42-expand-form-date",
+    "s1-43-expand-form-payment",
+    "s1-44-demoqa-required",
+    "s1-45-practice-login-password",
+    "s1-46-sauce-whitespace-username",
+    "s1-47-qa-uppercase-username",
+    "s1-48-sauce-uppercase-username",
+    "s1-49-qa-whitespace-username",
+    "s1-50-sauce-bad-username-repeat",
+    "s1-51-qa-bad-credentials-repeat",
+    "s1-52-qa-api-error-repeat"
+  ],
+  "category_targets": {
+    "action_failure": 19,
+    "loading_completion": 18
+  },
+  "collection_selection": {
+    "candidate_count": 52,
+    "category_targets": {
+      "action_failure": 19,
+      "loading_completion": 18
+    },
+    "mode": "first_valid_target_event_by_category_in_plan_order",
+    "model_outputs_forbidden_before_selection": true,
+    "retain_all_attempts": true,
+    "validity_source": "independent_capture_verification"
+  },
+  "evidence_policy": {
+    "capture": {
+      "fixed_duration_state_reconstruction": false,
+      "format": "original timestamped browser recording",
+      "minimum_frame_rate": 10,
+      "viewport": "1280x720"
+    },
+    "event_checkpoint_native_replay": {
+      "action_event": "original frames at frozen before and after timestamps",
+      "allowed_requests": [
+        "screenshot",
+        "zoom_when_documented_by_provider"
+      ],
+      "disallowed_requests": [
+        "click",
+        "type",
+        "scroll",
+        "navigate",
+        "wait"
+      ],
+      "passive_event": "original frame at the frozen event midpoint",
+      "provider_failures_count_as_failures": true
+    },
+    "labels": {
+      "ambiguous_or_corrupted_events_retained_as_ineligible": true,
+      "constructed_failures_eligible": false,
+      "created_before_any_model_run": true,
+      "labels_hidden_from_models": true,
+      "unique_source_transition_per_eligible_event": true
+    },
+    "review": "two independent human-blind reviewers plus adjudication",
+    "scope": "computer-use perception only; no action-execution score"
+  },
+  "kind": "signum_claim180_supplement_plan",
+  "observation_budget": {
+    "all_requests_count_toward_cost_and_latency": true,
+    "max_screenshots": 3,
+    "max_turns": 6,
+    "max_zooms": 2,
+    "same_frozen_prompt_and_output_schema": true,
+    "unit": "per eligible event"
+  },
+  "protocol_id": "signum-claim180-deficit-supplement-v1",
+  "protocol_repository": "https://github.com/consol0302/Signum",
+  "protocol_revision": "6f9dbd67e682c6e168e5b87a478e3cb768cf9fff",
+  "schema_version": 1,
+  "target_events": [
+    {
+      "action_id": "completion",
+      "case_id": "s1-01-qa-delayed-element",
+      "category": "loading_completion",
+      "expected_result": "the delayed element becomes visible"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-02-qa-loaded-content",
+      "category": "loading_completion",
+      "expected_result": "the asynchronously loaded content appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-03-qa-spinner",
+      "category": "loading_completion",
+      "expected_result": "the spinner is replaced by its loaded result"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-04-qa-three-second-wait",
+      "category": "loading_completion",
+      "expected_result": "the three-second delayed element becomes visible"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-05-qa-progress",
+      "category": "loading_completion",
+      "expected_result": "the progress display reaches 100% complete"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-06-qa-delayed-text",
+      "category": "loading_completion",
+      "expected_result": "the delayed replacement text appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-07-qa-dynamic-dropdown",
+      "category": "loading_completion",
+      "expected_result": "the dynamic dropdown reports five loaded options"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-08-qa-delayed-enable",
+      "category": "loading_completion",
+      "expected_result": "the delayed button enablement confirmation appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-09-qa-api-fast",
+      "category": "loading_completion",
+      "expected_result": "the fast API success response appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-10-qa-api-medium",
+      "category": "loading_completion",
+      "expected_result": "the medium API success response appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-11-qa-api-slow",
+      "category": "loading_completion",
+      "expected_result": "the slow API success response appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-12-expand-hidden",
+      "category": "loading_completion",
+      "expected_result": "the previously hidden Hello World result becomes visible"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-13-expand-rendered",
+      "category": "loading_completion",
+      "expected_result": "the newly rendered Hello World result appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-14-expand-remove",
+      "category": "loading_completion",
+      "expected_result": "the removal confirmation appears after the checkbox disappears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-15-expand-enable",
+      "category": "loading_completion",
+      "expected_result": "the input-enabled confirmation appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-16-selenium-add",
+      "category": "loading_completion",
+      "expected_result": "the delayed red box is added to the page"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-17-selenium-reveal",
+      "category": "loading_completion",
+      "expected_result": "the delayed input becomes visible"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-18-practice-liftoff",
+      "category": "loading_completion",
+      "expected_result": "the countdown finishes with Liftoff"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-19-demoqa-progress",
+      "category": "loading_completion",
+      "expected_result": "the progress bar reaches 100% and exposes Reset"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-20-demoqa-visible",
+      "category": "loading_completion",
+      "expected_result": "the Visible After control appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-21-qa-delayed-element-repeat",
+      "category": "loading_completion",
+      "expected_result": "the delayed element becomes visible"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-22-qa-spinner-repeat",
+      "category": "loading_completion",
+      "expected_result": "the spinner is replaced by its loaded result"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-23-qa-progress-repeat",
+      "category": "loading_completion",
+      "expected_result": "the progress display reaches 100% complete"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-24-selenium-add-repeat",
+      "category": "loading_completion",
+      "expected_result": "the delayed red box is added to the page"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-25-demoqa-progress-repeat",
+      "category": "loading_completion",
+      "expected_result": "the progress bar reaches 100% and exposes Reset"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-26-expand-hidden-repeat",
+      "category": "loading_completion",
+      "expected_result": "the previously hidden Hello World result becomes visible"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-27-sauce-missing-username",
+      "category": "action_failure",
+      "expected_result": "the Username is required error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-28-sauce-missing-password",
+      "category": "action_failure",
+      "expected_result": "the Password is required error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-29-sauce-bad-username",
+      "category": "action_failure",
+      "expected_result": "the username/password mismatch error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-30-sauce-bad-password",
+      "category": "action_failure",
+      "expected_result": "the username/password mismatch error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-31-sauce-locked-user",
+      "category": "action_failure",
+      "expected_result": "the locked-out user error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-32-sauce-empty",
+      "category": "action_failure",
+      "expected_result": "the Username is required error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-33-qa-empty",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-34-qa-missing-password",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-35-qa-missing-username",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-36-qa-bad-both",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-37-qa-bad-username",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-38-qa-bad-password",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-39-qa-api-error",
+      "category": "action_failure",
+      "expected_result": "the simulated API exposes its visible 500 error"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-40-expand-form-empty",
+      "category": "action_failure",
+      "expected_result": "required-field errors are visible and registration is rejected"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-41-expand-form-phone",
+      "category": "action_failure",
+      "expected_result": "the invalid contact-number state remains visible"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-42-expand-form-date",
+      "category": "action_failure",
+      "expected_result": "the missing pickup-date error remains visible"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-43-expand-form-payment",
+      "category": "action_failure",
+      "expected_result": "the missing payment-method error remains visible"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-44-demoqa-required",
+      "category": "action_failure",
+      "expected_result": "the required fields are marked invalid and no submission dialog opens"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-45-practice-login-password",
+      "category": "action_failure",
+      "expected_result": "the Your password is invalid error is visible"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-46-sauce-whitespace-username",
+      "category": "action_failure",
+      "expected_result": "the username/password mismatch error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-47-qa-uppercase-username",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-48-sauce-uppercase-username",
+      "category": "action_failure",
+      "expected_result": "the username/password mismatch error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-49-qa-whitespace-username",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-50-sauce-bad-username-repeat",
+      "category": "action_failure",
+      "expected_result": "the username/password mismatch error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-51-qa-bad-credentials-repeat",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-52-qa-api-error-repeat",
+      "category": "action_failure",
+      "expected_result": "the simulated API exposes its visible 500 error"
+    }
+  ],
+  "workflow_sources": [
+    {
+      "case_id": "s1-01-qa-delayed-element",
+      "goal": "Trigger a delayed element and wait for it to appear.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-02-qa-loaded-content",
+      "goal": "Request asynchronous content and wait for the response text.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-03-qa-spinner",
+      "goal": "Start the loading spinner and wait for its completion result.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-04-qa-three-second-wait",
+      "goal": "Trigger the three-second wait and observe the delayed element.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-05-qa-progress",
+      "goal": "Start the progress simulation and wait for completion.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-06-qa-delayed-text",
+      "goal": "Start a delayed text update and wait for the replacement.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-07-qa-dynamic-dropdown",
+      "goal": "Load dropdown choices asynchronously and wait for the result.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-08-qa-delayed-enable",
+      "goal": "Request delayed button enablement and wait for its visible confirmation.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-09-qa-api-fast",
+      "goal": "Call the fast simulated API and wait for its response.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-10-qa-api-medium",
+      "goal": "Call the medium simulated API and wait for its response.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-11-qa-api-slow",
+      "goal": "Call the slow simulated API and wait for its response.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-12-expand-hidden",
+      "goal": "Start the hidden-element loader and wait for Hello World.",
+      "url": "https://practice.expandtesting.com/dynamic-loading/1"
+    },
+    {
+      "case_id": "s1-13-expand-rendered",
+      "goal": "Start the dynamic renderer and wait for Hello World.",
+      "url": "https://practice.expandtesting.com/dynamic-loading/2"
+    },
+    {
+      "case_id": "s1-14-expand-remove",
+      "goal": "Remove the checkbox asynchronously and wait for confirmation.",
+      "url": "https://practice.expandtesting.com/dynamic-controls"
+    },
+    {
+      "case_id": "s1-15-expand-enable",
+      "goal": "Enable the input asynchronously and wait for confirmation.",
+      "url": "https://practice.expandtesting.com/dynamic-controls"
+    },
+    {
+      "case_id": "s1-16-selenium-add",
+      "goal": "Request a delayed red box and wait for it to be added.",
+      "url": "https://www.selenium.dev/selenium/web/dynamic.html"
+    },
+    {
+      "case_id": "s1-17-selenium-reveal",
+      "goal": "Request a delayed input and wait for it to become visible.",
+      "url": "https://www.selenium.dev/selenium/web/dynamic.html"
+    },
+    {
+      "case_id": "s1-18-practice-liftoff",
+      "goal": "Start the countdown and wait for Liftoff.",
+      "url": "https://practice-automation.com/javascript-delays/"
+    },
+    {
+      "case_id": "s1-19-demoqa-progress",
+      "goal": "Start the progress bar and wait for its Reset state.",
+      "url": "https://demoqa.com/progress-bar"
+    },
+    {
+      "case_id": "s1-20-demoqa-visible",
+      "goal": "Wait for the page's automatically delayed Visible After control.",
+      "url": "https://demoqa.com/dynamic-properties"
+    },
+    {
+      "case_id": "s1-21-qa-delayed-element-repeat",
+      "goal": "Independent repeat capture: Trigger a delayed element and wait for it to appear.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-22-qa-spinner-repeat",
+      "goal": "Independent repeat capture: Start the loading spinner and wait for its completion result.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-23-qa-progress-repeat",
+      "goal": "Independent repeat capture: Start the progress simulation and wait for completion.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-24-selenium-add-repeat",
+      "goal": "Independent repeat capture: Request a delayed red box and wait for it to be added.",
+      "url": "https://www.selenium.dev/selenium/web/dynamic.html"
+    },
+    {
+      "case_id": "s1-25-demoqa-progress-repeat",
+      "goal": "Independent repeat capture: Start the progress bar and wait for its Reset state.",
+      "url": "https://demoqa.com/progress-bar"
+    },
+    {
+      "case_id": "s1-26-expand-hidden-repeat",
+      "goal": "Independent repeat capture: Start the hidden-element loader and wait for Hello World.",
+      "url": "https://practice.expandtesting.com/dynamic-loading/1"
+    },
+    {
+      "case_id": "s1-27-sauce-missing-username",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-28-sauce-missing-password",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-29-sauce-bad-username",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-30-sauce-bad-password",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-31-sauce-locked-user",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-32-sauce-empty",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-33-qa-empty",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-34-qa-missing-password",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-35-qa-missing-username",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-36-qa-bad-both",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-37-qa-bad-username",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-38-qa-bad-password",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-39-qa-api-error",
+      "goal": "Call the simulated failing API and wait for its visible 500 result.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-40-expand-form-empty",
+      "goal": "Submit an empty validation form and retain all required-field errors.",
+      "url": "https://practice.expandtesting.com/form-validation"
+    },
+    {
+      "case_id": "s1-41-expand-form-phone",
+      "goal": "Submit an otherwise incomplete form with an invalid phone value.",
+      "url": "https://practice.expandtesting.com/form-validation"
+    },
+    {
+      "case_id": "s1-42-expand-form-date",
+      "goal": "Submit valid contact fields without a pickup date.",
+      "url": "https://practice.expandtesting.com/form-validation"
+    },
+    {
+      "case_id": "s1-43-expand-form-payment",
+      "goal": "Submit valid contact fields and date without a payment method.",
+      "url": "https://practice.expandtesting.com/form-validation"
+    },
+    {
+      "case_id": "s1-44-demoqa-required",
+      "goal": "Submit the empty required form and retain its invalid-field styling.",
+      "url": "https://demoqa.com/automation-practice-form"
+    },
+    {
+      "case_id": "s1-45-practice-login-password",
+      "goal": "Submit the documented username with an invalid password.",
+      "url": "https://practicetestautomation.com/practice-test-login/"
+    },
+    {
+      "case_id": "s1-46-sauce-whitespace-username",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-47-qa-uppercase-username",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-48-sauce-uppercase-username",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-49-qa-whitespace-username",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-50-sauce-bad-username-repeat",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-51-qa-bad-credentials-repeat",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-52-qa-api-error-repeat",
+      "goal": "Repeat the simulated failing API in an independent capture.",
+      "url": "https://qaplayground.vercel.app/"
+    }
+  ]
+}
