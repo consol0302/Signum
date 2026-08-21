@@ -1,0 +1,322 @@
+{
+  "category_candidate_counts": {
+    "action_failure": 26,
+    "loading_completion": 26
+  },
+  "kind": "signum_claim180_supplement_target_events",
+  "schema_version": 1,
+  "target_events": [
+    {
+      "action_id": "completion",
+      "case_id": "s1-01-qa-delayed-element",
+      "category": "loading_completion",
+      "expected_result": "the delayed element becomes visible"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-02-qa-loaded-content",
+      "category": "loading_completion",
+      "expected_result": "the asynchronously loaded content appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-03-qa-spinner",
+      "category": "loading_completion",
+      "expected_result": "the spinner is replaced by its loaded result"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-04-qa-three-second-wait",
+      "category": "loading_completion",
+      "expected_result": "the three-second delayed element becomes visible"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-05-qa-progress",
+      "category": "loading_completion",
+      "expected_result": "the progress display reaches 100% complete"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-06-qa-delayed-text",
+      "category": "loading_completion",
+      "expected_result": "the delayed replacement text appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-07-qa-dynamic-dropdown",
+      "category": "loading_completion",
+      "expected_result": "the dynamic dropdown reports five loaded options"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-08-qa-delayed-enable",
+      "category": "loading_completion",
+      "expected_result": "the delayed button enablement confirmation appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-09-qa-api-fast",
+      "category": "loading_completion",
+      "expected_result": "the fast API success response appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-10-qa-api-medium",
+      "category": "loading_completion",
+      "expected_result": "the medium API success response appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-11-qa-api-slow",
+      "category": "loading_completion",
+      "expected_result": "the slow API success response appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-12-expand-hidden",
+      "category": "loading_completion",
+      "expected_result": "the previously hidden Hello World result becomes visible"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-13-expand-rendered",
+      "category": "loading_completion",
+      "expected_result": "the newly rendered Hello World result appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-14-expand-remove",
+      "category": "loading_completion",
+      "expected_result": "the removal confirmation appears after the checkbox disappears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-15-expand-enable",
+      "category": "loading_completion",
+      "expected_result": "the input-enabled confirmation appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-16-selenium-add",
+      "category": "loading_completion",
+      "expected_result": "the delayed red box is added to the page"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-17-selenium-reveal",
+      "category": "loading_completion",
+      "expected_result": "the delayed input becomes visible"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-18-practice-liftoff",
+      "category": "loading_completion",
+      "expected_result": "the countdown finishes with Liftoff"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-19-demoqa-progress",
+      "category": "loading_completion",
+      "expected_result": "the progress bar reaches 100% and exposes Reset"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-20-demoqa-visible",
+      "category": "loading_completion",
+      "expected_result": "the Visible After control appears"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-21-qa-delayed-element-repeat",
+      "category": "loading_completion",
+      "expected_result": "the delayed element becomes visible"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-22-qa-spinner-repeat",
+      "category": "loading_completion",
+      "expected_result": "the spinner is replaced by its loaded result"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-23-qa-progress-repeat",
+      "category": "loading_completion",
+      "expected_result": "the progress display reaches 100% complete"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-24-selenium-add-repeat",
+      "category": "loading_completion",
+      "expected_result": "the delayed red box is added to the page"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-25-demoqa-progress-repeat",
+      "category": "loading_completion",
+      "expected_result": "the progress bar reaches 100% and exposes Reset"
+    },
+    {
+      "action_id": "completion",
+      "case_id": "s1-26-expand-hidden-repeat",
+      "category": "loading_completion",
+      "expected_result": "the previously hidden Hello World result becomes visible"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-27-sauce-missing-username",
+      "category": "action_failure",
+      "expected_result": "the Username is required error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-28-sauce-missing-password",
+      "category": "action_failure",
+      "expected_result": "the Password is required error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-29-sauce-bad-username",
+      "category": "action_failure",
+      "expected_result": "the username/password mismatch error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-30-sauce-bad-password",
+      "category": "action_failure",
+      "expected_result": "the username/password mismatch error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-31-sauce-locked-user",
+      "category": "action_failure",
+      "expected_result": "the locked-out user error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-32-sauce-empty",
+      "category": "action_failure",
+      "expected_result": "the Username is required error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-33-qa-empty",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-34-qa-missing-password",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-35-qa-missing-username",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-36-qa-bad-both",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-37-qa-bad-username",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-38-qa-bad-password",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-39-qa-api-error",
+      "category": "action_failure",
+      "expected_result": "the simulated API exposes its visible 500 error"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-40-expand-form-empty",
+      "category": "action_failure",
+      "expected_result": "required-field errors are visible and registration is rejected"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-41-expand-form-phone",
+      "category": "action_failure",
+      "expected_result": "the invalid contact-number state remains visible"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-42-expand-form-date",
+      "category": "action_failure",
+      "expected_result": "the missing pickup-date error remains visible"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-43-expand-form-payment",
+      "category": "action_failure",
+      "expected_result": "the missing payment-method error remains visible"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-44-demoqa-required",
+      "category": "action_failure",
+      "expected_result": "the required fields are marked invalid and no submission dialog opens"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-45-practice-login-password",
+      "category": "action_failure",
+      "expected_result": "the Your password is invalid error is visible"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-46-sauce-whitespace-username",
+      "category": "action_failure",
+      "expected_result": "the username/password mismatch error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-47-qa-uppercase-username",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-48-sauce-uppercase-username",
+      "category": "action_failure",
+      "expected_result": "the username/password mismatch error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-49-qa-whitespace-username",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-50-sauce-bad-username-repeat",
+      "category": "action_failure",
+      "expected_result": "the username/password mismatch error appears"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-51-qa-bad-credentials-repeat",
+      "category": "action_failure",
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered"
+    },
+    {
+      "action_id": "failure",
+      "case_id": "s1-52-qa-api-error-repeat",
+      "category": "action_failure",
+      "expected_result": "the simulated API exposes its visible 500 error"
+    }
+  ]
+}

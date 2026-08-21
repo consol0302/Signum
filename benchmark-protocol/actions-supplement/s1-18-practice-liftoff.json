@@ -1,0 +1,43 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1.0,
+      "expected_outcome": "success",
+      "expected_result": "the asynchronous operation starts",
+      "id": "trigger",
+      "locator": {
+        "by": "css",
+        "value": "#start"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 1.1,
+      "expected_outcome": "success",
+      "expected_result": "the countdown finishes with Liftoff",
+      "id": "completion",
+      "locator": {
+        "by": "text",
+        "exact": true,
+        "value": "Liftoff!"
+      },
+      "required": true,
+      "state": "visible",
+      "timeout_ms": 13000,
+      "type": "wait_for"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "s1-18-practice-liftoff",
+  "duration_seconds": 16,
+  "goal": "Start the countdown and wait for Liftoff.",
+  "schema_version": 1,
+  "source_url": "https://practice-automation.com/javascript-delays/"
+}

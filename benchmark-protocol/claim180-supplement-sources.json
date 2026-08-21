@@ -1,0 +1,320 @@
+{
+  "case_ids": [
+    "s1-01-qa-delayed-element",
+    "s1-02-qa-loaded-content",
+    "s1-03-qa-spinner",
+    "s1-04-qa-three-second-wait",
+    "s1-05-qa-progress",
+    "s1-06-qa-delayed-text",
+    "s1-07-qa-dynamic-dropdown",
+    "s1-08-qa-delayed-enable",
+    "s1-09-qa-api-fast",
+    "s1-10-qa-api-medium",
+    "s1-11-qa-api-slow",
+    "s1-12-expand-hidden",
+    "s1-13-expand-rendered",
+    "s1-14-expand-remove",
+    "s1-15-expand-enable",
+    "s1-16-selenium-add",
+    "s1-17-selenium-reveal",
+    "s1-18-practice-liftoff",
+    "s1-19-demoqa-progress",
+    "s1-20-demoqa-visible",
+    "s1-21-qa-delayed-element-repeat",
+    "s1-22-qa-spinner-repeat",
+    "s1-23-qa-progress-repeat",
+    "s1-24-selenium-add-repeat",
+    "s1-25-demoqa-progress-repeat",
+    "s1-26-expand-hidden-repeat",
+    "s1-27-sauce-missing-username",
+    "s1-28-sauce-missing-password",
+    "s1-29-sauce-bad-username",
+    "s1-30-sauce-bad-password",
+    "s1-31-sauce-locked-user",
+    "s1-32-sauce-empty",
+    "s1-33-qa-empty",
+    "s1-34-qa-missing-password",
+    "s1-35-qa-missing-username",
+    "s1-36-qa-bad-both",
+    "s1-37-qa-bad-username",
+    "s1-38-qa-bad-password",
+    "s1-39-qa-api-error",
+    "s1-40-expand-form-empty",
+    "s1-41-expand-form-phone",
+    "s1-42-expand-form-date",
+    "s1-43-expand-form-payment",
+    "s1-44-demoqa-required",
+    "s1-45-practice-login-password",
+    "s1-46-sauce-whitespace-username",
+    "s1-47-qa-uppercase-username",
+    "s1-48-sauce-uppercase-username",
+    "s1-49-qa-whitespace-username",
+    "s1-50-sauce-bad-username-repeat",
+    "s1-51-qa-bad-credentials-repeat",
+    "s1-52-qa-api-error-repeat"
+  ],
+  "kind": "signum_claim180_supplement_candidate_sources",
+  "schema_version": 1,
+  "workflow_sources": [
+    {
+      "case_id": "s1-01-qa-delayed-element",
+      "goal": "Trigger a delayed element and wait for it to appear.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-02-qa-loaded-content",
+      "goal": "Request asynchronous content and wait for the response text.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-03-qa-spinner",
+      "goal": "Start the loading spinner and wait for its completion result.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-04-qa-three-second-wait",
+      "goal": "Trigger the three-second wait and observe the delayed element.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-05-qa-progress",
+      "goal": "Start the progress simulation and wait for completion.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-06-qa-delayed-text",
+      "goal": "Start a delayed text update and wait for the replacement.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-07-qa-dynamic-dropdown",
+      "goal": "Load dropdown choices asynchronously and wait for the result.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-08-qa-delayed-enable",
+      "goal": "Request delayed button enablement and wait for its visible confirmation.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-09-qa-api-fast",
+      "goal": "Call the fast simulated API and wait for its response.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-10-qa-api-medium",
+      "goal": "Call the medium simulated API and wait for its response.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-11-qa-api-slow",
+      "goal": "Call the slow simulated API and wait for its response.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-12-expand-hidden",
+      "goal": "Start the hidden-element loader and wait for Hello World.",
+      "url": "https://practice.expandtesting.com/dynamic-loading/1"
+    },
+    {
+      "case_id": "s1-13-expand-rendered",
+      "goal": "Start the dynamic renderer and wait for Hello World.",
+      "url": "https://practice.expandtesting.com/dynamic-loading/2"
+    },
+    {
+      "case_id": "s1-14-expand-remove",
+      "goal": "Remove the checkbox asynchronously and wait for confirmation.",
+      "url": "https://practice.expandtesting.com/dynamic-controls"
+    },
+    {
+      "case_id": "s1-15-expand-enable",
+      "goal": "Enable the input asynchronously and wait for confirmation.",
+      "url": "https://practice.expandtesting.com/dynamic-controls"
+    },
+    {
+      "case_id": "s1-16-selenium-add",
+      "goal": "Request a delayed red box and wait for it to be added.",
+      "url": "https://www.selenium.dev/selenium/web/dynamic.html"
+    },
+    {
+      "case_id": "s1-17-selenium-reveal",
+      "goal": "Request a delayed input and wait for it to become visible.",
+      "url": "https://www.selenium.dev/selenium/web/dynamic.html"
+    },
+    {
+      "case_id": "s1-18-practice-liftoff",
+      "goal": "Start the countdown and wait for Liftoff.",
+      "url": "https://practice-automation.com/javascript-delays/"
+    },
+    {
+      "case_id": "s1-19-demoqa-progress",
+      "goal": "Start the progress bar and wait for its Reset state.",
+      "url": "https://demoqa.com/progress-bar"
+    },
+    {
+      "case_id": "s1-20-demoqa-visible",
+      "goal": "Wait for the page's automatically delayed Visible After control.",
+      "url": "https://demoqa.com/dynamic-properties"
+    },
+    {
+      "case_id": "s1-21-qa-delayed-element-repeat",
+      "goal": "Independent repeat capture: Trigger a delayed element and wait for it to appear.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-22-qa-spinner-repeat",
+      "goal": "Independent repeat capture: Start the loading spinner and wait for its completion result.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-23-qa-progress-repeat",
+      "goal": "Independent repeat capture: Start the progress simulation and wait for completion.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-24-selenium-add-repeat",
+      "goal": "Independent repeat capture: Request a delayed red box and wait for it to be added.",
+      "url": "https://www.selenium.dev/selenium/web/dynamic.html"
+    },
+    {
+      "case_id": "s1-25-demoqa-progress-repeat",
+      "goal": "Independent repeat capture: Start the progress bar and wait for its Reset state.",
+      "url": "https://demoqa.com/progress-bar"
+    },
+    {
+      "case_id": "s1-26-expand-hidden-repeat",
+      "goal": "Independent repeat capture: Start the hidden-element loader and wait for Hello World.",
+      "url": "https://practice.expandtesting.com/dynamic-loading/1"
+    },
+    {
+      "case_id": "s1-27-sauce-missing-username",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-28-sauce-missing-password",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-29-sauce-bad-username",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-30-sauce-bad-password",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-31-sauce-locked-user",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-32-sauce-empty",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-33-qa-empty",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-34-qa-missing-password",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-35-qa-missing-username",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-36-qa-bad-both",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-37-qa-bad-username",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-38-qa-bad-password",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-39-qa-api-error",
+      "goal": "Call the simulated failing API and wait for its visible 500 result.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-40-expand-form-empty",
+      "goal": "Submit an empty validation form and retain all required-field errors.",
+      "url": "https://practice.expandtesting.com/form-validation"
+    },
+    {
+      "case_id": "s1-41-expand-form-phone",
+      "goal": "Submit an otherwise incomplete form with an invalid phone value.",
+      "url": "https://practice.expandtesting.com/form-validation"
+    },
+    {
+      "case_id": "s1-42-expand-form-date",
+      "goal": "Submit valid contact fields without a pickup date.",
+      "url": "https://practice.expandtesting.com/form-validation"
+    },
+    {
+      "case_id": "s1-43-expand-form-payment",
+      "goal": "Submit valid contact fields and date without a payment method.",
+      "url": "https://practice.expandtesting.com/form-validation"
+    },
+    {
+      "case_id": "s1-44-demoqa-required",
+      "goal": "Submit the empty required form and retain its invalid-field styling.",
+      "url": "https://demoqa.com/automation-practice-form"
+    },
+    {
+      "case_id": "s1-45-practice-login-password",
+      "goal": "Submit the documented username with an invalid password.",
+      "url": "https://practicetestautomation.com/practice-test-login/"
+    },
+    {
+      "case_id": "s1-46-sauce-whitespace-username",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-47-qa-uppercase-username",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-48-sauce-uppercase-username",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-49-qa-whitespace-username",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-50-sauce-bad-username-repeat",
+      "goal": "Submit rejected Sauce Demo credentials and retain the visible error.",
+      "url": "https://www.saucedemo.com/"
+    },
+    {
+      "case_id": "s1-51-qa-bad-credentials-repeat",
+      "goal": "Submit rejected QA Playground credentials and retain the visible error.",
+      "url": "https://qaplayground.vercel.app/"
+    },
+    {
+      "case_id": "s1-52-qa-api-error-repeat",
+      "goal": "Repeat the simulated failing API in an independent capture.",
+      "url": "https://qaplayground.vercel.app/"
+    }
+  ]
+}

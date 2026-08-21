@@ -1,0 +1,42 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1.0,
+      "expected_outcome": "success",
+      "expected_result": "the asynchronous operation starts",
+      "id": "trigger",
+      "locator": {
+        "by": "css",
+        "value": "#reveal"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 1.1,
+      "expected_outcome": "success",
+      "expected_result": "the delayed input becomes visible",
+      "id": "completion",
+      "locator": {
+        "by": "css",
+        "value": "#revealed"
+      },
+      "required": true,
+      "state": "visible",
+      "timeout_ms": 5000,
+      "type": "wait_for"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "s1-17-selenium-reveal",
+  "duration_seconds": 8,
+  "goal": "Request a delayed input and wait for it to become visible.",
+  "schema_version": 1,
+  "source_url": "https://www.selenium.dev/selenium/web/dynamic.html"
+}

@@ -284,6 +284,17 @@ targets without a preregistered failed outcome, and loading targets that are not
 successful asynchronous `wait_for` actions. It creates an acquisition lock; it
 does not turn mechanically anchored events into reviewed ground truth.
 
+The repository now also contains the deterministic supplement candidate
+builder and its generated 52-case action pool: 26 loading-completion candidates
+and 26 action-failure candidates across seven public test domains. Every case
+declares exactly one scored target action; setup actions are retained but are
+not scored. The collection runner executes the published manifest in order,
+does not retry cases, refuses to overwrite an existing output directory, and
+preserves collector failures. A reconnaissance run is used only to remove
+broken locators or structurally uncapturable workflows; it is not claim
+evidence. The final collection will begin only after the candidate revision,
+supplement plan, and acquisition lock are published.
+
 ### Replay native computer-use perception
 
 The native benchmark adapter gives a provider its documented computer tool,

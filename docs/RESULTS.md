@@ -188,3 +188,22 @@ events plus 19 action-failure events. Those 37 transitions must come from a
 separately preregistered supplement whose selection rule is frozen before
 capture. Repeated descriptions, inferred failures, and post-model label changes
 will not be credited.
+
+The supplement candidate pool is now implemented as 52 deterministic browser
+workflows, split evenly between loading-completion and action-failure
+candidates. Reconnaissance initially produced 45 valid captures and seven
+invalid captures. Three invalid cases used completion text that did not match
+the page's actual API response, while four server-roundtrip form cases exceeded
+the frozen 0.25-second maximum frame gap. The API locators were corrected to
+the visible response strings. The four server-roundtrip cases were replaced by
+client-side rejected-input cases, while DemoQA and Practice Test Automation
+were moved into the first 19 failure candidates to preserve failure-mode and
+domain diversity.
+
+A focused, no-retry reconnaissance capture of all nine changed cases then
+produced nine independently valid captures. Effective average frame rate was
+between 14.99 and 15.02 fps, maximum frame gaps were between 0.079 and 0.100
+seconds, and no unexpected action failed. These reconnaissance artifacts are
+diagnostic only and will not enter Claim 180. The next step is to publish the
+candidate revision, generate and publish the supplement acquisition lock from
+that immutable commit, and only then perform the one-shot evidence collection.
