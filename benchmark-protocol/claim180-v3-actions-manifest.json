@@ -1,0 +1,290 @@
+{
+  "candidate_count": 45,
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "cases": [
+    {
+      "action_file": "actions-v3/v3-01-expand-inputs.json",
+      "bytes": 2428,
+      "case_id": "v3-01-expand-inputs",
+      "sha256": "10e39a3ca4ab8bd0f732cf5707293b406bcba442c22e0e2ff161b2c5f3b626ae"
+    },
+    {
+      "action_file": "actions-v3/v3-02-expand-login-success.json",
+      "bytes": 1776,
+      "case_id": "v3-02-expand-login-success",
+      "sha256": "fc8947d14dd1d64adea9277f370671faf0645647135e335aac955e3102948710"
+    },
+    {
+      "action_file": "actions-v3/v3-03-expand-login-bad-user.json",
+      "bytes": 1758,
+      "case_id": "v3-03-expand-login-bad-user",
+      "sha256": "38aa63b30cc34cd94b9fb8421c7d6708e0dab7d32d394a120c003f6b3e06cfec"
+    },
+    {
+      "action_file": "actions-v3/v3-04-expand-login-bad-password.json",
+      "bytes": 1754,
+      "case_id": "v3-04-expand-login-bad-password",
+      "sha256": "448706f7d733465f02833b57059172a15cb92b54decb3f9f162eb06569704d6f"
+    },
+    {
+      "action_file": "actions-v3/v3-05-expand-radio.json",
+      "bytes": 1639,
+      "case_id": "v3-05-expand-radio",
+      "sha256": "61fb20805e3b7d47325b2f514a1b833df6d0b8094af05b304147a8fd1f51ac80"
+    },
+    {
+      "action_file": "actions-v3/v3-06-expand-form-invalid.json",
+      "bytes": 1856,
+      "case_id": "v3-06-expand-form-invalid",
+      "sha256": "e27ce36b933fc073564d2d3a9c0ca094fb5fc1d947c44cb958501165584693c1"
+    },
+    {
+      "action_file": "actions-v3/v3-07-expand-add-remove.json",
+      "bytes": 2374,
+      "case_id": "v3-07-expand-add-remove",
+      "sha256": "0eac60c9229b96e12770c833f4f5bf5467a340f88d9c25a3833d00ae4eb0f355"
+    },
+    {
+      "action_file": "actions-v3/v3-08-expand-notification.json",
+      "bytes": 1497,
+      "case_id": "v3-08-expand-notification",
+      "sha256": "57115b98060537cd089f5138b52115464d807fa77bf5d7ed9251e1e538f340a5"
+    },
+    {
+      "action_file": "actions-v3/v3-09-expand-autocomplete.json",
+      "bytes": 1442,
+      "case_id": "v3-09-expand-autocomplete",
+      "sha256": "6f6be928529f12b5c8edb3c183a41d96d23de491d28f0b1f15d7c60fb89a57c7"
+    },
+    {
+      "action_file": "actions-v3/v3-10-expand-challenging-dom.json",
+      "bytes": 1701,
+      "case_id": "v3-10-expand-challenging-dom",
+      "sha256": "ab8766b694bac3bf64a6d2dfe5954aca2264e93595085bbe424001c6ce7b70cd"
+    },
+    {
+      "action_file": "actions-v3/v3-11-expand-checkboxes.json",
+      "bytes": 1644,
+      "case_id": "v3-11-expand-checkboxes",
+      "sha256": "5ddf22710551bffcc73efd15e8effc09139d3d9b04fa88677bd585370d04e990"
+    },
+    {
+      "action_file": "actions-v3/v3-12-expand-keypress.json",
+      "bytes": 1618,
+      "case_id": "v3-12-expand-keypress",
+      "sha256": "645d5995ca3f51015c4893fcb12fff5eb1d143f55baebd316665a3286594c44c"
+    },
+    {
+      "action_file": "actions-v3/v3-13-expand-dropdowns.json",
+      "bytes": 1676,
+      "case_id": "v3-13-expand-dropdowns",
+      "sha256": "6360db92cc5a88e9fe5591c6d49f214ce9315cf88d3b53549e9022dcd6a6c303"
+    },
+    {
+      "action_file": "actions-v3/v3-14-expand-slider.json",
+      "bytes": 1679,
+      "case_id": "v3-14-expand-slider",
+      "sha256": "2a97d8ff1b93ee565c8f7c1d48533d89bcc2dcc9f20c39f4c4a512104fe71868"
+    },
+    {
+      "action_file": "actions-v3/v3-15-expand-hovers.json",
+      "bytes": 1300,
+      "case_id": "v3-15-expand-hovers",
+      "sha256": "8b0f92f7c51ec55197f0d5462c2abc702e10c0e6f81a461b4481532aac4fa153"
+    },
+    {
+      "action_file": "actions-v3/v3-16-expand-tooltips.json",
+      "bytes": 1763,
+      "case_id": "v3-16-expand-tooltips",
+      "sha256": "5d81b7abbb72705075510a0a8af4784c10a92a6dcb538ac36befe2031658f96f"
+    },
+    {
+      "action_file": "actions-v3/v3-17-expand-scrollbars.json",
+      "bytes": 1477,
+      "case_id": "v3-17-expand-scrollbars",
+      "sha256": "16b578b6d02631c5f7e5bc12d40016249ff506d12ef25f72aaea91284e7109ab"
+    },
+    {
+      "action_file": "actions-v3/v3-18-expand-random.json",
+      "bytes": 1452,
+      "case_id": "v3-18-expand-random",
+      "sha256": "377769113e31d658d6c1c839185c6fb30e7cf455e5c5dcc2e95557762d9e5ce0"
+    },
+    {
+      "action_file": "actions-v3/v3-19-expand-bmi.json",
+      "bytes": 1687,
+      "case_id": "v3-19-expand-bmi",
+      "sha256": "575e3fbbad7245aa4f67367bfd05c9780dee0f3fd5b3ea134766b5c55ef0a09e"
+    },
+    {
+      "action_file": "actions-v3/v3-20-expand-bmi-clear.json",
+      "bytes": 2037,
+      "case_id": "v3-20-expand-bmi-clear",
+      "sha256": "3e0ccd367c7d0585bcd856cbbe44aef6bdca80fd3870f093e993cf59024a4f02"
+    },
+    {
+      "action_file": "actions-v3/v3-21-expand-password.json",
+      "bytes": 1521,
+      "case_id": "v3-21-expand-password",
+      "sha256": "a7d3f93e15e4c852e3ed2d9ff46c5a9750ef3192b809016aeb17b7e52ca83223"
+    },
+    {
+      "action_file": "actions-v3/v3-22-expand-dynamic-table.json",
+      "bytes": 1344,
+      "case_id": "v3-22-expand-dynamic-table",
+      "sha256": "475dffc606d92f6ab266d0ac32670d0d74908daef9d4e79c7f465c4d0caf4dc0"
+    },
+    {
+      "action_file": "actions-v3/v3-23-expand-infinite-scroll.json",
+      "bytes": 1415,
+      "case_id": "v3-23-expand-infinite-scroll",
+      "sha256": "9c1dc5005f3140c00db9261aaedd2f716a32d42823fc39c73549eeaaf6cc5537"
+    },
+    {
+      "action_file": "actions-v3/v3-24-expand-floating-menu.json",
+      "bytes": 1565,
+      "case_id": "v3-24-expand-floating-menu",
+      "sha256": "3b4604cad0851aa4e886eed211f815bdcc93a0a9fc00ddebe5ea647973f0bd5e"
+    },
+    {
+      "action_file": "actions-v3/v3-25-expand-add-remove-alt.json",
+      "bytes": 2118,
+      "case_id": "v3-25-expand-add-remove-alt",
+      "sha256": "c30ccb76ffdc9220425b45698fef8fd4898a7b8cab094ecf3440e301a4e91484"
+    },
+    {
+      "action_file": "actions-v3/v3-26-practice-delay.json",
+      "bytes": 1082,
+      "case_id": "v3-26-practice-delay",
+      "sha256": "416faf7780abd43b1323c51800b08c32156e55120e18fe6b9256d3765aac9704"
+    },
+    {
+      "action_file": "actions-v3/v3-27-practice-slider.json",
+      "bytes": 1640,
+      "case_id": "v3-27-practice-slider",
+      "sha256": "562c45546a2eb5a062ac2b21901656f5285987e18ce11b475486bf19707056e2"
+    },
+    {
+      "action_file": "actions-v3/v3-28-practice-click-events.json",
+      "bytes": 1635,
+      "case_id": "v3-28-practice-click-events",
+      "sha256": "9a9a52ce50b153b9d6792d604a470d695b391b031173df5729a523836158f454"
+    },
+    {
+      "action_file": "actions-v3/v3-29-practice-iframes.json",
+      "bytes": 1565,
+      "case_id": "v3-29-practice-iframes",
+      "sha256": "f1918e46207df07dae7da20f55a8a752ae53fb6e3e7bc60f015d3e981a8634b3"
+    },
+    {
+      "action_file": "actions-v3/v3-30-practice-accordion.json",
+      "bytes": 1722,
+      "case_id": "v3-30-practice-accordion",
+      "sha256": "8f7b4acb8c33a3404bff1e14db1df7d5ea81c0e1d5613cff617b139e3440ac20"
+    },
+    {
+      "action_file": "actions-v3/v3-31-practice-form.json",
+      "bytes": 2302,
+      "case_id": "v3-31-practice-form",
+      "sha256": "42827e7138206c14c56512d067b5fbd347f91d03b22670a085397ca6e8a6ab4c"
+    },
+    {
+      "action_file": "actions-v3/v3-32-practice-modals.json",
+      "bytes": 2067,
+      "case_id": "v3-32-practice-modals",
+      "sha256": "c7581f6fa9a74d31228ef323eb1b21dd417843ee00fe7731f11616ec4dc72003"
+    },
+    {
+      "action_file": "actions-v3/v3-33-practice-hover.json",
+      "bytes": 1408,
+      "case_id": "v3-33-practice-hover",
+      "sha256": "19837c6b26073500e5f27857ff4229e64a6ba1c7cc3b3d6c8584deaab5635ec0"
+    },
+    {
+      "action_file": "actions-v3/v3-34-practice-ads.json",
+      "bytes": 1398,
+      "case_id": "v3-34-practice-ads",
+      "sha256": "35e8a892e1e8736441eb4b8f94159cea1c286c39c5bfc4e1a5321ae5423b74eb"
+    },
+    {
+      "action_file": "actions-v3/v3-35-practice-popup-tooltip.json",
+      "bytes": 1765,
+      "case_id": "v3-35-practice-popup-tooltip",
+      "sha256": "364e2cc99e8477318b814d7aca358f7b5492be969f2b81c95e9ab77ecd1caed2"
+    },
+    {
+      "action_file": "actions-v3/v3-36-todo-add.json",
+      "bytes": 2252,
+      "case_id": "v3-36-todo-add",
+      "sha256": "7a31c996a57af17f6a95cbdfb811718c1d75f3355c1b15e506eae2a789b9a6ee"
+    },
+    {
+      "action_file": "actions-v3/v3-37-todo-complete.json",
+      "bytes": 1951,
+      "case_id": "v3-37-todo-complete",
+      "sha256": "f48de02e06fd131c32f0b9eec7f24501983e6e33d5bc40f0adcc4b72c0b8b380"
+    },
+    {
+      "action_file": "actions-v3/v3-38-todo-edit.json",
+      "bytes": 1958,
+      "case_id": "v3-38-todo-edit",
+      "sha256": "4a4c8b8f7294e8970f492d07c35d59234c54f1ac4014a8f0436a5f41421205b5"
+    },
+    {
+      "action_file": "actions-v3/v3-39-todo-delete.json",
+      "bytes": 2268,
+      "case_id": "v3-39-todo-delete",
+      "sha256": "ec912674dccdf65b35df853c0159816eab0f74e388cff353f4cc42776edaa825"
+    },
+    {
+      "action_file": "actions-v3/v3-40-todo-toggle-all.json",
+      "bytes": 2826,
+      "case_id": "v3-40-todo-toggle-all",
+      "sha256": "9427f04254ecf03af9bc9d595d63ee51842f26ebaa80cc52d4e09c9938f761d0"
+    },
+    {
+      "action_file": "actions-v3/v3-41-todo-clear-completed.json",
+      "bytes": 2229,
+      "case_id": "v3-41-todo-clear-completed",
+      "sha256": "d52875bc013c2efc4083f79de89d76c86ab2a9c4c73d01e3aaa39825277f2e80"
+    },
+    {
+      "action_file": "actions-v3/v3-42-todo-active-filter.json",
+      "bytes": 2302,
+      "case_id": "v3-42-todo-active-filter",
+      "sha256": "abaae9c9070b413041c37f772d94e119afe27c3af475f0e042865d9aa331d4ed"
+    },
+    {
+      "action_file": "actions-v3/v3-43-todo-completed-filter.json",
+      "bytes": 2325,
+      "case_id": "v3-43-todo-completed-filter",
+      "sha256": "ee137b7a127640f39843e1b53809d79a840c488f8152d8618f68fbc6a9322f51"
+    },
+    {
+      "action_file": "actions-v3/v3-44-todo-edit-cancel.json",
+      "bytes": 2023,
+      "case_id": "v3-44-todo-edit-cancel",
+      "sha256": "53b87c8053d23e67adbf20f539c9250f7c09ef361dd120dd9dcda60b0b370a9d"
+    },
+    {
+      "action_file": "actions-v3/v3-45-todo-filter-cycle.json",
+      "bytes": 2956,
+      "case_id": "v3-45-todo-filter-cycle",
+      "sha256": "4100a70a3f655f8536317e39f00d07531aeeb500d86e3f7d51741021d0693e68"
+    }
+  ],
+  "collector_revision": "0a51dce0a7d1768456065fbe4cc8c5189edbff34",
+  "kind": "signum_claim180_browser_actions",
+  "schema_version": 1,
+  "source_catalog": {
+    "bytes": 10578,
+    "path": "claim180-v3-sources.json",
+    "sha256": "50956a7c38a534b5d33bc163c25ef15ec1366185ebf5617a2e13761976bb36bf"
+  }
+}

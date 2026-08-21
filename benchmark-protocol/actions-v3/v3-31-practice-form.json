@@ -1,0 +1,97 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "name is populated",
+      "id": "name",
+      "locator": {
+        "by": "label",
+        "exact": true,
+        "value": "Name"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "Signum Tester"
+    },
+    {
+      "at_seconds": 2,
+      "expected_outcome": "success",
+      "expected_result": "password is populated",
+      "id": "password",
+      "locator": {
+        "by": "label",
+        "exact": true,
+        "value": "Password"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "FormPass9!"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "Coffee is selected",
+      "id": "coffee",
+      "locator": {
+        "by": "label",
+        "exact": true,
+        "value": "Coffee"
+      },
+      "required": true,
+      "type": "check"
+    },
+    {
+      "at_seconds": 4,
+      "expected_outcome": "success",
+      "expected_result": "Blue is selected",
+      "id": "blue",
+      "locator": {
+        "by": "label",
+        "exact": true,
+        "value": "Blue"
+      },
+      "required": true,
+      "type": "check"
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "success",
+      "expected_result": "automation preference is selected",
+      "id": "automation",
+      "locator": {
+        "by": "css",
+        "value": "select"
+      },
+      "required": true,
+      "type": "select",
+      "value": "yes"
+    },
+    {
+      "at_seconds": 8,
+      "expected_outcome": "success",
+      "expected_result": "the form is submitted",
+      "id": "submit",
+      "locator": {
+        "by": "role",
+        "exact": true,
+        "name": "Submit",
+        "role": "button"
+      },
+      "required": true,
+      "type": "click"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "v3-31-practice-form",
+  "duration_seconds": 12,
+  "goal": "Fill a mixed-control form and submit it.",
+  "schema_version": 1,
+  "source_url": "https://practice-automation.com/form-fields/"
+}

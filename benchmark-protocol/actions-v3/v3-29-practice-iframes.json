@@ -1,0 +1,60 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the first embedded region receives pointer focus",
+      "id": "hover-frame-1",
+      "locator": {
+        "by": "css",
+        "value": "iframe >> nth=0"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "the second embedded region enters view",
+      "id": "scroll",
+      "required": true,
+      "type": "scroll",
+      "x": 0,
+      "y": 500
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "success",
+      "expected_result": "the second embedded region receives pointer focus",
+      "id": "hover-frame-2",
+      "locator": {
+        "by": "css",
+        "value": "iframe >> nth=1"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 8,
+      "expected_outcome": "success",
+      "expected_result": "the first embedded region returns",
+      "id": "scroll-up",
+      "required": true,
+      "type": "scroll",
+      "x": 0,
+      "y": -400
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "v3-29-practice-iframes",
+  "duration_seconds": 12,
+  "goal": "Move focus among embedded frame regions and scroll the surrounding page.",
+  "schema_version": 1,
+  "source_url": "https://practice-automation.com/iframes/"
+}

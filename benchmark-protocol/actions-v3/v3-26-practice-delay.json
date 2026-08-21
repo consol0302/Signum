@@ -1,0 +1,43 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the countdown starts",
+      "id": "start",
+      "locator": {
+        "by": "text",
+        "exact": true,
+        "value": "Start"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 1.2,
+      "expected_outcome": "success",
+      "expected_result": "Liftoff becomes visible after the delay",
+      "id": "wait-liftoff",
+      "locator": {
+        "by": "text",
+        "exact": false,
+        "value": "Liftoff!"
+      },
+      "required": true,
+      "timeout_ms": 11000,
+      "type": "wait_for"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "v3-26-practice-delay",
+  "duration_seconds": 14,
+  "goal": "Start the countdown and observe the delayed Liftoff state.",
+  "schema_version": 1,
+  "source_url": "https://practice-automation.com/javascript-delays/"
+}

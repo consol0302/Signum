@@ -1,0 +1,80 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "first todo text is entered",
+      "id": "add-one",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "complete me"
+    },
+    {
+      "at_seconds": 1.5,
+      "expected_outcome": "success",
+      "expected_result": "first todo appears",
+      "id": "submit-one",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "second todo text is entered",
+      "id": "add-two",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "stay active"
+    },
+    {
+      "at_seconds": 3.5,
+      "expected_outcome": "success",
+      "expected_result": "second todo appears",
+      "id": "submit-two",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "success",
+      "expected_result": "the first todo is completed",
+      "id": "complete-one",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li .toggle >> nth=0"
+      },
+      "required": true,
+      "type": "check"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "v3-37-todo-complete",
+  "duration_seconds": 12,
+  "goal": "Add two todos and complete the first one.",
+  "schema_version": 1,
+  "source_url": "https://demo.playwright.dev/todomvc/"
+}

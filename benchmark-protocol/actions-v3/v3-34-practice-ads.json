@@ -1,0 +1,54 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the advertisement popup becomes visible",
+      "id": "wait-ad",
+      "locator": {
+        "by": "css",
+        "value": ".pum-container"
+      },
+      "required": true,
+      "timeout_ms": 5000,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 4,
+      "expected_outcome": "success",
+      "expected_result": "the advertisement popup closes",
+      "id": "close-ad",
+      "locator": {
+        "by": "css",
+        "value": ".pum-close:visible >> nth=0"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 7,
+      "expected_outcome": "failure",
+      "expected_result": "the closed popup cannot be closed again",
+      "id": "click-closed-ad",
+      "locator": {
+        "by": "css",
+        "value": ".pum-close:visible >> nth=0"
+      },
+      "required": false,
+      "timeout_ms": 600,
+      "type": "click"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "v3-34-practice-ads",
+  "duration_seconds": 12,
+  "goal": "Observe and close the page advertisement if it appears.",
+  "schema_version": 1,
+  "source_url": "https://practice-automation.com/ads/"
+}

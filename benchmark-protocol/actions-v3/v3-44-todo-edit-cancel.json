@@ -1,0 +1,80 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "original text is entered",
+      "id": "add",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "original task"
+    },
+    {
+      "at_seconds": 1.5,
+      "expected_outcome": "success",
+      "expected_result": "original todo appears",
+      "id": "submit",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "the todo enters edit mode",
+      "id": "edit",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li label"
+      },
+      "required": true,
+      "type": "double_click"
+    },
+    {
+      "at_seconds": 4,
+      "expected_outcome": "success",
+      "expected_result": "replacement text is present in edit mode",
+      "id": "replace",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li .edit"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "cancelled edit"
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "failure",
+      "expected_result": "the edit is cancelled and original text remains",
+      "id": "cancel",
+      "key": "Escape",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li .edit"
+      },
+      "required": true,
+      "type": "press"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "v3-44-todo-edit-cancel",
+  "duration_seconds": 12,
+  "goal": "Enter edit mode, change text, cancel it, and retain the original todo.",
+  "schema_version": 1,
+  "source_url": "https://demo.playwright.dev/todomvc/"
+}

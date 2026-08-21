@@ -1,0 +1,92 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "first text is entered",
+      "id": "add-a",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "clear one"
+    },
+    {
+      "at_seconds": 1.5,
+      "expected_outcome": "success",
+      "expected_result": "first todo appears",
+      "id": "submit-a",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "second text is entered",
+      "id": "add-b",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "clear two"
+    },
+    {
+      "at_seconds": 3.5,
+      "expected_outcome": "success",
+      "expected_result": "second todo appears",
+      "id": "submit-b",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "success",
+      "expected_result": "both todos are completed",
+      "id": "complete-all",
+      "locator": {
+        "by": "css",
+        "value": "#toggle-all"
+      },
+      "required": true,
+      "type": "check"
+    },
+    {
+      "at_seconds": 7,
+      "expected_outcome": "success",
+      "expected_result": "all completed todos are removed",
+      "id": "clear",
+      "locator": {
+        "by": "css",
+        "value": ".clear-completed"
+      },
+      "required": true,
+      "type": "click"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "v3-41-todo-clear-completed",
+  "duration_seconds": 12,
+  "goal": "Add two todos, complete both, and clear the completed list.",
+  "schema_version": 1,
+  "source_url": "https://demo.playwright.dev/todomvc/"
+}
