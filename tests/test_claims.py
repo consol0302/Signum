@@ -65,6 +65,85 @@ class ClaimAssessmentTests(unittest.TestCase):
                 role="held_out",
             )
 
+    def test_preregistration_verifies_every_frozen_action_file(self) -> None:
+        case_ids = [f"workflow-{index:02d}" for index in range(30)]
+        actions_dir = self.root / "actions"
+        actions_dir.mkdir()
+        action_rows = []
+        for case_id in case_ids:
+            action_path = actions_dir / f"{case_id}.json"
+            action_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "case_id": case_id,
+                        "actions": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            action_rows.append(
+                {
+                    "case_id": case_id,
+                    "action_file": f"actions/{case_id}.json",
+                    "bytes": action_path.stat().st_size,
+                    "sha256": hashlib.sha256(action_path.read_bytes()).hexdigest(),
+                }
+            )
+        actions_manifest = self.root / "actions-manifest.json"
+        actions_manifest.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "kind": "signum_claim180_browser_actions",
+                    "collector_revision": "b" * 40,
+                    "cases": action_rows,
+                }
+            ),
+            encoding="utf-8",
+        )
+        plan = self.root / "action-plan.json"
+        plan.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "protocol_id": "signum-claim180-actions-test",
+                    "protocol_repository": "https://example.invalid/signum",
+                    "protocol_revision": "a" * 40,
+                    "case_ids": case_ids,
+                    "category_targets": CLAIM180_TARGETS,
+                    "evidence_policy": {"review": "human blind"},
+                    "observation_budget": {"screenshots": 2},
+                    "workflow_sources": [
+                        {
+                            "case_id": case_id,
+                            "url": f"https://example.invalid/{case_id}",
+                            "goal": "complete the frozen workflow",
+                        }
+                        for case_id in case_ids
+                    ],
+                    "actions_manifest": {
+                        "path": actions_manifest.name,
+                        "bytes": actions_manifest.stat().st_size,
+                        "sha256": hashlib.sha256(
+                            actions_manifest.read_bytes()
+                        ).hexdigest(),
+                    },
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        lock = preregister_heldout(plan, self.root / "actions-lock.json")
+        self.assertEqual(30, lock["actions_manifest"]["case_count"])
+        self.assertEqual("b" * 40, lock["actions_manifest"]["collector_revision"])
+
+        (actions_dir / f"{case_ids[0]}.json").write_text(
+            "changed after action freeze", encoding="utf-8"
+        )
+        with self.assertRaisesRegex(EvaluationError, "action file integrity"):
+            preregister_heldout(plan, self.root / "tampered-lock.json")
+
     def test_claim_is_blocked_when_a_run_artifact_changes(self) -> None:
         manifest, events, preregistration = self._claim_manifest()
         held_out_lock = self.root / "artifact-freeze.json"

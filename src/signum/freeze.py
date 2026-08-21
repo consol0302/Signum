@@ -92,6 +92,12 @@ def preregister_heldout(
         )
 
     source = Path(plan_path).resolve()
+    actions_manifest = _validate_actions_manifest(
+        source,
+        plan.get("actions_manifest"),
+        case_ids,
+    )
+
     destination = Path(output_path).resolve()
     destination.parent.mkdir(parents=True, exist_ok=True)
     payload: dict[str, Any] = {
@@ -110,6 +116,14 @@ def preregister_heldout(
         "observation_budget": observation_budget,
         "workflow_sources": workflow_sources,
     }
+    if actions_manifest is not None:
+        payload["actions_manifest"] = {
+            "path": _relative_to_lock(actions_manifest["path"], destination),
+            "bytes": actions_manifest["bytes"],
+            "sha256": actions_manifest["sha256"],
+            "collector_revision": actions_manifest["collector_revision"],
+            "case_count": actions_manifest["case_count"],
+        }
     payload["preregistration_id"] = _fingerprint(
         {key: value for key, value in payload.items() if key != "created_at_utc"}
     )
@@ -223,6 +237,10 @@ def freeze_manifest(
             "protocol_repository": preregistration["protocol_repository"],
             "protocol_revision": preregistration["protocol_revision"],
         }
+        if isinstance(preregistration.get("actions_manifest"), dict):
+            payload["preregistration"]["actions_manifest"] = preregistration[
+                "actions_manifest"
+            ]
     payload["freeze_id"] = _fingerprint(
         {key: value for key, value in payload.items() if key != "created_at_utc"}
     )
@@ -314,6 +332,28 @@ def _verify_preregistration(path: Path) -> dict[str, Any]:
     )
     if not check["valid"]:
         raise EvaluationError("held-out preregistration plan integrity check failed")
+    plan = _read_object(plan_path, "held-out preregistration plan")
+    actions_manifest = _validate_actions_manifest(
+        plan_path,
+        plan.get("actions_manifest"),
+        lock.get("case_ids"),
+    )
+    locked_actions = lock.get("actions_manifest")
+    if actions_manifest is None:
+        if locked_actions is not None:
+            raise EvaluationError(
+                "held-out preregistration has an unexpected actions manifest"
+            )
+    elif not isinstance(locked_actions, dict) or any(
+        locked_actions.get(key) != value
+        for key, value in {
+            "bytes": actions_manifest["bytes"],
+            "sha256": actions_manifest["sha256"],
+            "collector_revision": actions_manifest["collector_revision"],
+            "case_count": actions_manifest["case_count"],
+        }.items()
+    ):
+        raise EvaluationError("held-out actions manifest lock does not match")
     expected_id = _fingerprint(
         {
             key: value
@@ -329,6 +369,86 @@ def _verify_preregistration(path: Path) -> dict[str, Any]:
     ):
         raise EvaluationError("held-out preregistration has invalid case_ids")
     return lock
+
+
+def _validate_actions_manifest(
+    plan_path: Path,
+    raw_reference: object,
+    case_ids: object,
+) -> dict[str, Any] | None:
+    if raw_reference is None:
+        return None
+    if not isinstance(raw_reference, dict):
+        raise EvaluationError("held-out plan actions_manifest must be an object")
+    if not isinstance(case_ids, list) or any(
+        not isinstance(value, str) for value in case_ids
+    ):
+        raise EvaluationError("held-out plan has invalid case_ids")
+    relative_path = _required_string(raw_reference, "path")
+    manifest_path = (plan_path.parent / relative_path).resolve()
+    expected_hash = _required_string(raw_reference, "sha256")
+    expected_bytes = _required_integer(raw_reference, "bytes")
+    check = _file_check(
+        "held-out-actions-manifest",
+        manifest_path,
+        expected_hash,
+        expected_bytes,
+    )
+    if not check["valid"]:
+        raise EvaluationError("held-out actions manifest integrity check failed")
+    manifest = _read_object(manifest_path, "held-out actions manifest")
+    if (
+        manifest.get("schema_version") != 1
+        or manifest.get("kind") != "signum_claim180_browser_actions"
+    ):
+        raise EvaluationError("invalid held-out actions manifest")
+    collector_revision = _required_nonempty(
+        manifest,
+        "collector_revision",
+        "held-out actions manifest",
+    )
+    if not re.fullmatch(r"[0-9a-fA-F]{40,64}", collector_revision):
+        raise EvaluationError(
+            "held-out actions manifest collector_revision must be immutable"
+        )
+    rows = manifest.get("cases")
+    if not isinstance(rows, list) or len(rows) != len(case_ids):
+        raise EvaluationError(
+            "held-out actions manifest must contain one row per case id"
+        )
+    manifest_case_ids = []
+    for row in rows:
+        if not isinstance(row, dict):
+            raise EvaluationError("held-out action manifest rows must be objects")
+        case_id = _required_string(row, "case_id")
+        manifest_case_ids.append(case_id)
+        action_path = (
+            manifest_path.parent / _required_string(row, "action_file")
+        ).resolve()
+        action_check = _file_check(
+            f"held-out-actions:{case_id}",
+            action_path,
+            _required_string(row, "sha256"),
+            _required_integer(row, "bytes"),
+        )
+        if not action_check["valid"]:
+            raise EvaluationError(
+                f"held-out action file integrity check failed for {case_id!r}"
+            )
+        action = _read_object(action_path, f"held-out action file {case_id!r}")
+        if action.get("schema_version") != 1 or action.get("case_id") != case_id:
+            raise EvaluationError(f"invalid held-out action file for {case_id!r}")
+    if manifest_case_ids != case_ids:
+        raise EvaluationError(
+            "held-out actions manifest case ids and order must match the plan"
+        )
+    return {
+        "path": manifest_path,
+        "bytes": expected_bytes,
+        "sha256": expected_hash,
+        "collector_revision": collector_revision,
+        "case_count": len(rows),
+    }
 
 
 def _file_check(
