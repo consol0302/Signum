@@ -43,13 +43,26 @@ def build(
     manifest_output: Path,
     *,
     check: bool,
+    round_number: int = 1,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, str]]:
+    if round_number not in {1, 2}:
+        raise RuntimeError("visibility reserve round must be 1 or 2")
     actions: dict[str, str] = {}
     slots: dict[str, list[str]] = {}
     targets = []
     workflows = []
     source_templates = []
-    for slot_id, case_id, template_id, target_action_id in TEMPLATES:
+    for base_slot_id, base_case_id, template_id, target_action_id in TEMPLATES:
+        slot_id = (
+            base_slot_id
+            if round_number == 1
+            else base_slot_id.replace("v4-reserve-slot", "v4-reserve2-slot")
+        )
+        case_id = (
+            base_case_id
+            if round_number == 1
+            else base_case_id.replace("v4r-", "v4r2-")
+        )
         template_path = source_actions / f"{template_id}.json"
         payload = deepcopy(read_object(template_path))
         action = next(
@@ -95,7 +108,10 @@ def build(
                 "target_action_id": target_action_id,
             }
         )
-    case_ids = [case_id for _, case_id, _, _ in TEMPLATES]
+    case_ids = [
+        case_id if round_number == 1 else case_id.replace("v4r-", "v4r2-")
+        for _, case_id, _, _ in TEMPLATES
+    ]
     source_catalog = {
         "schema_version": 1,
         "kind": "signum_claim180_v4_visibility_reserve_sources",
@@ -116,6 +132,8 @@ def build(
             ],
         },
     }
+    if round_number == 2:
+        source_catalog["reserve_round"] = 2
     source_text = json_text(source_catalog)
     if check:
         if sources_output.read_text(encoding="utf-8") != source_text:
@@ -174,6 +192,7 @@ def main() -> None:
     parser.add_argument("--sources", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--round", type=int, choices=(1, 2), default=1)
     args = parser.parse_args()
     sources, manifest, _ = build(
         args.source_actions.resolve(),
@@ -181,6 +200,7 @@ def main() -> None:
         args.sources.resolve(),
         args.manifest.resolve(),
         check=args.check,
+        round_number=args.round,
     )
     print(
         json.dumps(

@@ -34,23 +34,51 @@ def reference(path: Path, identity_field: str) -> dict[str, Any]:
     }
 
 
-def build_plan(protocol_root: Path, protocol_revision: str) -> dict[str, Any]:
+def build_plan(
+    protocol_root: Path, protocol_revision: str, round_number: int = 1
+) -> dict[str, Any]:
     if not protocol_revision or not all(
         character in "0123456789abcdef" for character in protocol_revision.lower()
     ) or len(protocol_revision) != 40:
         raise RuntimeError("protocol revision must be a full immutable Git revision")
-    sources_path = protocol_root / "claim180-v4-visibility-reserve-sources.json"
-    manifest_path = protocol_root / "claim180-v4-visibility-reserve-actions-manifest.json"
+    if round_number not in {1, 2}:
+        raise RuntimeError("visibility reserve round must be 1 or 2")
+    suffix = "" if round_number == 1 else "-v2"
+    sources_path = protocol_root / f"claim180-v4-visibility-reserve-sources{suffix}.json"
+    manifest_path = protocol_root / f"claim180-v4-visibility-reserve-actions-manifest{suffix}.json"
     sources = read_object(sources_path)
     manifest = read_object(manifest_path)
     case_ids = sources["case_ids"]
     slots = sources["slots"]
     if manifest.get("candidate_count") != 8 or manifest.get("slot_count") != 2:
         raise RuntimeError("visibility reserve manifest must contain eight candidates")
+    base_evidence = {
+        "collection": reference(
+            protocol_root / "claim180-v4-collection-result.json", "collection_id"
+        ),
+        "inventory": reference(
+            protocol_root / "claim180-v4-event-inventory.json", "inventory_id"
+        ),
+        "anchor_audit": reference(
+            protocol_root / "claim180-v4-anchor-audit.json", "audit_id"
+        ),
+        "review_packet_lock": reference(
+            protocol_root / "claim180-v4-review-packet-lock.json", "lock_id"
+        ),
+    }
+    if round_number == 2:
+        base_evidence["failed_reserve_v1"] = reference(
+            protocol_root / "claim180-v4-visibility-reserve-collection-result.json",
+            "collection_id",
+        )
     return {
         "schema_version": 1,
         "kind": "signum_claim180_v4_visibility_reserve_plan",
-        "protocol_id": "signum-claim180-v4-visibility-reserve-2026-08-22",
+        "protocol_id": (
+            "signum-claim180-v4-visibility-reserve-2026-08-22"
+            if round_number == 1
+            else "signum-claim180-v4-visibility-reserve-v2-2026-08-22"
+        ),
         "protocol_repository": "https://github.com/consol0302/Signum",
         "protocol_revision": protocol_revision,
         "collector_revision": manifest["collector_revision"],
@@ -68,20 +96,7 @@ def build_plan(protocol_root: Path, protocol_revision: str) -> dict[str, Any]:
                 protocol_root / "claim180-v4-review-packet-lock.json"
             )["packet_id"],
         },
-        "base_evidence": {
-            "collection": reference(
-                protocol_root / "claim180-v4-collection-result.json", "collection_id"
-            ),
-            "inventory": reference(
-                protocol_root / "claim180-v4-event-inventory.json", "inventory_id"
-            ),
-            "anchor_audit": reference(
-                protocol_root / "claim180-v4-anchor-audit.json", "audit_id"
-            ),
-            "review_packet_lock": reference(
-                protocol_root / "claim180-v4-review-packet-lock.json", "lock_id"
-            ),
-        },
+        "base_evidence": base_evidence,
         "actions_manifest": {
             "path": manifest_path.name,
             "bytes": manifest_path.stat().st_size,
@@ -112,7 +127,7 @@ def build_plan(protocol_root: Path, protocol_revision: str) -> dict[str, Any]:
             "human_review_required_before_activation": True,
             "model_outputs_forbidden_before_selection": True,
         },
-    }
+    } | ({"reserve_round": 2} if round_number == 2 else {})
 
 
 def main() -> None:
@@ -121,8 +136,11 @@ def main() -> None:
     parser.add_argument("--protocol-revision", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--round", type=int, choices=(1, 2), default=1)
     args = parser.parse_args()
-    payload = build_plan(args.protocol_root.resolve(), args.protocol_revision)
+    payload = build_plan(
+        args.protocol_root.resolve(), args.protocol_revision, args.round
+    )
     text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     if args.check:
         if args.output.read_text(encoding="utf-8") != text:

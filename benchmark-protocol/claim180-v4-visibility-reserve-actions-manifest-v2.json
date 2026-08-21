@@ -1,0 +1,70 @@
+{
+  "candidate_count": 8,
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.75,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "screenshot_timeout_ms": 200,
+    "width": 1280
+  },
+  "cases": [
+    {
+      "action_file": "actions-v4-visibility-reserve-v2/v4r2-01a-qah.json",
+      "bytes": 7777,
+      "case_id": "v4r2-01a-qah",
+      "sha256": "c06de4a9b22f59f46a4dad69dd2c268d42874042d3012679182a5f9d2249b5b9"
+    },
+    {
+      "action_file": "actions-v4-visibility-reserve-v2/v4r2-01b-playlab.json",
+      "bytes": 5552,
+      "case_id": "v4r2-01b-playlab",
+      "sha256": "0e353ad8271e9d8b02aebe4dae1d92230951ea408cf83f05cdcc5535eedb1c70"
+    },
+    {
+      "action_file": "actions-v4-visibility-reserve-v2/v4r2-01c-qah.json",
+      "bytes": 7431,
+      "case_id": "v4r2-01c-qah",
+      "sha256": "40901105af44dea080553b91b7938f43b73a179c5f8bc29968d7d15b071aeb72"
+    },
+    {
+      "action_file": "actions-v4-visibility-reserve-v2/v4r2-01d-playlab.json",
+      "bytes": 4526,
+      "case_id": "v4r2-01d-playlab",
+      "sha256": "840c2208831411492b3a91ee5e635ead31ac6fcebb1f69fd5bde19de856247c7"
+    },
+    {
+      "action_file": "actions-v4-visibility-reserve-v2/v4r2-02a-qah.json",
+      "bytes": 7773,
+      "case_id": "v4r2-02a-qah",
+      "sha256": "d699d644607997fa9c5d471e4d3f35086c5b38200911a53f8224e22cc5de4fd5"
+    },
+    {
+      "action_file": "actions-v4-visibility-reserve-v2/v4r2-02b-playlab.json",
+      "bytes": 5558,
+      "case_id": "v4r2-02b-playlab",
+      "sha256": "f08bb1f1e597a0642063992ad46845e93a4d1bdbde6aeeede5e545aa7a619ef9"
+    },
+    {
+      "action_file": "actions-v4-visibility-reserve-v2/v4r2-02c-qah.json",
+      "bytes": 7428,
+      "case_id": "v4r2-02c-qah",
+      "sha256": "29d6997e560c52a6343b2de503002c9b74fa5a57abc3a09d5d0a2123fd0252d4"
+    },
+    {
+      "action_file": "actions-v4-visibility-reserve-v2/v4r2-02d-playlab.json",
+      "bytes": 4494,
+      "case_id": "v4r2-02d-playlab",
+      "sha256": "ac70698c0a713b8629aa3d72914033fc85e42b5d22e93ead215971ee50f081eb"
+    }
+  ],
+  "collector_revision": "b6025b84d4498c682a76273e8540c63032d8e83e",
+  "kind": "signum_claim180_browser_actions",
+  "schema_version": 1,
+  "slot_count": 2,
+  "source_catalog": {
+    "bytes": 6016,
+    "path": "claim180-v4-visibility-reserve-sources-v2.json",
+    "sha256": "5fa1bb8815d6f8f72d98c857dae763ce7b70bfe5ea00efe404fa58487de30619"
+  }
+}

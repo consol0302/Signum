@@ -32,6 +32,7 @@ class Claim180V4VisibilityReserveTests(unittest.TestCase):
             ROOT / "benchmark-protocol" / "claim180-v4-visibility-reserve-sources.json",
             ROOT / "benchmark-protocol" / "claim180-v4-visibility-reserve-actions-manifest.json",
             check=True,
+            round_number=1,
         )
         self.assertEqual(8, manifest["candidate_count"])
         self.assertEqual(2, manifest["slot_count"])
@@ -59,6 +60,26 @@ class Claim180V4VisibilityReserveTests(unittest.TestCase):
                 [{"action_id": target["events"][0]["action_id"], "category": "cursor_hover_focus"}],
                 target["events"],
             )
+
+    def test_second_round_uses_new_ids_after_preserved_startup_failures(self) -> None:
+        sources, manifest, _ = MODULE.build(
+            ROOT / "benchmark-protocol" / "actions-v4",
+            ROOT / "benchmark-protocol" / "actions-v4-visibility-reserve-v2",
+            ROOT / "benchmark-protocol" / "claim180-v4-visibility-reserve-sources-v2.json",
+            ROOT / "benchmark-protocol" / "claim180-v4-visibility-reserve-actions-manifest-v2.json",
+            check=True,
+            round_number=2,
+        )
+        failure = json.loads(
+            (ROOT / "benchmark-protocol" / "claim180-v4-visibility-reserve-collection-result.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(8, failure["counts"]["startup_failed"])
+        self.assertFalse(failure["claim180_collection_complete"])
+        self.assertEqual(2, sources["reserve_round"])
+        self.assertTrue(all(case_id.startswith("v4r2-") for case_id in sources["case_ids"]))
+        self.assertEqual(8, manifest["candidate_count"])
 
     def test_plan_and_preregistration_freeze_conditional_activation(self) -> None:
         plan_path = (

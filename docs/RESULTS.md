@@ -328,3 +328,11 @@ id is
 `6372f02eb8094223ce5325793e33bd3769517ca57c26ee135c1d9568933cf00a`.
 This reserve is collection insurance, not evidence that either event has
 already failed human review.
+
+The first reserve acquisition did not reach a web page: all eight cases were
+retained as startup failures after Chromium returned
+`ERR_NETWORK_ACCESS_DENIED`. Independent verification reports zero valid, zero
+invalid, eight startup-failed, and zero missing attempts. Incomplete collection
+id `14f15891168648938ae6bcd60e9069c650cca30e0d152f4a640937cb6c5cf4e9`
+is failure evidence, not a usable reserve. The same case ids are not retried;
+a second-round pool uses new ids and binds this result.

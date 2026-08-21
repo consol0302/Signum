@@ -1,0 +1,208 @@
+{
+  "actions": [
+    {
+      "at_seconds": 0.9,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-modal-control completes",
+      "id": "01-show-modal-control",
+      "locator": {
+        "by": "css",
+        "value": "#openModalBtn"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 1.45,
+      "expected_outcome": "success",
+      "expected_result": "the modal dialog is visible",
+      "id": "02-open-modal",
+      "locator": {
+        "by": "css",
+        "value": "#openModalBtn"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 2.75,
+      "expected_outcome": "success",
+      "expected_result": "preparation step close-modal completes",
+      "id": "03-close-modal",
+      "locator": {
+        "by": "css",
+        "value": "#modalClose"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 3.3,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-format-controls completes",
+      "id": "04-show-format-controls",
+      "locator": {
+        "by": "css",
+        "value": "#interactions"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 3.85,
+      "expected_outcome": "success",
+      "expected_result": "the bold formatting control becomes active",
+      "id": "05-toggle-bold",
+      "locator": {
+        "by": "css",
+        "value": "#toggleBold"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 5.15,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-registration completes",
+      "id": "06-show-registration",
+      "locator": {
+        "by": "css",
+        "value": "#fullName"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 5.7,
+      "expected_outcome": "failure",
+      "expected_result": "empty registration remains rejected with validation feedback",
+      "id": "07-reject-empty-registration",
+      "locator": {
+        "by": "css",
+        "value": "#forms button[type=submit]"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 7.0,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-delayed-loader completes",
+      "id": "08-show-delayed-loader",
+      "locator": {
+        "by": "css",
+        "value": "#loadDelayedBtn"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 7.55,
+      "expected_outcome": "success",
+      "expected_result": "preparation step select-one-second-delay completes",
+      "id": "09-select-one-second-delay",
+      "locator": {
+        "by": "css",
+        "value": "#delayTime"
+      },
+      "required": true,
+      "type": "select",
+      "value": {
+        "label": "1 second"
+      }
+    },
+    {
+      "at_seconds": 8.1,
+      "expected_outcome": "success",
+      "expected_result": "preparation step start-delayed-load completes",
+      "id": "10-start-delayed-load",
+      "locator": {
+        "by": "css",
+        "value": "#loadDelayedBtn"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 8.65,
+      "expected_outcome": "success",
+      "expected_result": "delayed content is fully visible",
+      "id": "11-observe-delayed-content",
+      "locator": {
+        "by": "css",
+        "value": "#delayedContent"
+      },
+      "required": true,
+      "timeout_ms": 3500,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 9.95,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-dynamic-add completes",
+      "id": "12-show-dynamic-add",
+      "locator": {
+        "by": "css",
+        "value": "#addElementBtn"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 10.5,
+      "expected_outcome": "success",
+      "expected_result": "a new dynamic element appears",
+      "id": "13-add-dynamic-element",
+      "locator": {
+        "by": "css",
+        "value": "#addElementBtn"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 11.8,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-tooltip-region completes",
+      "id": "14-show-tooltip-region",
+      "locator": {
+        "by": "css",
+        "value": "#interactions"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 12.35,
+      "expected_outcome": "success",
+      "expected_result": "the hover tooltip appears",
+      "id": "15-hover-tooltip",
+      "locator": {
+        "by": "css",
+        "value": "#tooltipBtn"
+      },
+      "required": true,
+      "type": "hover"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.75,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "screenshot_timeout_ms": 200,
+    "width": 1280
+  },
+  "case_id": "v4r2-01b-playlab",
+  "duration_seconds": 16,
+  "goal": "Collect one fresh visible hover/focus reserve event for v4-reserve2-slot-01.",
+  "schema_version": 1,
+  "slot_id": "v4-reserve2-slot-01",
+  "source_url": "https://playwrightlab.github.io/index.html",
+  "target_events": [
+    {
+      "action_id": "15-hover-tooltip",
+      "category": "cursor_hover_focus"
+    }
+  ]
+}

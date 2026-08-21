@@ -116,6 +116,13 @@ two named TestPages transitions invisible. The reserve remains ineligible if
 that condition is not met, and method output remains forbidden before its
 selection.
 
+The first reserve acquisition retained eight startup failures caused by the
+capture environment returning `ERR_NETWORK_ACCESS_DENIED`; it selected no
+event and has collection id
+`14f15891168648938ae6bcd60e9069c650cca30e0d152f4a640937cb6c5cf4e9`.
+Those case ids will not be retried. A second-round pool uses new case ids and
+binds the complete failed first-round summary before it can be preregistered.
+
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 
 ## Install

@@ -1,0 +1,168 @@
+{
+  "actions": [
+    {
+      "at_seconds": 0.9,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-format-controls completes",
+      "id": "01-show-format-controls",
+      "locator": {
+        "by": "css",
+        "value": "#interactions"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 1.45,
+      "expected_outcome": "success",
+      "expected_result": "the italic formatting control becomes active",
+      "id": "02-toggle-italic",
+      "locator": {
+        "by": "css",
+        "value": "#toggleItalic"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 2.75,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-registration completes",
+      "id": "03-show-registration",
+      "locator": {
+        "by": "css",
+        "value": "#fullName"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 3.3,
+      "expected_outcome": "failure",
+      "expected_result": "empty registration remains rejected with validation feedback",
+      "id": "04-reject-empty-registration",
+      "locator": {
+        "by": "css",
+        "value": "#forms button[type=submit]"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 4.6,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-start-download-progress completes",
+      "id": "05-show-start-download-progress",
+      "locator": {
+        "by": "css",
+        "value": "#startProgressBtn"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 5.15,
+      "expected_outcome": "success",
+      "expected_result": "download progress starts moving",
+      "id": "06-start-download-progress",
+      "locator": {
+        "by": "css",
+        "value": "#startProgressBtn"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 6.45,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-dynamic-add completes",
+      "id": "07-show-dynamic-add",
+      "locator": {
+        "by": "css",
+        "value": "#addElementBtn"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 7.0,
+      "expected_outcome": "success",
+      "expected_result": "a new dynamic element appears",
+      "id": "08-add-dynamic-element",
+      "locator": {
+        "by": "css",
+        "value": "#addElementBtn"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 8.3,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-success-toast completes",
+      "id": "09-show-success-toast",
+      "locator": {
+        "by": "css",
+        "value": "#toastSuccess"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 8.85,
+      "expected_outcome": "success",
+      "expected_result": "a temporary success toast appears",
+      "id": "10-success-toast",
+      "locator": {
+        "by": "css",
+        "value": "#toastSuccess"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 10.15,
+      "expected_outcome": "success",
+      "expected_result": "preparation step show-tooltip-region completes",
+      "id": "11-show-tooltip-region",
+      "locator": {
+        "by": "css",
+        "value": "#interactions"
+      },
+      "required": true,
+      "type": "hover"
+    },
+    {
+      "at_seconds": 10.7,
+      "expected_outcome": "success",
+      "expected_result": "the hover tooltip appears",
+      "id": "12-hover-tooltip",
+      "locator": {
+        "by": "css",
+        "value": "#tooltipBtn"
+      },
+      "required": true,
+      "type": "hover"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.75,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "screenshot_timeout_ms": 200,
+    "width": 1280
+  },
+  "case_id": "v4r2-01d-playlab",
+  "duration_seconds": 14,
+  "goal": "Collect one fresh visible hover/focus reserve event for v4-reserve2-slot-01.",
+  "schema_version": 1,
+  "slot_id": "v4-reserve2-slot-01",
+  "source_url": "https://playwrightlab.github.io/index.html",
+  "target_events": [
+    {
+      "action_id": "12-hover-tooltip",
+      "category": "cursor_hover_focus"
+    }
+  ]
+}
