@@ -225,6 +225,12 @@ class ClaimAssessmentTests(unittest.TestCase):
                 "startup_failed": 1,
                 "missing": 0,
             },
+            "selection": {
+                "mode": "first_valid_in_plan_order",
+                "required_valid_cases": 30,
+                "selected_case_ids": case_ids[:30],
+            },
+            "claim180_collection_complete": True,
             "unexpected_case_directories": [],
             "cases": rows,
         }

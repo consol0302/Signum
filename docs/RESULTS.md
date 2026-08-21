@@ -153,10 +153,18 @@ This failed collection does not satisfy Claim 180 and will not be repaired,
 retried, or submitted to models. The next protocol revision must preregister an
 ordered candidate pool and an objective inclusion rule before collection so
 site or capture failures cannot be replaced selectively after their results are
-known. That v3 revision is now preregistered with 45 new candidates across
-three public test-application domains and the fixed rule that only the first 30
-independently valid captures in plan order may enter the manifest. No v3
-candidate has been captured yet. The native OpenAI and Claude event-checkpoint adapters are implemented,
+known. That v3 revision was preregistered with 45 new candidates across three
+public test-application domains and the fixed rule that only the first 30
+independently valid captures in plan order may enter the manifest.
+
+The one-shot v3 collection is now complete: the collector and independent
+verifier both report 30 valid and 15 invalid captures, with no missing or
+startup-failed candidate. All 45 attempts remain retained. The ordered
+selection contains exactly the first 30 valid case ids and is locked under
+collection id
+`3ee5284d843080914b11da1e0a9160a3469c40b1a7a58f7c33cd60a58033f861`.
+This establishes collection readiness only; the 180 event labels, detector
+measurements, provider runs, and blind review are not complete. The native OpenAI and Claude event-checkpoint adapters are implemented,
 including screenshot retry, Claude zoom, usage normalization, and visible
 failure recording. They have not made a paid request because the required API
 keys are absent. Until a new collection, labels, review, and provider execution

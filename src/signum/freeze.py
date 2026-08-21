@@ -694,6 +694,14 @@ def _validate_collection_evidence(
             f"held-out collection has {len(valid_case_ids)} valid candidates; {required} required"
         )
     selected = valid_case_ids[:required]
+    if summary.get("claim180_collection_complete") is not True:
+        raise EvaluationError("held-out candidate collection is not complete")
+    if summary.get("selection") != {
+        "mode": selection["mode"],
+        "required_valid_cases": required,
+        "selected_case_ids": selected,
+    }:
+        raise EvaluationError("held-out collection summary selection is invalid")
     if manifest_case_ids != selected:
         raise EvaluationError(
             "held-out manifest must use the first valid candidates in preregistered order"

@@ -58,6 +58,8 @@ class Claim180CollectionSummaryTests(unittest.TestCase):
                 summary["counts"],
             )
             self.assertFalse(summary["claim180_collection_complete"])
+            self.assertEqual("all_planned_cases_valid", summary["selection"]["mode"])
+            self.assertEqual([], summary["selection"]["selected_case_ids"])
             self.assertEqual(
                 ["valid", "invalid", "startup_failed"],
                 [row["collection_status"] for row in summary["cases"]],

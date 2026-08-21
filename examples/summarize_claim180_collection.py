@@ -140,6 +140,31 @@ def build_summary(
     unexpected = sorted(
         path.name for path in root.iterdir() if path.is_dir() and path.name not in case_ids
     )
+    selection = plan.get("collection_selection")
+    if selection is None:
+        required_valid_cases = len(case_ids)
+        selection_mode = "all_planned_cases_valid"
+    else:
+        if (
+            not isinstance(selection, dict)
+            or selection.get("mode") != "first_valid_in_plan_order"
+            or selection.get("candidate_count") != len(case_ids)
+            or not isinstance(selection.get("required_valid_cases"), int)
+        ):
+            raise RuntimeError("plan has an invalid collection_selection")
+        required_valid_cases = selection["required_valid_cases"]
+        selection_mode = selection["mode"]
+    valid_case_ids = [
+        row["case_id"] for row in cases if row["collection_status"] == "valid"
+    ]
+    collection_complete = (
+        len(valid_case_ids) >= required_valid_cases
+        and counts["missing"] == 0
+        and not unexpected
+    )
+    selected_case_ids = (
+        valid_case_ids[:required_valid_cases] if collection_complete else []
+    )
     payload: dict[str, Any] = {
         "schema_version": 1,
         "kind": "signum_claim180_collection_summary",
@@ -156,12 +181,12 @@ def build_summary(
             "sha256": sha256_file(preregistration_path),
         },
         "counts": counts,
-        "claim180_collection_complete": counts == {
-            "valid": len(case_ids),
-            "invalid": 0,
-            "startup_failed": 0,
-            "missing": 0,
+        "selection": {
+            "mode": selection_mode,
+            "required_valid_cases": required_valid_cases,
+            "selected_case_ids": selected_case_ids,
         },
+        "claim180_collection_complete": collection_complete,
         "unexpected_case_directories": unexpected,
         "cases": cases,
     }
