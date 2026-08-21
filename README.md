@@ -101,6 +101,8 @@ remaining cases are the same TestPages hover target. This is a disclosed
 ground-truth visibility deficit, not a detector result. The method-blind review
 packet id is
 `341033d585d5279c4286bac7251dfcca48a38b1c9cbd3ee836f341f444f66e5d`;
+its 360 images, coordinator mapping, packet, and reviewer templates are bound by
+review lock `d2a139ef087a903020bb868aa84189f2fd86558a9b4fe88ff41ad0e3a796f725`.
 two independent human reviews and adjudication are still required before the
 suite can be frozen or any comparative claim can be assessed.
 
@@ -405,6 +407,10 @@ python examples/build_ground_truth_review_packet.py `
   --v4-root benchmark-output/claim180-v4-heldout-captures `
   --output benchmark-output/claim180-v4-ground-truth-review `
   --seed claim180-v4-ground-truth-v1
+
+python examples/lock_ground_truth_review_packet.py `
+  --packet-root benchmark-output/claim180-v4-ground-truth-review `
+  --output benchmark-protocol/claim180-v4-review-packet-lock.json
 ```
 
 The repository now also contains the deterministic supplement candidate

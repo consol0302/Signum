@@ -311,6 +311,10 @@ confirmed, a separately preregistered supplement.
 
 The method-blind 180-item packet has id
 `341033d585d5279c4286bac7251dfcca48a38b1c9cbd3ee836f341f444f66e5d`.
+Review lock
+`d2a139ef087a903020bb868aa84189f2fd86558a9b4fe88ff41ad0e3a796f725`
+binds the packet, all 360 images, the coordinator-only mapping, and both
+reviewer templates without publishing their local paths.
 It contains no method output. Two distinct human reviewers and adjudication are
 still required. Native provider and same-budget method runs remain forbidden
 until that label review and the final suite freeze are complete.

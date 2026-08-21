@@ -23,6 +23,7 @@ def load_example(name: str):
 
 PACKET_MODULE = load_example("build_ground_truth_review_packet.py")
 COMPARE_MODULE = load_example("compare_ground_truth_reviews.py")
+LOCK_MODULE = load_example("lock_ground_truth_review_packet.py")
 
 
 class GroundTruthReviewTests(unittest.TestCase):
@@ -102,6 +103,11 @@ class GroundTruthReviewTests(unittest.TestCase):
                     self.assertEqual(
                         row[f"{prefix}_sha256"], PACKET_MODULE.sha256_file(path)
                     )
+            lock = LOCK_MODULE.build_lock(output_root)
+            self.assertEqual(packet["packet_id"], lock["packet_id"])
+            self.assertFalse(lock["method_outputs_included"])
+            self.assertEqual(360, lock["evidence"]["file_count"])
+            self.assertEqual(2, len(lock["reviewer_templates"]))
 
     def test_comparison_requires_complete_distinct_reviews_and_exposes_disagreement(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
