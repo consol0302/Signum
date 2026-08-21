@@ -30,6 +30,35 @@ class GatewayTests(unittest.TestCase):
             jpeg_quality=100,
         )
 
+    def test_default_stability_keeps_sequential_small_transitions_separate(self) -> None:
+        first = self.black.copy()
+        first[8:20, 8:20] = 255
+        second = first.copy()
+        second[36:48, 36:48] = 255
+        gateway = PerceptionGateway()
+
+        gateway.observe_frame(self.black, 0.0, goal="track fields", frame_index=0)
+        self.assertIsNone(
+            gateway.observe_frame(first, 0.6, goal="track fields", frame_index=1)
+        )
+        first_observation = gateway.observe_frame(
+            first, 0.7, goal="track fields", frame_index=2
+        )
+        self.assertIsNone(
+            gateway.observe_frame(second, 1.3, goal="track fields", frame_index=3)
+        )
+        second_observation = gateway.observe_frame(
+            second, 1.4, goal="track fields", frame_index=4
+        )
+
+        self.assertIsNotNone(first_observation)
+        self.assertIsNotNone(second_observation)
+        assert first_observation is not None
+        assert second_observation is not None
+        self.assertEqual((1, 2), (first_observation.event.sequence, second_observation.event.sequence))
+        self.assertEqual("change_stable", first_observation.event.reason)
+        self.assertEqual("change_stable", second_observation.event.reason)
+
     def test_transient_peak_is_preserved_for_semantic_interpretation(self) -> None:
         gateway = PerceptionGateway(self.config)
         gateway.observe_frame(self.black, 0.0, goal="notice a flash", frame_index=0)

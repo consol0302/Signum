@@ -250,3 +250,29 @@ UI, and 18 transient events. The composite inventory id is
 `ca24e78e5bfe081a3ecced64817d331f646759e4739a5d0f0d1eeda28494bde5`.
 Its status remains `mechanically_anchored_pending_human_review`; these counts
 are capacity and integrity evidence, not reviewed accuracy ground truth.
+
+The composite inventory was then used as a detector validation set before any
+semantic model run. With the previous two-stable-frame default, Signum detected
+122/180 mechanically anchored transitions (67.8%) versus 79/180 (43.9%) for
+uniform sampling at the same 435-observation budget. Misses were concentrated
+in small-UI, animation, hover/focus, and popup events.
+
+Three single-variable hypotheses were tested on the same validation set. A
+0.25-second cooldown increased observations from 435 to 463 but reduced Signum
+hits from 122 to 119. Reducing the local connected-component threshold from 12
+to six added 11 unmatched observations without recovering an event. Reducing
+the active timeout from five seconds to one made no difference. These changes
+were rejected.
+
+Using one stable frame instead of two increased Signum hits to 164/180 (91.1%)
+with 473 observations, while equal-budget uniform sampling reached 86/180
+(47.8%). Unmatched Signum observations decreased from 313 to 309 despite the
+larger budget. Category hits became 24/24 action-failure, 24/24 action-success,
+18/18 loading-completion, 15/15 scroll/navigation, 26/30 small-UI, 15/18
+animation/dynamic-UI, 13/15 cursor/focus, 12/18 popup/notification, and 17/18
+transient. This setting is now the development default.
+
+Because this composite suite was used to choose the detector setting, it is a
+validation set and cannot serve as the final held-out claim suite. The final
+claim requires a fresh preregistered collection after the detector and review
+rules are frozen.

@@ -16,7 +16,7 @@ class GatewayConfig:
     pixel_threshold: int = 18
     min_changed_fraction: float = 0.002
     min_local_component_pixels: int = 12
-    stable_frames: int = 2
+    stable_frames: int = 1
     min_event_interval_seconds: float = 0.5
     max_active_seconds: float = 5.0
     crop_margin: int = 12

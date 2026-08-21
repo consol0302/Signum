@@ -54,6 +54,14 @@ category distribution. Its inventory id is
 It remains mechanically anchored and pending human review, so comparative model
 runs have not started.
 
+As a development-only detector validation, the previous two-stable-frame
+default found 122/180 transitions while equal-budget uniform sampling found
+79/180. Changing only the default to one stable frame raised Signum to 164/180
+with 473 observations; uniform found 86/180 at that same budget. Cooldown,
+active-timeout, and smaller local-component experiments did not improve the
+tradeoff and were rejected. Because this suite was used to choose the setting,
+it is not the final held-out claim suite.
+
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 
 ## Install

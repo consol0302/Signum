@@ -68,7 +68,7 @@ def build_parser() -> argparse.ArgumentParser:
     observe.add_argument("--local-analysis-width", type=int, default=768)
     observe.add_argument("--min-local-component-pixels", type=int, default=12)
     observe.add_argument("--min-change-fraction", type=float, default=0.002)
-    observe.add_argument("--stable-frames", type=int, default=2)
+    observe.add_argument("--stable-frames", type=int, default=1)
     observe.add_argument("--min-event-interval", type=float, default=0.5)
     observe.add_argument("--max-active-seconds", type=float, default=5.0)
     evaluate = subparsers.add_parser(
@@ -89,7 +89,7 @@ def build_parser() -> argparse.ArgumentParser:
     evaluate.add_argument("--local-analysis-width", type=int, default=768)
     evaluate.add_argument("--min-local-component-pixels", type=int, default=12)
     evaluate.add_argument("--min-change-fraction", type=float, default=0.002)
-    evaluate.add_argument("--stable-frames", type=int, default=2)
+    evaluate.add_argument("--stable-frames", type=int, default=1)
     evaluate.add_argument("--min-event-interval", type=float, default=0.5)
     evaluate.add_argument("--max-active-seconds", type=float, default=5.0)
     score = subparsers.add_parser(
