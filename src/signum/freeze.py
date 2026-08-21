@@ -102,6 +102,13 @@ def preregister_heldout(
     collection_selection = _validate_collection_selection(
         plan.get("collection_selection"), len(case_ids), case_ids
     )
+    target_events = _validate_slot_target_events(
+        actions_manifest,
+        collection_selection,
+        plan.get("target_events"),
+        category_targets,
+        case_ids,
+    )
 
     destination = Path(output_path).resolve()
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -131,6 +138,8 @@ def preregister_heldout(
         }
     if collection_selection is not None:
         payload["collection_selection"] = collection_selection
+    if target_events is not None:
+        payload["target_events"] = target_events
     payload["preregistration_id"] = _fingerprint(
         {key: value for key, value in payload.items() if key != "created_at_utc"}
     )
@@ -637,6 +646,15 @@ def _verify_preregistration(path: Path) -> dict[str, Any]:
     )
     if lock.get("collection_selection") != collection_selection:
         raise EvaluationError("held-out collection selection lock does not match")
+    target_events = _validate_slot_target_events(
+        actions_manifest,
+        collection_selection,
+        plan.get("target_events"),
+        lock.get("category_targets"),
+        case_ids,
+    )
+    if lock.get("target_events") != target_events:
+        raise EvaluationError("held-out target event lock does not match")
     locked_actions = lock.get("actions_manifest")
     if actions_manifest is None:
         if locked_actions is not None:
@@ -953,6 +971,115 @@ def _validate_collection_evidence(
     }
 
 
+def _validate_slot_target_events(
+    actions_manifest: dict[str, Any] | None,
+    selection: dict[str, Any] | None,
+    raw: object,
+    category_targets: object,
+    case_ids: list[str],
+) -> list[dict[str, Any]] | None:
+    slot_mode = (
+        isinstance(selection, dict)
+        and selection.get("mode") == "first_valid_per_slot_in_plan_order"
+    )
+    if not slot_mode:
+        if raw is not None:
+            raise EvaluationError(
+                "held-out target_events require slot-based collection selection"
+            )
+        return None
+    if actions_manifest is None:
+        raise EvaluationError("slot-based held-out plans require an actions manifest")
+    if not isinstance(raw, list) or len(raw) != len(case_ids):
+        raise EvaluationError(
+            "slot-based held-out plans require one target event row per candidate"
+        )
+    if category_targets != CLAIM180_TARGETS:
+        raise EvaluationError("slot target events require the Claim 180 targets")
+    candidate_to_slot = {
+        candidate_id: slot["slot_id"]
+        for slot in selection["slots"]
+        for candidate_id in slot["candidate_ids"]
+    }
+    action_paths = actions_manifest.get("action_paths")
+    if not isinstance(action_paths, dict):
+        raise EvaluationError("held-out actions manifest has no validated action paths")
+    normalized = []
+    templates: dict[str, list[str]] = {}
+    for expected_case_id, row in zip(case_ids, raw, strict=True):
+        if not isinstance(row, dict):
+            raise EvaluationError("held-out target event rows must be objects")
+        case_id = _required_nonempty(row, "case_id", "held-out target event row")
+        slot_id = _required_nonempty(row, "slot_id", "held-out target event row")
+        if case_id != expected_case_id or candidate_to_slot.get(case_id) != slot_id:
+            raise EvaluationError(
+                "held-out target event rows must follow candidate and slot order"
+            )
+        action_path = action_paths.get(case_id)
+        if not isinstance(action_path, Path):
+            raise EvaluationError(f"held-out target actions are missing for {case_id!r}")
+        action_payload = _read_object(
+            action_path, f"held-out target action file {case_id!r}"
+        )
+        actions = action_payload.get("actions")
+        if not isinstance(actions, list):
+            raise EvaluationError(f"held-out action list is invalid for {case_id!r}")
+        action_index = {
+            action.get("id"): action
+            for action in actions
+            if isinstance(action, dict) and isinstance(action.get("id"), str)
+        }
+        events = row.get("events")
+        if not isinstance(events, list) or len(events) != 6:
+            raise EvaluationError(
+                "every slot candidate must bind exactly six target events"
+            )
+        event_ids = []
+        categories = []
+        normalized_events = []
+        for event in events:
+            if not isinstance(event, dict):
+                raise EvaluationError("held-out target events must be objects")
+            action_id = _required_nonempty(event, "action_id", "held-out target event")
+            category = _required_nonempty(event, "category", "held-out target event")
+            if category not in CLAIM180_TARGETS:
+                raise EvaluationError(f"unknown held-out target category {category!r}")
+            action = action_index.get(action_id)
+            if action is None:
+                raise EvaluationError(
+                    f"held-out target action {action_id!r} is missing for {case_id!r}"
+                )
+            failed = action.get("expected_outcome", "success") == "failure"
+            if failed is not (category == "action_failure"):
+                raise EvaluationError(
+                    "action_failure targets and failed action outcomes must match"
+                )
+            event_ids.append(action_id)
+            categories.append(category)
+            normalized_events.append(
+                {"action_id": action_id, "category": category}
+            )
+        if len(event_ids) != len(set(event_ids)):
+            raise EvaluationError("held-out target action ids must be unique per case")
+        previous = templates.setdefault(slot_id, categories)
+        if previous != categories:
+            raise EvaluationError(
+                "every candidate in a slot must use the same category template"
+            )
+        normalized.append(
+            {"case_id": case_id, "slot_id": slot_id, "events": normalized_events}
+        )
+    totals = {category: 0 for category in CLAIM180_TARGETS}
+    for categories in templates.values():
+        for category in categories:
+            totals[category] += 1
+    if totals != CLAIM180_TARGETS:
+        raise EvaluationError(
+            "held-out slot category templates must exactly match Claim 180"
+        )
+    return normalized
+
+
 def _validate_actions_manifest(
     plan_path: Path,
     raw_reference: object,
@@ -999,6 +1126,7 @@ def _validate_actions_manifest(
             "held-out actions manifest must contain one row per case id"
         )
     manifest_case_ids = []
+    action_paths = {}
     for row in rows:
         if not isinstance(row, dict):
             raise EvaluationError("held-out action manifest rows must be objects")
@@ -1020,6 +1148,7 @@ def _validate_actions_manifest(
         action = _read_object(action_path, f"held-out action file {case_id!r}")
         if action.get("schema_version") != 1 or action.get("case_id") != case_id:
             raise EvaluationError(f"invalid held-out action file for {case_id!r}")
+        action_paths[case_id] = action_path
     if manifest_case_ids != case_ids:
         raise EvaluationError(
             "held-out actions manifest case ids and order must match the plan"
@@ -1030,6 +1159,7 @@ def _validate_actions_manifest(
         "sha256": expected_hash,
         "collector_revision": collector_revision,
         "case_count": len(rows),
+        "action_paths": action_paths,
     }
 
 

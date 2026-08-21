@@ -111,11 +111,14 @@ For the final balanced suite, prefer
 `first_valid_per_slot_in_plan_order`. Define exactly 30 ordered slots with at
 least two ordered candidates per slot. Every candidate in a slot must bind the
 same six-event category template, and the 30 slot templates must sum exactly to
-the fixed 180-event distribution. Attempt every candidate once and retain every
-artifact. The selected case for each slot is its first independently valid
-candidate; candidates may never move between slots. The lock rejects missing,
-duplicated, reordered, or cross-slot candidate ids. This lets a broken public
-page be replaced without changing the preregistered category balance.
+the fixed 180-event distribution. `target_events` binds each category to an
+exact action id in the hashed action file; failed outcomes and
+`action_failure` labels must match. Attempt every candidate once and retain
+every artifact. The selected case for each slot is its first independently
+valid candidate; candidates may never move between slots. The lock rejects
+missing, duplicated, reordered, or cross-slot candidate ids, target actions,
+and category templates. This lets a broken public page be replaced without
+changing the preregistered category balance.
 
 After every candidate is attempted once, build the collection summary. The
 held-out manifest must contain exactly the cases chosen by the frozen global or

@@ -11,6 +11,7 @@ from signum.evaluation import CLAIM180_TARGETS, EvaluationError
 from signum.freeze import (
     _validate_collection_evidence,
     _validate_collection_selection,
+    _validate_slot_target_events,
     freeze_manifest,
     preregister_heldout,
 )
@@ -425,6 +426,101 @@ class ClaimAssessmentTests(unittest.TestCase):
         duplicate["slots"][1]["candidate_ids"][0] = case_ids[0]
         with self.assertRaisesRegex(EvaluationError, "exactly once"):
             _validate_collection_selection(duplicate, 60, case_ids)
+
+    def test_slot_targets_bind_six_actions_and_exact_claim180_distribution(self) -> None:
+        expanded_categories = [
+            category
+            for category, count in CLAIM180_TARGETS.items()
+            for _ in range(count)
+        ]
+        slots = []
+        case_ids = []
+        target_rows = []
+        action_paths = {}
+        for slot_index in range(30):
+            slot_id = f"slot-{slot_index:02d}"
+            template = expanded_categories[slot_index * 6 : slot_index * 6 + 6]
+            candidates = []
+            for variant in ("primary", "alternate"):
+                case_id = f"{slot_id}-{variant}"
+                candidates.append(case_id)
+                case_ids.append(case_id)
+                actions = []
+                events = []
+                for event_index, category in enumerate(template):
+                    action_id = f"target-{event_index}"
+                    actions.append(
+                        {
+                            "id": action_id,
+                            "expected_outcome": (
+                                "failure"
+                                if category == "action_failure"
+                                else "success"
+                            ),
+                        }
+                    )
+                    events.append(
+                        {"action_id": action_id, "category": category}
+                    )
+                action_path = self.root / f"{case_id}.json"
+                action_path.write_text(
+                    json.dumps(
+                        {
+                            "schema_version": 1,
+                            "case_id": case_id,
+                            "actions": actions,
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+                action_paths[case_id] = action_path
+                target_rows.append(
+                    {"case_id": case_id, "slot_id": slot_id, "events": events}
+                )
+            slots.append({"slot_id": slot_id, "candidate_ids": candidates})
+        selection = _validate_collection_selection(
+            {
+                "mode": "first_valid_per_slot_in_plan_order",
+                "validity_source": "independent_capture_verification",
+                "retain_all_attempts": True,
+                "model_outputs_forbidden_before_selection": True,
+                "required_valid_cases": 30,
+                "candidate_count": 60,
+                "slots": slots,
+            },
+            60,
+            case_ids,
+        )
+
+        validated = _validate_slot_target_events(
+            {"action_paths": action_paths},
+            selection,
+            target_rows,
+            CLAIM180_TARGETS,
+            case_ids,
+        )
+
+        self.assertEqual(target_rows, validated)
+        changed_template = json.loads(json.dumps(target_rows))
+        changed_template[1]["events"][0]["category"] = "transient_event"
+        with self.assertRaisesRegex(EvaluationError, "same category template"):
+            _validate_slot_target_events(
+                {"action_paths": action_paths},
+                selection,
+                changed_template,
+                CLAIM180_TARGETS,
+                case_ids,
+            )
+        failed_action_mismatch = json.loads(json.dumps(target_rows))
+        failed_action_mismatch[0]["events"][0]["category"] = "action_failure"
+        with self.assertRaisesRegex(EvaluationError, "failed action outcomes"):
+            _validate_slot_target_events(
+                {"action_paths": action_paths},
+                selection,
+                failed_action_mismatch,
+                CLAIM180_TARGETS,
+                case_ids,
+            )
 
     def test_claim_is_blocked_when_a_run_artifact_changes(self) -> None:
         manifest, events, preregistration = self._claim_manifest()
