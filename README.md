@@ -79,8 +79,12 @@ domain/template combinations without running Signum or any provider model;
 17/17 captures passed independent integrity, timing, action, and target-frame
 checks. This validates collection mechanics only. The collector revision is
 `b6025b84d4498c682a76273e8540c63032d8e83e` and the plan-builder revision is
-`67c821dc38bc07e38816a5f39030a607222a0f83`. Final recording remains forbidden
-until the generated plan and its preregistration lock are pushed.
+`67c821dc38bc07e38816a5f39030a607222a0f83`. The plan and pre-collection lock
+are now public. The reproducible preregistration id is
+`02912857cf4064f23311ba722c546c3d6297658afb189fecb2e7e76fd531fc02`.
+The one-shot 60-candidate collection may begin only from this point; no model
+output may be produced until all attempts are independently verified and the
+per-slot selection is fixed.
 
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 
@@ -353,6 +357,9 @@ python examples/build_claim180_v4_plan.py `
   --output benchmark-protocol/claim180-plan-v4.json `
   --protocol-revision 67c821dc38bc07e38816a5f39030a607222a0f83 `
   --check
+
+signum preregister-heldout benchmark-protocol/claim180-plan-v4.json `
+  --output benchmark-protocol/claim180-preregistration-v4.json
 ```
 
 The repository now also contains the deterministic supplement candidate

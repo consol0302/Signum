@@ -13,6 +13,16 @@ validation evidence and must not be rewritten or relabeled as final held-out
 evidence. A new authoritative pre-collection lock is required for the final
 claim suite.
 
+That replacement is V4. Its public plan contains 60 candidates in 30 balanced
+two-candidate slots across three fresh domains. It binds six action targets per
+candidate and the exact fixed distribution below. The collector revision is
+`b6025b84d4498c682a76273e8540c63032d8e83e`, the plan-builder revision is
+`67c821dc38bc07e38816a5f39030a607222a0f83`, and the preregistration id is
+`02912857cf4064f23311ba722c546c3d6297658afb189fecb2e7e76fd531fc02`.
+The plan, all 60 action files, their manifest, and this lock were pushed before
+the first final capture. Reconnaissance artifacts are development-only and are
+not candidates in the final collection.
+
 ## Fixed distribution
 
 | Category | Eligible independent transitions |

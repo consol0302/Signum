@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import hashlib
 import importlib.util
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
-from signum.freeze import preregister_heldout
+from signum.freeze import _verify_preregistration, preregister_heldout
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,6 +33,33 @@ PLAN = load_module(
 
 
 class Claim180V4PlanTests(unittest.TestCase):
+    def test_published_preregistration_is_the_reproducible_plan_lock(self) -> None:
+        plan_path = ROOT / "benchmark-protocol" / "claim180-plan-v4.json"
+        published_path = (
+            ROOT / "benchmark-protocol" / "claim180-preregistration-v4.json"
+        )
+        published = json.loads(published_path.read_text(encoding="utf-8"))
+        verified = _verify_preregistration(published_path)
+        self.assertEqual(published, verified)
+        self.assertEqual(plan_path.stat().st_size, published["plan_bytes"])
+        self.assertEqual(
+            hashlib.sha256(plan_path.read_bytes()).hexdigest(),
+            published["plan_sha256"],
+        )
+        expected_id = hashlib.sha256(
+            json.dumps(
+                {
+                    key: value
+                    for key, value in published.items()
+                    if key not in {"created_at_utc", "preregistration_id"}
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+            ).encode("utf-8")
+        ).hexdigest()
+        self.assertEqual(expected_id, published["preregistration_id"])
+
     def test_published_plan_matches_generators_and_is_preregisterable(self) -> None:
         sources = ROOT / "benchmark-protocol" / "claim180-v4-candidate-sources.json"
         actions = ROOT / "benchmark-protocol" / "actions-v4"
