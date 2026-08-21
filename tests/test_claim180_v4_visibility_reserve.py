@@ -7,12 +7,21 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MODULE_PATH = ROOT / "examples" / "build_claim180_v4_visibility_reserve.py"
-SPEC = importlib.util.spec_from_file_location("build_visibility_reserve", MODULE_PATH)
-if SPEC is None or SPEC.loader is None:
-    raise RuntimeError(f"could not load {MODULE_PATH}")
-MODULE = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(MODULE)
+
+
+def load_example(name: str):
+    path = ROOT / "examples" / name
+    spec = importlib.util.spec_from_file_location(path.stem, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"could not load {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+MODULE = load_example("build_claim180_v4_visibility_reserve.py")
+PLAN_MODULE = load_example("build_claim180_v4_visibility_reserve_plan.py")
+PREREGISTER_MODULE = load_example("preregister_claim180_v4_visibility_reserve.py")
 
 
 class Claim180V4VisibilityReserveTests(unittest.TestCase):
@@ -50,6 +59,53 @@ class Claim180V4VisibilityReserveTests(unittest.TestCase):
                 [{"action_id": target["events"][0]["action_id"], "category": "cursor_hover_focus"}],
                 target["events"],
             )
+
+    def test_plan_and_preregistration_freeze_conditional_activation(self) -> None:
+        plan_path = (
+            ROOT
+            / "benchmark-protocol"
+            / "claim180-v4-visibility-reserve-plan.json"
+        )
+        preregistration_path = (
+            ROOT
+            / "benchmark-protocol"
+            / "claim180-v4-visibility-reserve-preregistration.json"
+        )
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        preregistration = json.loads(
+            preregistration_path.read_text(encoding="utf-8")
+        )
+        rebuilt = PLAN_MODULE.build_plan(
+            ROOT / "benchmark-protocol", plan["protocol_revision"]
+        )
+        self.assertEqual(plan, rebuilt)
+        self.assertEqual(2, plan["activation"]["reviewer_count"])
+        self.assertTrue(plan["activation"]["adjudication_required"])
+        self.assertTrue(
+            plan["activation"]["reserve_use_forbidden_before_confirmation"]
+        )
+        self.assertTrue(
+            plan["activation"]["method_outputs_forbidden_before_activation"]
+        )
+        self.assertFalse(
+            plan["anchor_policy"]["exact_before_after_png_identity_allowed"]
+        )
+        self.assertEqual(
+            plan["activation"]["required_v4_event_keys"],
+            preregistration["activation"]["required_v4_event_keys"],
+        )
+        rebuilt_lock = PREREGISTER_MODULE.preregister(plan_path)
+        for key, value in preregistration.items():
+            if key not in {"created_at_utc", "preregistration_id"}:
+                self.assertEqual(value, rebuilt_lock[key])
+        expected_id = PREREGISTER_MODULE.fingerprint(
+            {
+                key: value
+                for key, value in preregistration.items()
+                if key not in {"created_at_utc", "preregistration_id"}
+            }
+        )
+        self.assertEqual(expected_id, preregistration["preregistration_id"])
 
 
 if __name__ == "__main__":

@@ -106,6 +106,16 @@ review lock `d2a139ef087a903020bb868aa84189f2fd86558a9b4fe88ff41ad0e3a796f725`.
 two independent human reviews and adjudication are still required before the
 suite can be frozen or any comparative claim can be assessed.
 
+A conditional eight-candidate visibility reserve is also published, but no
+reserve capture can replace a V4 event by default. It has two ordered slots of
+four fresh post-lock candidates and targets only `cursor_hover_focus`. Its
+preregistration id is
+`6372f02eb8094223ce5325793e33bd3769517ca57c26ee135c1d9568933cf00a`.
+Activation requires both independent reviewers and adjudication to mark the
+two named TestPages transitions invisible. The reserve remains ineligible if
+that condition is not met, and method output remains forbidden before its
+selection.
+
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 
 ## Install

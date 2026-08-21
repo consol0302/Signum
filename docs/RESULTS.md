@@ -318,3 +318,13 @@ reviewer templates without publishing their local paths.
 It contains no method output. Two distinct human reviewers and adjudication are
 still required. Native provider and same-budget method runs remain forbidden
 until that label review and the final suite freeze are complete.
+
+To avoid an unplanned post-review substitution, an eight-candidate conditional
+reserve was published before any reserve capture. It contains two ordered
+four-candidate slots for the exact two `cursor_hover_focus` deficits and uses
+fresh case ids. The reserve may activate only if both independent reviewers
+and adjudication mark the named V4 transitions invisible. Its preregistration
+id is
+`6372f02eb8094223ce5325793e33bd3769517ca57c26ee135c1d9568933cf00a`.
+This reserve is collection insurance, not evidence that either event has
+already failed human review.

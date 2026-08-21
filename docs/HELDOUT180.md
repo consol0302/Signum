@@ -154,6 +154,14 @@ hand-reordered selections, an insufficient number of valid candidates, or a
 summary tied to a different preregistration. This mechanism is for collection
 reliability only; it cannot use detector or provider results for selection.
 
+If a method-blind label review exposes a fixed category deficit, publish a
+conditional reserve plan and acquisition lock before collecting reserve
+evidence. Bind the exact rejected event keys, review packet, reviewer count,
+adjudication requirement, category deficit, candidate order, and activation
+rule. Reserve captures remain ineligible unless the frozen review condition is
+met. Never activate a reserve because its detector or provider result is more
+favorable.
+
 ## Execute and review
 
 Run every compared system on every eligible frozen event under the plan's
