@@ -1,0 +1,36 @@
+{
+  "audit_id": "0f8e982e0828ec214eb9e4567d6750ffcd3f1881081a9560b29332ea09530e77",
+  "collection_id": "22253704d30b5ba44437ef3108750b690e0f80c4473cea506443ba0e2d7c60c4",
+  "human_activation_confirmed": false,
+  "kind": "signum_claim180_v4_visibility_reserve_anchor_audit",
+  "mechanical_anchor_gate_passed": true,
+  "method_outputs_seen": false,
+  "plan_sha256": "d07b31bcb67c07f68094f3ce6faa36cb32d0ddb939629fd89ef59dbf9483f145",
+  "post_action_settle_seconds": 0.3,
+  "rows": [
+    {
+      "action_id": "22-hover-feedback-button",
+      "after_sequence": 248,
+      "after_sha256": "8ad3856dca6d47d64458b8ebb73d2be5f85d7396d47078048722d361c933a622",
+      "before_sequence": 242,
+      "before_sha256": "c64e36458e26f042bdff0e974482b59e4663f18e9f66cd95e316dfbe63fb789b",
+      "case_id": "v4r2-01a-qah",
+      "category": "cursor_hover_focus",
+      "crossed_next_action": false,
+      "identical": false
+    },
+    {
+      "action_id": "22-hover-feedback-button",
+      "after_sequence": 248,
+      "after_sha256": "8ad3856dca6d47d64458b8ebb73d2be5f85d7396d47078048722d361c933a622",
+      "before_sequence": 242,
+      "before_sha256": "c64e36458e26f042bdff0e974482b59e4663f18e9f66cd95e316dfbe63fb789b",
+      "case_id": "v4r2-02a-qah",
+      "category": "cursor_hover_focus",
+      "crossed_next_action": false,
+      "identical": false
+    }
+  ],
+  "schema_version": 1,
+  "summary_sha256": "bb4e662c5638a1704a4036cf5de260cecac06dfb19879574dfe28d017d191509"
+}

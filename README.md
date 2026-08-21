@@ -122,6 +122,12 @@ event and has collection id
 `14f15891168648938ae6bcd60e9069c650cca30e0d152f4a640937cb6c5cf4e9`.
 Those case ids will not be retried. A second-round pool uses new case ids and
 binds the complete failed first-round summary before it can be preregistered.
+Reserve V2 then completed with 8/8 independently valid captures and collection
+id `22253704d30b5ba44437ef3108750b690e0f80c4473cea506443ba0e2d7c60c4`.
+Both frozen first candidates have non-identical 0.3-second before/after pixels
+without crossing a following action. Mechanical anchor audit
+`0f8e982e0828ec214eb9e4567d6750ffcd3f1881081a9560b29332ea09530e77`
+passes, but human activation remains false until the V4 blind review finishes.
 
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 

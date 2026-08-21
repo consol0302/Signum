@@ -336,3 +336,16 @@ invalid, eight startup-failed, and zero missing attempts. Incomplete collection
 id `14f15891168648938ae6bcd60e9069c650cca30e0d152f4a640937cb6c5cf4e9`
 is failure evidence, not a usable reserve. The same case ids are not retried;
 a second-round pool uses new ids and binds this result.
+
+Reserve V2 was preregistered under id
+`83ca482fdfe2816b625bed6ea38792621be353d5d95c64d9012caa6f7dceb266`
+and collected only after that lock was pushed. All eight new cases passed both
+the collector and independent verification. The frozen two-slot first-valid
+selection is complete with collection id
+`22253704d30b5ba44437ef3108750b690e0f80c4473cea506443ba0e2d7c60c4`.
+Both selected 0.3-second before/after pairs differ and neither crosses the next
+action. Anchor audit
+`0f8e982e0828ec214eb9e4567d6750ffcd3f1881081a9560b29332ea09530e77`
+passes mechanically. `human_activation_confirmed` remains false, so these two
+events are still conditional reserve evidence rather than members of the final
+suite.

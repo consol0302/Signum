@@ -97,6 +97,15 @@ class Claim180V4VisibilityReserveTests(unittest.TestCase):
         )
         self.assertEqual(plan["case_ids"], preregistration["case_ids"])
         self.assertEqual(2, plan["reserve_round"])
+        anchor_audit = json.loads(
+            (ROOT / "benchmark-protocol" / "claim180-v4-visibility-reserve-anchor-audit-v2.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(anchor_audit["mechanical_anchor_gate_passed"])
+        self.assertFalse(anchor_audit["human_activation_confirmed"])
+        self.assertFalse(anchor_audit["method_outputs_seen"])
+        self.assertTrue(all(not row["identical"] for row in anchor_audit["rows"]))
 
     def test_plan_and_preregistration_freeze_conditional_activation(self) -> None:
         plan_path = (
