@@ -1,0 +1,52 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the viewport moves down",
+      "id": "scroll-one",
+      "required": true,
+      "type": "scroll",
+      "y": 600
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "additional content enters the viewport",
+      "id": "scroll-two",
+      "required": true,
+      "type": "scroll",
+      "y": 900
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "success",
+      "expected_result": "new infinite-scroll content is appended",
+      "id": "scroll-three",
+      "required": true,
+      "type": "scroll",
+      "y": 1200
+    },
+    {
+      "at_seconds": 8,
+      "expected_outcome": "success",
+      "expected_result": "the viewport moves upward",
+      "id": "scroll-up",
+      "required": true,
+      "type": "scroll",
+      "y": -700
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-14-infinite-scroll",
+  "duration_seconds": 12,
+  "goal": "Scroll through newly appended content and verify the viewport position changes.",
+  "schema_version": 1,
+  "source_url": "https://the-internet.herokuapp.com/infinite_scroll"
+}

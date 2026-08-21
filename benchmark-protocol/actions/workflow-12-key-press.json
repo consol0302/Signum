@@ -1,0 +1,68 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the page reports A",
+      "id": "press-a",
+      "key": "A",
+      "locator": {
+        "by": "css",
+        "value": "body"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "the page reports ESCAPE",
+      "id": "press-escape",
+      "key": "Escape",
+      "locator": {
+        "by": "css",
+        "value": "body"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "success",
+      "expected_result": "the page reports DOWN",
+      "id": "press-arrow-down",
+      "key": "ArrowDown",
+      "locator": {
+        "by": "css",
+        "value": "body"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 7,
+      "expected_outcome": "success",
+      "expected_result": "the page reports SHIFT",
+      "id": "press-shift",
+      "key": "Shift",
+      "locator": {
+        "by": "css",
+        "value": "body"
+      },
+      "required": true,
+      "type": "press"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-12-key-press",
+  "duration_seconds": 12,
+  "goal": "Send several keys and identify the page's latest key result.",
+  "schema_version": 1,
+  "source_url": "https://the-internet.herokuapp.com/key_presses"
+}

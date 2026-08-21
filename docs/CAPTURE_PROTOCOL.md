@@ -39,6 +39,23 @@ workflow action file must be committed and pushed. Do not repair locators after
 viewing a held-out recording; a broken action remains a recorded failure or
 the workflow becomes ineligible under the preregistered rules.
 
+Claim 180's 30 action files are generated deterministically from the public
+workflow plan and locked by a hash manifest:
+
+```powershell
+python examples/build_claim180_actions.py `
+  --plan benchmark-protocol/claim180-plan.json `
+  --output benchmark-protocol/actions `
+  --manifest benchmark-protocol/claim180-actions-manifest.json `
+  --collector-revision 0a51dce0a7d1768456065fbe4cc8c5189edbff34 `
+  --check
+```
+
+The check fails if a generated file is missing, edited, added, or differs from
+the generator; it also recomputes every file's byte count and SHA-256. The
+revision identifies the exact development-validated collector. A later
+collector change requires a new manifest and preregistration before collection.
+
 ## Recorded evidence
 
 The capture directory contains:

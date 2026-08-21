@@ -1,0 +1,69 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the datalist field contains New York",
+      "id": "fill-datalist",
+      "locator": {
+        "by": "css",
+        "value": "input[name=my-datalist]"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "New York"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "the first select option is chosen",
+      "id": "select-one",
+      "locator": {
+        "by": "css",
+        "value": "select[name=my-select]"
+      },
+      "required": true,
+      "type": "select",
+      "value": "1"
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "failure",
+      "expected_result": "free text is visible but no datalist suggestion matches",
+      "id": "fill-datalist-missing",
+      "locator": {
+        "by": "css",
+        "value": "input[name=my-datalist]"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "Not in list"
+    },
+    {
+      "at_seconds": 8,
+      "expected_outcome": "success",
+      "expected_result": "the form submission result opens",
+      "id": "submit-form",
+      "locator": {
+        "by": "role",
+        "exact": true,
+        "name": "Submit",
+        "role": "button"
+      },
+      "required": true,
+      "type": "click"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-20-selenium-datalist",
+  "duration_seconds": 12,
+  "goal": "Use the datalist and select controls, then verify the submitted state.",
+  "schema_version": 1,
+  "source_url": "https://www.selenium.dev/selenium/web/web-form.html"
+}

@@ -1,0 +1,86 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the list shows names matching A",
+      "id": "filter-a",
+      "locator": {
+        "by": "css",
+        "frame": "iframe#iframeResult",
+        "value": "#myInput"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "A"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "the list narrows to names matching Al",
+      "id": "filter-al",
+      "locator": {
+        "by": "css",
+        "frame": "iframe#iframeResult",
+        "value": "#myInput"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "Al"
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "failure",
+      "expected_result": "no list item remains visible",
+      "id": "filter-no-match",
+      "locator": {
+        "by": "css",
+        "frame": "iframe#iframeResult",
+        "value": "#myInput"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "NoSuchName"
+    },
+    {
+      "at_seconds": 7,
+      "expected_outcome": "success",
+      "expected_result": "the full list is visible again",
+      "id": "clear-filter",
+      "locator": {
+        "by": "css",
+        "frame": "iframe#iframeResult",
+        "value": "#myInput"
+      },
+      "required": true,
+      "type": "fill",
+      "value": ""
+    },
+    {
+      "at_seconds": 9,
+      "expected_outcome": "success",
+      "expected_result": "the list shows names matching B",
+      "id": "filter-b",
+      "locator": {
+        "by": "css",
+        "frame": "iframe#iframeResult",
+        "value": "#myInput"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "B"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-30-w3-filter-list",
+  "duration_seconds": 12,
+  "goal": "Filter the example list with matching and non-matching text and verify the results.",
+  "schema_version": 1,
+  "source_url": "https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_filter_list"
+}

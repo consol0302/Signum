@@ -1,0 +1,119 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the input contains active lit item",
+      "id": "add-first",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "active lit item"
+    },
+    {
+      "at_seconds": 2,
+      "expected_outcome": "success",
+      "expected_result": "active lit item appears",
+      "id": "commit-first",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "the input contains completed lit item",
+      "id": "add-second",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "completed lit item"
+    },
+    {
+      "at_seconds": 4,
+      "expected_outcome": "success",
+      "expected_result": "completed lit item appears",
+      "id": "commit-second",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "success",
+      "expected_result": "the second item is completed",
+      "id": "complete-second",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li:nth-child(2) .toggle"
+      },
+      "required": true,
+      "type": "check"
+    },
+    {
+      "at_seconds": 7,
+      "expected_outcome": "success",
+      "expected_result": "the active filter hides the completed item",
+      "id": "show-active",
+      "locator": {
+        "by": "text",
+        "exact": true,
+        "value": "Active"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 8.5,
+      "expected_outcome": "success",
+      "expected_result": "the completed filter shows the completed item",
+      "id": "show-completed",
+      "locator": {
+        "by": "text",
+        "exact": true,
+        "value": "Completed"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 10,
+      "expected_outcome": "success",
+      "expected_result": "both items are visible again",
+      "id": "show-all",
+      "locator": {
+        "by": "text",
+        "exact": true,
+        "value": "All"
+      },
+      "required": true,
+      "type": "click"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-25-todomvc-lit-filter",
+  "duration_seconds": 12,
+  "goal": "Create todos and navigate among all, active, and completed filters.",
+  "schema_version": 1,
+  "source_url": "https://todomvc.com/examples/lit/dist/"
+}

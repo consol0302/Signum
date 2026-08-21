@@ -39,6 +39,9 @@ copies are ineligible.
    push that exact collector implementation and all 30 action JSON files before
    opening a preregistered workflow. Follow
    [Timestamped browser capture](CAPTURE_PROTOCOL.md).
+8. Run the action generator in `--check` mode and publish
+   `claim180-actions-manifest.json`, which records the validated collector
+   revision and the byte count and SHA-256 of every action file.
 
 The tool hashes the plan. It rejects a placeholder revision, a non-HTTPS
 repository, fewer than 30 unique case ids, changed category targets, or missing

@@ -1,0 +1,105 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the input contains editable item",
+      "id": "add-item",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "editable item"
+    },
+    {
+      "at_seconds": 2,
+      "expected_outcome": "success",
+      "expected_result": "editable item appears",
+      "id": "commit-item",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 3.5,
+      "expected_outcome": "success",
+      "expected_result": "the todo enters edit mode",
+      "id": "open-edit",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li label"
+      },
+      "required": true,
+      "type": "double_click"
+    },
+    {
+      "at_seconds": 4.5,
+      "expected_outcome": "success",
+      "expected_result": "the edit field contains edited item",
+      "id": "replace-edit",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li .edit"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "edited item"
+    },
+    {
+      "at_seconds": 5.5,
+      "expected_outcome": "success",
+      "expected_result": "edited item is committed",
+      "id": "commit-edit",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li .edit"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 7,
+      "expected_outcome": "success",
+      "expected_result": "the todo enters edit mode again",
+      "id": "open-cancel-edit",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li label"
+      },
+      "required": true,
+      "type": "double_click"
+    },
+    {
+      "at_seconds": 8,
+      "expected_outcome": "failure",
+      "expected_result": "the visible label remains edited item",
+      "id": "cancel-edit",
+      "key": "Escape",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li .edit"
+      },
+      "required": true,
+      "type": "press"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-23-todomvc-svelte-edit",
+  "duration_seconds": 12,
+  "goal": "Edit a todo label and verify the committed and cancelled edit states.",
+  "schema_version": 1,
+  "source_url": "https://todomvc.com/examples/svelte/dist/"
+}

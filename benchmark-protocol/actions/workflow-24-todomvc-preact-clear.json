@@ -1,0 +1,105 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the input contains clear me",
+      "id": "add-first",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "clear me"
+    },
+    {
+      "at_seconds": 2,
+      "expected_outcome": "success",
+      "expected_result": "clear me appears",
+      "id": "commit-first",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "the input contains keep me",
+      "id": "add-second",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "keep me"
+    },
+    {
+      "at_seconds": 4,
+      "expected_outcome": "success",
+      "expected_result": "keep me appears",
+      "id": "commit-second",
+      "key": "Enter",
+      "locator": {
+        "by": "css",
+        "value": ".new-todo"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "success",
+      "expected_result": "clear me is completed",
+      "id": "complete-first",
+      "locator": {
+        "by": "css",
+        "value": ".todo-list li:first-child .toggle"
+      },
+      "required": true,
+      "type": "check"
+    },
+    {
+      "at_seconds": 7,
+      "expected_outcome": "success",
+      "expected_result": "the completed item is removed",
+      "id": "clear-completed",
+      "locator": {
+        "by": "css",
+        "value": ".clear-completed"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 9,
+      "expected_outcome": "failure",
+      "expected_result": "no additional item is removed",
+      "id": "clear-again",
+      "locator": {
+        "by": "css",
+        "value": ".clear-completed"
+      },
+      "required": false,
+      "timeout_ms": 600,
+      "type": "click"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-24-todomvc-preact-clear",
+  "duration_seconds": 12,
+  "goal": "Complete and clear todos while verifying the remaining list.",
+  "schema_version": 1,
+  "source_url": "https://todomvc.com/examples/preact/dist/"
+}

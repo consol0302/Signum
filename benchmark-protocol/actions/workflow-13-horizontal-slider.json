@@ -1,0 +1,81 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the displayed slider value increases",
+      "id": "slider-right-one",
+      "key": "ArrowRight",
+      "locator": {
+        "by": "css",
+        "value": "input[type=range]"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 2,
+      "expected_outcome": "success",
+      "expected_result": "the displayed slider value increases again",
+      "id": "slider-right-two",
+      "key": "ArrowRight",
+      "locator": {
+        "by": "css",
+        "value": "input[type=range]"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 4,
+      "expected_outcome": "success",
+      "expected_result": "the displayed slider value decreases",
+      "id": "slider-left",
+      "key": "ArrowLeft",
+      "locator": {
+        "by": "css",
+        "value": "input[type=range]"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 6,
+      "expected_outcome": "failure",
+      "expected_result": "a letter key leaves the slider value unchanged",
+      "id": "slider-letter",
+      "key": "A",
+      "locator": {
+        "by": "css",
+        "value": "input[type=range]"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 8,
+      "expected_outcome": "success",
+      "expected_result": "the slider reaches its maximum value",
+      "id": "slider-end",
+      "key": "End",
+      "locator": {
+        "by": "css",
+        "value": "input[type=range]"
+      },
+      "required": true,
+      "type": "press"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-13-horizontal-slider",
+  "duration_seconds": 12,
+  "goal": "Move the slider to a requested value and verify the displayed number.",
+  "schema_version": 1,
+  "source_url": "https://the-internet.herokuapp.com/horizontal_slider"
+}

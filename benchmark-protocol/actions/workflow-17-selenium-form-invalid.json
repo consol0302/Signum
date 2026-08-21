@@ -1,0 +1,83 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "failure",
+      "expected_result": "the disabled field remains unchanged",
+      "id": "fill-disabled",
+      "locator": {
+        "by": "css",
+        "value": "input[name=my-disabled]"
+      },
+      "required": false,
+      "timeout_ms": 600,
+      "type": "fill",
+      "value": "rejected"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "failure",
+      "expected_result": "the readonly field remains unchanged",
+      "id": "fill-readonly",
+      "locator": {
+        "by": "css",
+        "value": "input[name=my-readonly]"
+      },
+      "required": false,
+      "timeout_ms": 600,
+      "type": "fill",
+      "value": "rejected"
+    },
+    {
+      "at_seconds": 5,
+      "expected_outcome": "success",
+      "expected_result": "the readonly field receives focus without changing value",
+      "id": "focus-readonly",
+      "locator": {
+        "by": "css",
+        "value": "input[name=my-readonly]"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 6,
+      "expected_outcome": "failure",
+      "expected_result": "the readonly value remains unchanged",
+      "id": "press-readonly",
+      "key": "A",
+      "locator": {
+        "by": "css",
+        "value": "input[name=my-readonly]"
+      },
+      "required": true,
+      "type": "press"
+    },
+    {
+      "at_seconds": 8,
+      "expected_outcome": "success",
+      "expected_result": "the submitted form opens without rejected edits",
+      "id": "submit-unchanged",
+      "locator": {
+        "by": "role",
+        "exact": true,
+        "name": "Submit",
+        "role": "button"
+      },
+      "required": true,
+      "type": "click"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-17-selenium-form-invalid",
+  "duration_seconds": 12,
+  "goal": "Exercise disabled and readonly controls and verify rejected changes.",
+  "schema_version": 1,
+  "source_url": "https://www.selenium.dev/selenium/web/web-form.html"
+}

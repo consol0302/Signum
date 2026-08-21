@@ -1,0 +1,82 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the invalid username is visible",
+      "id": "fill-invalid-username",
+      "locator": {
+        "by": "css",
+        "value": "#username"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "invalid-user"
+    },
+    {
+      "at_seconds": 2,
+      "expected_outcome": "success",
+      "expected_result": "the password field is filled",
+      "id": "fill-invalid-password",
+      "locator": {
+        "by": "css",
+        "value": "#password"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "invalid-password"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "failure",
+      "expected_result": "access is rejected and an error notification appears",
+      "id": "submit-invalid-login",
+      "locator": {
+        "by": "role",
+        "exact": true,
+        "name": "Login",
+        "role": "button"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 3.2,
+      "expected_outcome": "success",
+      "expected_result": "the login error is visible",
+      "id": "wait-login-error",
+      "locator": {
+        "by": "css",
+        "value": "#flash.error"
+      },
+      "required": true,
+      "state": "visible",
+      "timeout_ms": 4000,
+      "type": "wait_for"
+    },
+    {
+      "at_seconds": 7,
+      "expected_outcome": "success",
+      "expected_result": "the error notification is dismissed",
+      "id": "dismiss-error",
+      "locator": {
+        "by": "css",
+        "value": "#flash a.close"
+      },
+      "required": true,
+      "type": "click"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-08-auth-rejected",
+  "duration_seconds": 12,
+  "goal": "Attempt an invalid sign-in and verify that access is rejected.",
+  "schema_version": 1,
+  "source_url": "https://the-internet.herokuapp.com/login"
+}

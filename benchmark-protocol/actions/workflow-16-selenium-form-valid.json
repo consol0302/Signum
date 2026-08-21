@@ -1,0 +1,97 @@
+{
+  "actions": [
+    {
+      "at_seconds": 1,
+      "expected_outcome": "success",
+      "expected_result": "the text field contains Signum valid form",
+      "id": "fill-text",
+      "locator": {
+        "by": "css",
+        "value": "input[name=my-text]"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "Signum valid form"
+    },
+    {
+      "at_seconds": 2,
+      "expected_outcome": "success",
+      "expected_result": "the password field is filled",
+      "id": "fill-password",
+      "locator": {
+        "by": "css",
+        "value": "input[name=my-password]"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "public-test-value"
+    },
+    {
+      "at_seconds": 3,
+      "expected_outcome": "success",
+      "expected_result": "the textarea contains timestamped capture",
+      "id": "fill-textarea",
+      "locator": {
+        "by": "css",
+        "value": "textarea[name=my-textarea]"
+      },
+      "required": true,
+      "type": "fill",
+      "value": "timestamped capture"
+    },
+    {
+      "at_seconds": 4,
+      "expected_outcome": "success",
+      "expected_result": "the second option is selected",
+      "id": "select-two",
+      "locator": {
+        "by": "css",
+        "value": "select[name=my-select]"
+      },
+      "required": true,
+      "type": "select",
+      "value": "2"
+    },
+    {
+      "at_seconds": 7,
+      "expected_outcome": "success",
+      "expected_result": "the form submission success page opens",
+      "id": "submit-form",
+      "locator": {
+        "by": "role",
+        "exact": true,
+        "name": "Submit",
+        "role": "button"
+      },
+      "required": true,
+      "type": "click"
+    },
+    {
+      "at_seconds": 7.2,
+      "expected_outcome": "success",
+      "expected_result": "the Received confirmation is visible",
+      "id": "wait-received",
+      "locator": {
+        "by": "text",
+        "exact": false,
+        "value": "Received!"
+      },
+      "required": true,
+      "state": "visible",
+      "timeout_ms": 4000,
+      "type": "wait_for"
+    }
+  ],
+  "capture_policy": {
+    "height": 720,
+    "maximum_gap_seconds": 0.25,
+    "minimum_average_fps": 10,
+    "requested_fps": 15,
+    "width": 1280
+  },
+  "case_id": "workflow-16-selenium-form-valid",
+  "duration_seconds": 12,
+  "goal": "Complete representative form controls and submit a valid form.",
+  "schema_version": 1,
+  "source_url": "https://www.selenium.dev/selenium/web/web-form.html"
+}
