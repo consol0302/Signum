@@ -27,7 +27,7 @@ screen recording
   -> observations.json
 ```
 
-The current release accepts video files only. Live screen capture, audio, action execution, and non-Codex model providers are not implemented.
+The CLI accepts video files. The Python streaming runtime also accepts live frames supplied by a controller such as Petasos. Desktop capture, audio, action execution, and non-Codex model providers are not implemented inside Signum.
 
 ## Install
 
@@ -81,9 +81,11 @@ signum observe screen-recording.mp4 \
   --output observe-output
 ```
 
-Each initial or stable changed screen becomes one Codex call. A 768-pixel-wide local guard supplements the 192-pixel global detector, allowing a compact connected change to trigger even when its full-screen area fraction is tiny. Short transitions keep their highest-change frame so a disappearing notification is not replaced by the later background. The final unfinished transition is emitted when the video ends.
+Each initial or stable changed screen becomes one Codex call. A 768-pixel-wide local guard supplements the 192-pixel global detector, allowing a compact connected change to trigger even when its full-screen area fraction is tiny. Global trigger decisions still use the cheap 192-pixel signal, but crop coordinates come from the 768-pixel map so thin UI evidence is not clipped by coarse localization. Short transitions keep their highest-change frame so a disappearing notification is not replaced by the later background. The final unfinished transition is emitted when the video ends.
 
 Codex is launched non-interactively with attached JPEG files, a strict JSON schema, an ephemeral session, and a read-only sandbox. User configuration is ignored for the perception run, while Codex authentication remains available. You may override the executable, model, or timeout:
+
+On Windows, the default `codex` command prefers `%APPDATA%\npm\codex.cmd` when it exists. This avoids selecting the protected desktop-app executable through the Windows application alias. An explicit `--codex-command` is never rewritten.
 
 ```text
 --codex-command   Codex executable or absolute path (default: codex)
@@ -94,6 +96,15 @@ Codex is launched non-interactively with attached JPEG files, a strict JSON sche
 ```
 
 The output contains the exact event images under `events/` and structured results in `observations.json`. Codex usage limits still depend on the signed-in plan, so this mode is deliberately event-driven rather than frame-driven.
+
+`observations.json` also records the usage reported by each completed Codex turn:
+
+- input, cached-input, output, and reasoning-output tokens;
+- total reported tokens, defined as input plus output tokens;
+- per-call latency and whether every call supplied a usage record;
+- encoded image bytes, pixels, and the unadjusted number of 32-pixel image patches sent.
+
+The patch count is a stable payload measurement, not a prediction of billed tokens. Image resizing, detail policy, and model-specific accounting happen beyond Signum's deterministic boundary. Missing Codex usage is left as `null` per observation and counted under `ai_calls_without_reported_usage` instead of being estimated as zero. An aggregate is partial whenever `reported_usage_complete` is false, and remains `null` when no call supplied usage. The observation file uses schema version 2 for these fields.
 
 ### Verify after a computer action
 
@@ -111,6 +122,30 @@ observation = gateway.verify_after_action(
 ```
 
 This always emits an observation, including when the screen did not change. Codex returns `confirmed`, `not_confirmed`, or `uncertain` for action-verification events; ordinary observations use `not_applicable`. Signum still does not execute the action itself.
+
+### Stream frames without blocking on Codex
+
+`StreamingPerceptionGateway` runs deterministic detection during frame submission and sends semantic work to a background worker. New frames continue to be inspected while a Codex turn is running. It keeps a bounded recent-frame buffer and event history, exposes queue overflow instead of hiding it, and supports requested detail crops, explicit event retries, and action verification.
+
+```python
+with StreamingPerceptionGateway(
+    goal="Watch the page and verify each action",
+    interpreter=CodexExecInterpreter(model="MODEL_NAME"),
+) as gateway:
+    gateway.submit_frame(frame, timestamp, frame_index=frame_index)
+    results = gateway.poll_results()
+```
+
+Petasos remains responsible for capture, action timing, and deciding when it must wait for a verification result. See [Streaming perception runtime](docs/STREAMING.md) for the integration contract and overload behavior.
+
+The reproducible browser smoke workflow, review rubric, measured latency, and runtime-reported token cost are documented in [Measuring live Codex perception](docs/CODEX_LIVE_MEASUREMENT.md). A tracked example replays three captured Selenium page states through the same streaming path:
+
+```powershell
+python examples/codex_live_web_probe.py `
+  --frames-dir C:\path\to\captured-frames `
+  --output live-web-output `
+  --model gpt-5.6-sol
+```
 
 ## How selection works
 
@@ -148,6 +183,23 @@ These numbers are useful for checking the mechanics, not for claiming real-world
 
 The benchmark setup and full notes are in [docs/BENCHMARK.md](docs/BENCHMARK.md) and [docs/RESULTS.md](docs/RESULTS.md).
 
+### Evaluate real screen recordings
+
+Signum can replay a labeled recording suite and compare the gateway with uniform temporal sampling at exactly the same observation count per recording:
+
+```bash
+signum evaluate real-evaluation.json --output evaluation-output
+```
+
+Add `--with-codex --model MODEL_NAME` to interpret both methods and collect their runtime-reported token usage. The run produces an `evaluation.json`, saved evidence for both methods, and a `review-template.json`. Trigger recall and false calls are automatic. Visible-evidence recall, semantic accuracy, task-state accuracy, and end-to-end success require explicit human verdicts:
+
+```bash
+signum score evaluation-output/evaluation.json \
+  --reviews evaluation-output/completed-review.json
+```
+
+Incomplete reviews remain `null`; detector misses count as failures. The manifest format, review rubric, and output fields are documented in [Real-world perception evaluation](docs/REAL_WORLD_EVALUATION.md).
+
 ## Development
 
 Run the test suite:
@@ -156,9 +208,9 @@ Run the test suite:
 python -m unittest discover -s tests -v
 ```
 
-The project currently has thirteen tests covering the CLI, budget handling, timestamps, duplicate handling, deterministic selection, between-sample flash recovery, small local UI changes, transient peak preservation, forced action verification, end-of-stream flushing, observation serialization, and the isolated Codex command and verification contracts. Tests do not spend Codex subscription usage.
+The project currently has twenty-five tests covering the CLI, budget handling, timestamps, duplicate handling, deterministic selection, between-sample flash recovery, small and thin UI changes, transient peak preservation, forced action verification, end-of-stream flushing, observation serialization, runtime usage accounting, labeled replay evaluation, equal-budget comparison, human review scoring, non-blocking streaming, overload visibility, requested detail, retries, and the isolated Codex command and verification contracts. Tests do not spend Codex subscription usage.
 
-The next useful step is a small manually labeled screen-recording suite. It should measure trigger recall, semantic accuracy, task-state accuracy, calls per minute, and latency against fixed-interval Codex observations. Synthetic results alone cannot establish real computer-use detection success.
+The evaluator is ready for a small manually labeled screen-recording suite. The repository still contains no real recordings, so synthetic results alone cannot establish real computer-use detection success.
 
 ## Project notes
 
@@ -167,5 +219,8 @@ The next useful step is a small manually labeled screen-recording suite. It shou
 - [Benchmark methodology](docs/BENCHMARK.md)
 - [Initial results](docs/RESULTS.md)
 - [Codex-mode improvement roadmap](docs/ROADMAP.md)
+- [Real-world perception evaluation](docs/REAL_WORLD_EVALUATION.md)
+- [Streaming perception runtime](docs/STREAMING.md)
+- [Measuring live Codex perception](docs/CODEX_LIVE_MEASUREMENT.md)
 
 Signum is currently at `0.0.2`. The API and output schema may still change while the core sampling approach is being validated.

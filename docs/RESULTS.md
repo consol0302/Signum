@@ -67,6 +67,32 @@ Two deterministic failures are now covered separately from the sampler benchmark
 
 These are regression fixtures, not real-world success measurements. Local component size, compression noise, false calls from cursor motion, and semantic verification accuracy still require labeled screen recordings.
 
+## Live public-web probe
+
+On 2026-08-21, the streaming gateway was fed viewport screenshots from Selenium's public dynamic-elements test page at 1280×720. The browser created a 151×151 red box and then revealed a 170×21 text input. The raw threshold-18 changed fractions were 0.02578 and 0.00235 respectively.
+
+The first input-field run exposed an evidence-localization failure: the 192-pixel global trigger fired, but its coarse region ended at source x=227 while the input ended near x=397. The prepared detail image therefore clipped most of the expected result.
+
+Hypothesis: retain the 192-pixel global fraction for the trigger decision, but derive the crop bounds from the already available 768-pixel change map.
+
+After that change, the same input transition produced a source region from x=6 through x=397, and the prepared detail image contained the complete input. A synthetic thin-border regression test reproduces the former x=227 cutoff. This adds one higher-resolution absolute-difference operation on globally triggered frames but does not lower thresholds or increase the number of model calls.
+
+In the deterministic five-frame probe, maximum synchronous frame-submission time was 18.18 ms, total detector time was 49.39 ms, five events were queued, and there were no queue drops or probe-interpreter failures. Those timings are one-run diagnostics, not a throughput claim.
+
+The initial Codex failure was command resolution rather than a missing installation. The bare `codex` command selected the protected desktop-app executable under `WindowsApps`, while the separately installed npm launcher was available at `%APPDATA%\npm\codex.cmd`. Signum now prefers that user launcher on Windows without rewriting an explicit command.
+
+### First Codex semantic measurement
+
+The capture and replay procedure is documented in [Measuring live Codex perception](CODEX_LIVE_MEASUREMENT.md), with a tracked example that writes the exact review images and machine-readable runtime report.
+
+The same captured browser frames were replayed through the streaming gateway once with `codex-cli 0.148.0`, ChatGPT subscription authentication, and an explicit `gpt-5.6-sol` model. All five structured calls completed with no queue drops or interpretation failures. Manual comparison against the visible fixture states found all five correct: initial absence, red-box appearance, small text-input appearance, requested input detail, and confirmed post-action input appearance. This is 5/5 on a tiny diagnostic set, not a general semantic-success estimate.
+
+The run took 36.26 seconds wall time. Per-call semantic latency averaged 7.24 seconds (minimum 6.84, maximum 7.93). Maximum synchronous frame submission was 15.81 ms, so Codex inference did not block frame ingestion; the rapidly replayed events produced a maximum semantic queue depth of four.
+
+Codex reported 75,128 input tokens and 667 output tokens, or 75,795 total reported tokens across five calls. Cached input tokens were zero and reasoning-output tokens totaled 50. Signum transmitted 37,894 JPEG bytes represented by 813 unadjusted 32-pixel patches. The roughly 15,159 reported tokens per event show that image payload size alone does not explain Codex runtime usage: each ephemeral agent turn carries substantial non-image context. A persistent session or event batching now has measured motivation, but it should be compared against this exact fixture before replacing the simple adapter.
+
+One additional negative action-verification case supplied the same red-box screen before and after a claimed click, while expecting a new input to appear. Codex correctly returned `not_confirmed`, cited the identical images and absent input, and did not claim success. That call took 6.12 seconds and reported 15,565 input plus 128 output tokens. Across the six targeted judgments, all six matched the visible fixture labels, but the cases still come from one simple page and do not support a production success-rate claim.
+
 ## Next experiment
 
-Build a small, manually labeled real-video corpus containing UI changes, surveillance-like static scenes, handheld camera motion, and screen recordings. Re-run the unchanged defaults before adding another signal. The most important unresolved risk is that pixel-level novelty may not correlate with semantic importance on real media.
+Expand the live probe into a labeled browser suite with repeated runs, negative cursor/focus cases, failed-action verification, rapid transitions, scroll, animation, and small text changes. The most important unresolved risk remains that pixel-level novelty may not correlate with semantic importance. Five easy positive observations establish end-to-end operation but are too few and too similar to estimate production accuracy.

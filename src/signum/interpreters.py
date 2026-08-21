@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import tempfile
 import time
@@ -32,10 +33,20 @@ class CodexExecInterpreter:
             raise ValueError("command cannot be empty")
         if timeout_seconds <= 0:
             raise ValueError("timeout_seconds must be greater than zero")
-        self.command = command
+        self.requested_command = command
+        self.command = _resolve_codex_command(command)
         self.model = model
         self.timeout_seconds = timeout_seconds
         self._runner = runner or subprocess.run
+
+    def metadata(self) -> dict[str, object]:
+        return {
+            "type": "codex_exec",
+            "command": self.command,
+            "requested_command": self.requested_command,
+            "requested_model": self.model,
+            "timeout_seconds": self.timeout_seconds,
+        }
 
     def interpret(
         self,
@@ -82,6 +93,7 @@ class CodexExecInterpreter:
                 raise InterpreterError(
                     f"Codex exited with status {completed.returncode}: {detail[:800]}"
                 )
+            usage = _parse_codex_usage(completed.stdout)
             try:
                 output_text = output_path.read_text(encoding="utf-8")
             except FileNotFoundError as error:
@@ -92,6 +104,7 @@ class CodexExecInterpreter:
         parsed = _parse_observation(output_text)
         return SemanticResult(
             **parsed,
+            **usage,
             latency_seconds=time.perf_counter() - started,
         )
 
@@ -111,6 +124,7 @@ class CodexExecInterpreter:
             "--skip-git-repo-check",
             "--color",
             "never",
+            "--json",
             "--output-schema",
             str(schema_path),
             "--output-last-message",
@@ -121,6 +135,31 @@ class CodexExecInterpreter:
         for image_path in image_paths:
             command.extend(("--image", str(image_path)))
         command.append("-")
+        return command
+
+
+def _resolve_codex_command(
+    command: str,
+    *,
+    platform: str | None = None,
+    appdata: str | None = None,
+) -> str:
+    """Prefer the user-installed npm launcher over a Windows app alias."""
+
+    if command.strip().casefold() != "codex":
+        return command
+    active_platform = os.name if platform is None else platform
+    if active_platform != "nt":
+        return command
+    active_appdata = os.environ.get("APPDATA") if appdata is None else appdata
+    if not active_appdata:
+        return command
+    npm_launcher = Path(active_appdata) / "npm" / "codex.cmd"
+    try:
+        return str(npm_launcher) if npm_launcher.is_file() else command
+    except OSError:
+        # Restricted hosts may deny even a metadata lookup outside the sandbox.
+        # Keep normal command resolution available; an explicit path still wins.
         return command
 
 
@@ -244,9 +283,46 @@ def _parse_observation(output_text: str) -> dict[str, object]:
         "verification": verification,
         "recommended_action": parsed["recommended_action"],
         "evidence": tuple(evidence),
-        "input_tokens": None,
-        "output_tokens": None,
     }
+
+
+def _parse_codex_usage(output_text: str) -> dict[str, int | None]:
+    """Read the last valid turn.completed usage record from Codex JSONL."""
+
+    parsed_usage: dict[str, int | None] = {
+        "input_tokens": None,
+        "cached_input_tokens": None,
+        "output_tokens": None,
+        "reasoning_output_tokens": None,
+    }
+    for line in output_text.splitlines():
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(event, dict) or event.get("type") != "turn.completed":
+            continue
+        usage = event.get("usage")
+        if not isinstance(usage, dict):
+            continue
+        candidate: dict[str, int | None] = {}
+        valid = True
+        for field in parsed_usage:
+            value = usage.get(field)
+            if value is None:
+                candidate[field] = None
+            elif isinstance(value, int) and not isinstance(value, bool) and value >= 0:
+                candidate[field] = value
+            else:
+                valid = False
+                break
+        if (
+            valid
+            and candidate["input_tokens"] is not None
+            and candidate["output_tokens"] is not None
+        ):
+            parsed_usage = candidate
+    return parsed_usage
 
 
 def _observation_schema() -> dict[str, object]:

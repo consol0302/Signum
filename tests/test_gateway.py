@@ -106,6 +106,37 @@ class GatewayTests(unittest.TestCase):
         assert observation.event.region is not None
         self.assertLess(observation.event.region.area_ratio, 0.001)
 
+    def test_global_trigger_keeps_distant_thin_evidence_in_region(self) -> None:
+        baseline = np.full((720, 1280, 3), 255, dtype=np.uint8)
+        changed = baseline.copy()
+        cv2.rectangle(changed, (6, 6), (221, 34), (0, 0, 0), 2)
+        cv2.rectangle(changed, (226, 12), (396, 33), (210, 210, 210), 1)
+        gateway = PerceptionGateway(
+            GatewayConfig(
+                analysis_width=192,
+                local_analysis_width=768,
+                pixel_threshold=10,
+                min_changed_fraction=0.0005,
+                stable_frames=1,
+                min_event_interval_seconds=0.0,
+            )
+        )
+        gateway.observe_frame(baseline, 0.0, goal="inspect UI", frame_index=0)
+        gateway.observe_frame(changed, 0.1, goal="inspect UI", frame_index=1)
+        observation = gateway.observe_frame(
+            changed, 0.2, goal="inspect UI", frame_index=2
+        )
+
+        self.assertIsNotNone(observation)
+        assert observation is not None
+        self.assertEqual("global_fraction", observation.event.discovery)
+        self.assertIsNotNone(observation.event.region)
+        assert observation.event.region is not None
+        self.assertGreaterEqual(
+            observation.event.region.x + observation.event.region.width,
+            396,
+        )
+
     def test_action_verification_emits_even_when_screen_does_not_change(self) -> None:
         gateway = PerceptionGateway(self.config)
         gateway.observe_frame(self.black, 0.0, goal="save the file", frame_index=0)
@@ -148,6 +179,10 @@ class ObserveVideoTests(unittest.TestCase):
                     relevant=True,
                     confidence=1.0,
                     recommended_action="Continue.",
+                    input_tokens=100,
+                    cached_input_tokens=40,
+                    output_tokens=20,
+                    reasoning_output_tokens=5,
                 )
 
         with tempfile.TemporaryDirectory() as temp_name:
@@ -166,11 +201,58 @@ class ObserveVideoTests(unittest.TestCase):
                 result["stats"]["events_emitted"], result["stats"]["ai_calls"]
             )
             self.assertGreater(result["stats"]["transmitted_image_bytes"], 0)
+            self.assertGreater(
+                result["stats"]["transmitted_image_patches_32px"], 0
+            )
+            self.assertEqual(0, result["stats"]["ai_calls_without_reported_usage"])
+            self.assertTrue(result["stats"]["reported_usage_complete"])
+            self.assertEqual(
+                result["stats"]["ai_calls"] * 120,
+                result["stats"]["reported_total_tokens"],
+            )
+            self.assertEqual(
+                result["stats"]["ai_calls"] * 40,
+                result["stats"]["reported_cached_input_tokens"],
+            )
             self.assertTrue((output / "observations.json").is_file())
             for observation in result["observations"]:
                 self.assertIsNotNone(observation["interpretation"])
                 for image_file in observation["event"]["image_files"]:
                     self.assertTrue((output / image_file).is_file())
+
+    def test_missing_runtime_usage_remains_visible_in_stats(self) -> None:
+        class InterpreterWithoutUsage:
+            def interpret(
+                self,
+                event: PerceptionEvent,
+                goal: str,
+                previous: SemanticResult | None,
+            ) -> SemanticResult:
+                return SemanticResult(
+                    state=f"event_{event.sequence}",
+                    summary=f"Observed for {goal}",
+                    relevant=True,
+                    confidence=1.0,
+                    recommended_action="Continue.",
+                )
+
+        with tempfile.TemporaryDirectory() as temp_name:
+            root = Path(temp_name)
+            _, video = generate_suite(root / "media")[0]
+            result = observe_video(
+                video,
+                root / "observed",
+                goal="track the screen",
+                interpreter=InterpreterWithoutUsage(),
+            )
+
+            self.assertGreater(result["stats"]["ai_calls"], 0)
+            self.assertEqual(
+                result["stats"]["ai_calls"],
+                result["stats"]["ai_calls_without_reported_usage"],
+            )
+            self.assertIsNone(result["stats"]["reported_total_tokens"])
+            self.assertFalse(result["stats"]["reported_usage_complete"])
 
 
 if __name__ == "__main__":

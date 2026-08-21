@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "export-finished",
+      "video": "../recordings/export-finished.mp4",
+      "goal": "Detect when the export finishes and identify the next safe action",
+      "events": [
+        {
+          "id": "completion-toast",
+          "start": 12.4,
+          "end": 13.15,
+          "tolerance": 0.1,
+          "region": {
+            "x": 0.72,
+            "y": 0.78,
+            "width": 0.25,
+            "height": 0.16
+          },
+          "acceptable_states": [
+            "export_complete",
+            "completion_toast_visible"
+          ],
+          "notes": "The completion message and file name must be legible."
+        }
+      ]
+    }
+  ]
+}

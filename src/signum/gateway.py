@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import math
 import time
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from typing import Protocol
 
 import cv2
@@ -130,6 +131,17 @@ class VisualInput:
     def pixel_count(self) -> int:
         return self.width * self.height
 
+    @property
+    def patch_count_32px(self) -> int:
+        """Return the unadjusted 32px-patch count for this image.
+
+        This is an observable payload metric, not a claim about billed tokens.
+        Model-specific resizing, detail settings, and multipliers may change the
+        number reported by the runtime.
+        """
+
+        return math.ceil(self.width / 32) * math.ceil(self.height / 32)
+
 
 @dataclass(frozen=True)
 class PerceptionEvent:
@@ -165,6 +177,7 @@ class PerceptionEvent:
                     "width": image.width,
                     "height": image.height,
                     "bytes": len(image.jpeg),
+                    "patches_32px": image.patch_count_32px,
                 }
                 for image in self.images
             ],
@@ -181,11 +194,22 @@ class SemanticResult:
     verification: str = "not_applicable"
     evidence: tuple[str, ...] = ()
     input_tokens: int | None = None
+    cached_input_tokens: int | None = None
     output_tokens: int | None = None
+    reasoning_output_tokens: int | None = None
     latency_seconds: float = 0.0
 
+    @property
+    def reported_total_tokens(self) -> int | None:
+        if self.input_tokens is None or self.output_tokens is None:
+            return None
+        return self.input_tokens + self.output_tokens
+
     def to_dict(self) -> dict[str, object]:
-        return asdict(self)
+        return {
+            **asdict(self),
+            "reported_total_tokens": self.reported_total_tokens,
+        }
 
 
 class SemanticInterpreter(Protocol):
@@ -220,10 +244,31 @@ class GatewayStats:
     prepared_image_pixels: int = 0
     transmitted_image_bytes: int = 0
     transmitted_image_pixels: int = 0
+    transmitted_image_patches_32px: int = 0
+    ai_calls_with_reported_usage: int = 0
+    reported_input_tokens: int = 0
+    reported_cached_input_tokens: int = 0
+    reported_output_tokens: int = 0
+    reported_reasoning_output_tokens: int = 0
     ai_latency_seconds: float = 0.0
 
     def to_dict(self) -> dict[str, object]:
-        return asdict(self)
+        reported_total_tokens = (
+            self.reported_input_tokens + self.reported_output_tokens
+            if self.ai_calls_with_reported_usage > 0
+            else None
+        )
+        return {
+            **asdict(self),
+            "reported_total_tokens": reported_total_tokens,
+            "ai_calls_without_reported_usage": (
+                self.ai_calls - self.ai_calls_with_reported_usage
+            ),
+            "reported_usage_complete": (
+                self.ai_calls > 0
+                and self.ai_calls == self.ai_calls_with_reported_usage
+            ),
+        }
 
 
 class PerceptionGateway:
@@ -388,6 +433,42 @@ class PerceptionGateway:
             before_frame=before_frame,
         )
 
+    def force_snapshot(
+        self,
+        frame: np.ndarray,
+        timestamp: float,
+        *,
+        goal: str,
+        frame_index: int | None = None,
+        reason: str = "scheduled_baseline",
+        discovery: str = "uniform",
+        region: ChangeRegion | None = None,
+    ) -> GatewayObservation:
+        """Emit a scheduled full-frame observation for a reference method."""
+
+        if frame.ndim != 3 or frame.shape[2] != 3:
+            raise ValueError("frame must be a BGR image with three channels")
+        if timestamp < 0:
+            raise ValueError("timestamp cannot be negative")
+        if not goal.strip():
+            raise ValueError("goal cannot be empty")
+        if region is not None and (
+            region.frame_width != frame.shape[1]
+            or region.frame_height != frame.shape[0]
+        ):
+            raise ValueError("region dimensions must match the source frame")
+        self.stats.frames_seen += 1
+        return self._emit(
+            frame,
+            timestamp,
+            frame_index,
+            goal,
+            reason=reason,
+            change_fraction=0.0,
+            region=region,
+            discovery=discovery,
+        )
+
     def flush(
         self,
         frame: np.ndarray,
@@ -494,20 +575,34 @@ class PerceptionGateway:
         if self.interpreter is not None:
             self.stats.transmitted_image_bytes += image_bytes
             self.stats.transmitted_image_pixels += image_pixels
+            self.stats.transmitted_image_patches_32px += sum(
+                image.patch_count_32px for image in images
+            )
             started = time.perf_counter()
             interpretation = self.interpreter.interpret(
                 event, goal, self._last_interpretation
             )
             elapsed = time.perf_counter() - started
             if interpretation.latency_seconds <= 0:
-                interpretation = SemanticResult(
-                    **{
-                        **interpretation.to_dict(),
-                        "latency_seconds": elapsed,
-                    }
+                interpretation = replace(
+                    interpretation,
+                    latency_seconds=elapsed,
                 )
             self._last_interpretation = interpretation
             self.stats.ai_calls += 1
+            if (
+                interpretation.input_tokens is not None
+                and interpretation.output_tokens is not None
+            ):
+                self.stats.ai_calls_with_reported_usage += 1
+                self.stats.reported_input_tokens += interpretation.input_tokens
+                self.stats.reported_output_tokens += interpretation.output_tokens
+                self.stats.reported_cached_input_tokens += (
+                    interpretation.cached_input_tokens or 0
+                )
+                self.stats.reported_reasoning_output_tokens += (
+                    interpretation.reasoning_output_tokens or 0
+                )
             self.stats.ai_latency_seconds += interpretation.latency_seconds
 
         return GatewayObservation(event=event, interpretation=interpretation)
@@ -531,16 +626,16 @@ def _detect_change(
 ) -> _ChangeDetection:
     global_mask = cv2.absdiff(gray, previous_gray) >= config.pixel_threshold
     global_fraction = float(np.mean(global_mask))
+    local_mask = (
+        cv2.absdiff(local_gray, previous_local_gray) >= config.pixel_threshold
+    )
     if global_fraction >= config.min_changed_fraction:
         return _ChangeDetection(
-            region=_region_from_mask(global_mask, frame_width, frame_height),
+            region=_region_from_mask(local_mask, frame_width, frame_height),
             change_fraction=global_fraction,
             discovery="global_fraction",
         )
 
-    local_mask = (
-        cv2.absdiff(local_gray, previous_local_gray) >= config.pixel_threshold
-    )
     component_mask, component_pixels = _largest_component(local_mask)
     if component_pixels < config.min_local_component_pixels:
         return _ChangeDetection(None, global_fraction, "none")

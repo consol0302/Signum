@@ -11,11 +11,11 @@ Evaluate the pipeline as four separate stages:
 3. **Semantic accuracy**: fraction of Codex observations that correctly describe the labeled state.
 4. **Task-state accuracy**: fraction of observations that recommend a safe and useful next step for the stated goal.
 
-Also record false calls per minute, Codex calls per minute, prepared image bytes, transmitted image bytes, per-call latency, and failed calls. Every detector comparison must use the same labeled recordings and Codex observation policy.
+Also record false calls per minute, Codex calls per minute, prepared image bytes, transmitted image bytes, transmitted 32-pixel image patches, per-call latency, runtime-reported token usage, missing usage records, and failed calls. Every detector comparison must use the same labeled recordings and Codex observation policy. Token results must come from Codex's completed-turn usage records; patch counts are payload measurements and must not be presented as billed-token estimates.
 
 ## Priority 0: establish a real screen-recording benchmark
 
-Build a small manually labeled suite containing dialogs, toasts, progress completion, disabled/enabled controls, small text changes, cursor and caret motion, loading animation, scrolling, and rapid open-close transitions. Store event intervals and evidence regions separately from predictions. Compare against fixed-interval observation at the same Codex call budget.
+The labeled replay evaluator, equal-budget uniform baseline, saved review artifacts, and human-review scoring contract are implemented. The remaining work is to build a real suite containing dialogs, toasts, progress completion, disabled/enabled controls, small text changes, cursor and caret motion, loading animation, scrolling, and rapid open-close transitions. Event intervals and evidence regions must be labeled before looking at predictions.
 
 No detection-success claim should be made before this suite exists.
 
@@ -43,6 +43,10 @@ The current adapter intentionally uses one stable `codex exec` process per event
 
 Acceptance criterion: a measured latency improvement with unchanged semantic test cases and no weaker isolation.
 
+## Implemented runtime foundation
+
+The streaming gateway now separates CPU detection from semantic inference, retains a bounded recent-frame ring and event history, preserves semantic event order, exposes queue overflow, and supports detail, retry, and action-verification requests. It still needs sustained real-browser measurements for capture rate, detector latency, queue depth, dropped events, and end-to-end Codex latency.
+
 ## Deferred
 
-Live desktop capture, action execution, audio, databases, servers, non-Codex providers, neural detectors, and GPU acceleration remain outside the current milestone. They should not be added to compensate for an unmeasured detector.
+Desktop capture, action execution, audio, databases, servers, non-Codex providers, neural detectors, and GPU acceleration remain outside the current milestone. They should not be added to compensate for an unmeasured detector.

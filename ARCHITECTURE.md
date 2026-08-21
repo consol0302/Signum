@@ -17,7 +17,8 @@ The experimental Codex-only vertical slice is:
 ```text
 video frames -> global + local deterministic change gate
              -> stable current frame + optional peak
-             -> context/detail JPEGs -> codex exec -> schema-validated observation
+             -> context/detail JPEGs -> codex exec JSONL
+             -> schema-validated observation + runtime usage
 ```
 
 The deterministic gate owns event discovery and source metadata. Codex only interprets events that the gate emits; it is not used to decide which frames changed.
@@ -31,6 +32,8 @@ The deterministic gate owns event discovery and source metadata. Codex only inte
 - `gateway.py`: stateful global/local screen-change gating, region extraction, action-verification checkpoints, stability handling, and visual-input preparation.
 - `interpreters.py`: the isolated Codex CLI subprocess adapter and structured observation contract.
 - `observe.py`: video-to-event orchestration and observation serialization.
+- `evaluation.py`: labeled replay manifests, equal-budget uniform observations, temporal matching, aggregate cost metrics, and human-review scoring.
+- `streaming.py`: live frame submission, bounded frame and event retention, non-blocking semantic queuing, retries, requested crops, and result polling.
 - `cli.py`: user-facing `signum analyze` and `signum observe` commands.
 - `synthetic.py` and `benchmark.py`: deterministic ground-truth fixtures and equal-budget comparisons.
 
@@ -56,16 +59,30 @@ This is sufficient to seek or sequentially re-extract the original frame. The so
 
 Codex events additionally record the event frame, the maximum-change frame when one exists, timestamps, normalized change region, image roles, and exact JPEG artifacts. A transient peak is attached only when it differs materially from the final stable frame. Pending changes are flushed at end of stream instead of being silently lost.
 
-The passive detector uses a cheap 192-pixel-wide full-screen fraction first. If that does not trigger, a 768-pixel-wide binary change map is checked for a connected local component. This preserves small UI evidence without lowering the global threshold and accepting every scattered compression artifact. Both paths remain deterministic.
+For each transmitted image, Signum records encoded bytes, pixels, and the unadjusted number of 32-pixel patches. The patch count is deterministic and useful for comparing gateway variants, but it is not labeled as a billed-token estimate. Model-side resizing and accounting are outside the deterministic core.
+
+The passive detector uses a cheap 192-pixel-wide full-screen fraction first. If that triggers, the event still uses the 768-pixel-wide binary map for crop localization; this preserves thin evidence that can disappear from coarse coordinates without changing the trigger threshold. If the global fraction does not trigger, the same 768-pixel map is checked for a connected local component. This preserves small UI evidence without lowering the global threshold and accepting every scattered compression artifact. Both paths remain deterministic.
 
 After a controller action, `verify_after_action` compares explicit pre-action and post-action frames and bypasses the stability and cooldown gates. Both visual states are attached, and it emits even when no pixels changed because visible non-change is evidence that an action may not have taken effect. The event carries the action and expected visible result, and the semantic contract requires an explicit verification status.
 
 ## Codex boundary
 
-`codex exec` is started once per gated observation. Runs are ephemeral, read-only, non-interactive, and validated with a JSON Schema. Signum passes the goal, previous semantic summary, event metadata, and local JPEG paths. It does not access Codex credentials or call the OpenAI API directly.
+`codex exec` is started once per gated observation. Runs are ephemeral, read-only, non-interactive, and validated with a JSON Schema. The adapter enables Codex's JSONL event stream and reads usage from the final `turn.completed` record. Signum stores input, cached-input, output, and reasoning-output fields without trying to reconstruct missing values. Aggregate reported tokens are input plus output; reasoning output is retained as a separate diagnostic and is not added again. Signum passes the goal, previous semantic summary, event metadata, and local JPEG paths. It does not access Codex credentials or call the OpenAI API directly.
 
 This process-per-event implementation is intentionally simple and testable. A persistent SDK or app-server session could reduce startup latency later, but it is not justified until real recordings show that Codex startup dominates the useful observation budget.
 
+## Evaluation boundary
+
+The replay evaluator uses source-timeline event intervals and both current and preserved-peak image timestamps. A gateway call is a trigger hit when one of those image timestamps falls inside the labeled interval plus its declared annotation tolerance. Each recording's uniform baseline receives exactly the number of observations emitted by Signum, placed at equal-bin centers. Initial context is included rather than silently removed from Signum's cost.
+
+Temporal matching cannot establish that resized text is legible or that a model's description is correct. The evaluator therefore generates a review contract with separate visible-evidence, semantic-correctness, and task-state-correctness verdicts. Missing human verdicts remain unavailable; they are never inferred from detector geometry or model confidence. End-to-end success requires all three verdicts, while an unmatched event is an automatic failure.
+
+## Streaming boundary
+
+The streaming runtime keeps deterministic gating on the frame-submission path and moves only semantic interpretation to a single background worker. This preserves event order and previous-state context while preventing Codex latency from pausing capture. A bounded queue prevents unbounded JPEG retention. Overflow is returned as an explicit failed result, and retained event artifacts can be requeued by sequence.
+
+The recent-frame ring is bounded independently from event history. Requested crops use the latest retained full-resolution frame, while retries reuse the exact event JPEGs originally prepared. Action verification accepts controller-provided before and after frames and bypasses passive stability gates.
+
 ## Explicit non-goals
 
-There is no database, server, plugin framework, GPU requirement, audio pipeline, action executor, live capture loop, or realtime buffer in this milestone. There are also no API or non-Codex model adapters. Those abstractions would add cost before the gating hypothesis is validated.
+There is no database, server, plugin framework, GPU requirement, audio pipeline, action executor, or desktop-capture implementation in this milestone. There are also no API or non-Codex model adapters. Petasos or another controller must supply frames and own actions.

@@ -47,7 +47,7 @@ def observe_video(
         )
         if observation is None:
             continue
-        observations.append(_serialize_observation(observation, images_dir, output))
+        observations.append(serialize_observation(observation, images_dir, output))
 
     if last_frame is not None and last_frame_index is not None:
         final_observation = gateway.flush(
@@ -58,11 +58,11 @@ def observe_video(
         )
         if final_observation is not None:
             observations.append(
-                _serialize_observation(final_observation, images_dir, output)
+                serialize_observation(final_observation, images_dir, output)
             )
 
     payload = {
-        "schema_version": 1,
+        "schema_version": 2,
         "source": metadata.to_dict(),
         "goal": goal,
         "config": gateway_config.to_dict(),
@@ -80,7 +80,7 @@ def observe_video(
     return payload
 
 
-def _serialize_observation(
+def serialize_observation(
     observation: GatewayObservation, images_dir: Path, output: Path
 ) -> dict[str, Any]:
     serialized = observation.to_dict()

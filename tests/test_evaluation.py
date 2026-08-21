@@ -1,0 +1,191 @@
+from __future__ import annotations
+
+import json
+import tempfile
+import unittest
+from contextlib import redirect_stdout
+from io import StringIO
+from pathlib import Path
+
+from signum.cli import main
+from signum.evaluation import EvaluationError, load_manifest, run_evaluation, score_reviews
+from signum.gateway import GatewayConfig, PerceptionEvent, SemanticResult
+from signum.synthetic import generate_suite
+
+
+class EvaluationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.temp_context = tempfile.TemporaryDirectory()
+        cls.root = Path(cls.temp_context.name)
+        cls.generated = generate_suite(cls.root / "media")
+        cls.flash_case, cls.flash_video = cls.generated[3]
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.temp_context.cleanup()
+
+    def _manifest(self, name: str, *, acceptable_states: list[str] | None = None) -> Path:
+        path = self.root / f"{name}.json"
+        event = self.flash_case.events[0]
+        path.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "cases": [
+                        {
+                            "id": name,
+                            "video": str(self.flash_video),
+                            "goal": "notice the brief full-screen flash",
+                            "events": [
+                                {
+                                    "id": event.name,
+                                    "start": event.start,
+                                    "end": event.end,
+                                    "tolerance": event.tolerance,
+                                    "acceptable_states": acceptable_states or [],
+                                    "notes": "The white flash must be visible.",
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        return path
+
+    def test_equal_budget_replay_recovers_preserved_peak(self) -> None:
+        output = self.root / "detector-evaluation"
+        result = run_evaluation(
+            self._manifest("brief-flash"),
+            output,
+            config=GatewayConfig(min_event_interval_seconds=0.0),
+        )
+
+        signum = result["aggregate"]["signum"]
+        uniform = result["aggregate"]["uniform"]
+        self.assertEqual(signum["observations"], uniform["observations"])
+        self.assertEqual(1.0, signum["trigger_recall"])
+        self.assertEqual(0.0, uniform["trigger_recall"])
+        match = result["cases"][0]["methods"]["signum"]["matches"][0]
+        self.assertEqual("change_peak", match["matched_image_role"])
+        self.assertTrue((output / "evaluation.json").is_file())
+        self.assertTrue((output / "review-template.json").is_file())
+        for method in ("signum", "uniform"):
+            self.assertTrue(
+                (output / "cases" / "brief-flash" / method / "observations.json").is_file()
+            )
+
+    def test_human_review_produces_end_to_end_success_rate(self) -> None:
+        output = self.root / "reviewed-evaluation"
+        run_evaluation(
+            self._manifest("reviewed-flash"),
+            output,
+            config=GatewayConfig(min_event_interval_seconds=0.0),
+        )
+        review_path = output / "review-template.json"
+        review = json.loads(review_path.read_text(encoding="utf-8"))
+        incomplete = score_reviews(output / "evaluation.json", review_path)
+        self.assertFalse(incomplete["complete"])
+        self.assertIsNone(
+            incomplete["methods"]["signum"]["end_to_end_success_rate"]
+        )
+        for row in review["reviews"]:
+            if row["triggered"]:
+                row["evidence_visible"] = True
+                row["semantic_correct"] = True
+                row["task_state_correct"] = True
+        completed_review = output / "completed-review.json"
+        completed_review.write_text(json.dumps(review), encoding="utf-8")
+
+        score = score_reviews(
+            output / "evaluation.json",
+            completed_review,
+        )
+
+        self.assertTrue(score["complete"])
+        self.assertEqual(
+            1.0, score["methods"]["signum"]["end_to_end_success_rate"]
+        )
+        self.assertEqual(
+            0.0, score["methods"]["uniform"]["end_to_end_success_rate"]
+        )
+
+    def test_codex_state_accuracy_is_separate_from_human_review(self) -> None:
+        class FakeInterpreter:
+            def interpret(
+                self,
+                event: PerceptionEvent,
+                goal: str,
+                previous: SemanticResult | None,
+            ) -> SemanticResult:
+                return SemanticResult(
+                    state="flash_visible",
+                    summary="A flash is visible.",
+                    relevant=True,
+                    confidence=1.0,
+                    recommended_action="Continue.",
+                    input_tokens=10,
+                    output_tokens=5,
+                )
+
+        result = run_evaluation(
+            self._manifest("semantic-flash", acceptable_states=["flash visible"]),
+            self.root / "semantic-evaluation",
+            config=GatewayConfig(min_event_interval_seconds=0.0),
+            interpreter=FakeInterpreter(),
+        )
+
+        self.assertTrue(result["semantic_attempted"])
+        self.assertEqual(
+            1.0, result["aggregate"]["signum"]["exact_state_accuracy"]
+        )
+        self.assertEqual(
+            0.0, result["aggregate"]["uniform"]["exact_state_accuracy"]
+        )
+        for method in ("signum", "uniform"):
+            aggregate = result["aggregate"][method]
+            self.assertTrue(aggregate["reported_usage_complete"])
+            self.assertEqual(
+                aggregate["ai_calls"] * 15,
+                aggregate["reported_total_tokens"],
+            )
+
+    def test_manifest_rejects_region_outside_frame(self) -> None:
+        manifest = self._manifest("invalid-region")
+        payload = json.loads(manifest.read_text(encoding="utf-8"))
+        payload["cases"][0]["events"][0]["region"] = {
+            "x": 0.9,
+            "y": 0.0,
+            "width": 0.2,
+            "height": 0.1,
+        }
+        manifest.write_text(json.dumps(payload), encoding="utf-8")
+
+        with self.assertRaises(EvaluationError):
+            load_manifest(manifest)
+
+    def test_evaluate_cli_writes_machine_readable_summary(self) -> None:
+        output = self.root / "cli-evaluation"
+        stdout = StringIO()
+        with redirect_stdout(stdout):
+            exit_code = main(
+                [
+                    "evaluate",
+                    str(self._manifest("cli-flash")),
+                    "--output",
+                    str(output),
+                    "--min-event-interval",
+                    "0",
+                ]
+            )
+
+        self.assertEqual(0, exit_code)
+        summary = json.loads(stdout.getvalue())
+        self.assertEqual(1.0, summary["signum_trigger_recall"])
+        self.assertEqual(0.0, summary["uniform_trigger_recall"])
+
+
+if __name__ == "__main__":
+    unittest.main()
