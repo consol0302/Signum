@@ -144,3 +144,35 @@ Before claiming that Signum is more accurate or cheaper, the remaining work is:
    and confidence intervals;
 5. repeat on a larger held-out set from workflows not used to adjust labels or
    thresholds.
+
+## Pilot completion update
+
+On 2026-08-21, five additional real browser interactions were captured before
+changing detector thresholds: invalid username, invalid password, rejected
+readonly input, rejected letters in a number input, and a valid login. The
+capture hashes are fixed in the replay builder.
+
+The resulting development suite has 65 labels, 60 independent source
+transitions, and eight real eligible failed actions. `profile_complete` is now
+`true`.
+
+| Metric | Signum | Equal-budget uniform |
+| --- | ---: | ---: |
+| Triggered labels | 65 / 65 | 22 / 65 |
+| Trigger recall | 1.000 | 0.338 |
+| 95% Wilson interval | 0.944–1.000 | 0.235–0.460 |
+| Observations | 93 | 93 |
+| Unmatched observations | 28 | 71 |
+| Unmatched initial observations | 19 | 0 |
+| Unmatched non-initial observations | 9 | 71 |
+
+One Codex batch interpreted the five new action pairs in 17.17 seconds and
+reported 20,396 input plus 696 output tokens. All four rejected actions were
+`not_confirmed`; the successful login was `confirmed`. This is a provisional
+AI-assisted check, not a human-blind accuracy score.
+
+The generated suite was hash-locked with freeze id
+`61b0fce16ea6964a4c44c19f0fa86ab9592978efab96665e51f470fe652d9baf`
+and role `development`. It cannot satisfy the comparative claim gate. The
+larger held-out requirements are defined in
+[Comparative claim protocol](CLAIM_PROTOCOL.md).

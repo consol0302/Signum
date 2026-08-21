@@ -169,10 +169,16 @@ A larger local replay can be built from the fixed-viewport public-web captures:
 python examples/build_pilot60_from_captures.py `
   --captures benchmark-output/pilot60-captures `
   --selenium-frames benchmark-output/live-web `
+  --completion-captures benchmark-output/heldout-candidates `
   --output benchmark-output/pilot60-suite
 ```
 
-The builder records source transition ids, excludes constructed cases from real-world eligibility, and keeps raw captures and generated videos in ignored output directories.
+The optional completion captures add four real rejected actions and one
+independent successful action. Their SHA-256 hashes are fixed in the builder.
+The resulting 65-label development Pilot has 60 independent transitions and
+enough real failed actions to pass the Pilot profile. It was collected after
+the original deficit was known, so it is not the larger held-out comparison
+suite. Raw captures and generated videos remain in ignored output directories.
 
 ## How selection works
 
@@ -231,6 +237,14 @@ New evaluation manifests use schema version 2 and label each event by category a
 signum audit-manifest real-evaluation.json
 ```
 
+Freeze a suite before running or tuning against it:
+
+```bash
+signum freeze-manifest real-evaluation.json \
+  --output evaluation-freeze.json \
+  --role held_out
+```
+
 Evaluation and review reports include category breakdowns, two-sided 95% Wilson confidence intervals, exact action-verification accuracy, and a separate false-confirmation rate for failed-action cases. Action labels provide before/after timestamps and are forced equally for both methods outside the passive observation budget. See [Pilot 60 perception suite](docs/PILOT60.md) for the collection contract.
 
 Incomplete reviews remain `null`; detector misses count as failures. The manifest format, review rubric, and output fields are documented in [Real-world perception evaluation](docs/REAL_WORLD_EVALUATION.md).
@@ -245,7 +259,13 @@ python -m unittest discover -s tests -v
 
 The test suite covers the CLI, budget handling, timestamps, duplicate handling, deterministic selection, between-sample flash recovery, small and thin UI changes, transient peak preservation, forced action verification, end-of-stream flushing, observation serialization, runtime usage accounting, labeled replay evaluation, equal-budget comparison, confidence intervals, category coverage auditing, false-confirmation scoring, human review scoring, non-blocking streaming, overload visibility, requested detail, retries, and the isolated Codex command and verification contracts. Tests do not spend Codex subscription usage.
 
-The evaluator has been exercised on local public-web captures, but raw recordings remain outside the repository and the first 60-label manifest does not yet meet the independent-transition or real failed-action requirements. Synthetic results and this development pilot cannot establish real computer-use success.
+The 65-label development Pilot now passes its category, independent-transition,
+and real failed-action audit. Signum triggered 65/65 labels while equal-budget
+uniform sampling triggered 22/65, but the Pilot is not held out and has no
+independent blind review or paid native-provider runs. It therefore cannot
+establish superiority over OpenAI or Claude computer use. The machine-enforced
+publication threshold is documented in
+[Comparative claim protocol](docs/CLAIM_PROTOCOL.md).
 
 ## Project notes
 
@@ -257,6 +277,7 @@ The evaluator has been exercised on local public-web captures, but raw recording
 - [Real-world perception evaluation](docs/REAL_WORLD_EVALUATION.md)
 - [Pilot 60 perception suite](docs/PILOT60.md)
 - [Pilot 60 local measurement](docs/PILOT60_RESULTS.md)
+- [Comparative claim protocol](docs/CLAIM_PROTOCOL.md)
 - [Streaming perception runtime](docs/STREAMING.md)
 - [Measuring live Codex perception](docs/CODEX_LIVE_MEASUREMENT.md)
 

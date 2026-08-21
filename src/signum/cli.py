@@ -6,12 +6,14 @@ import sys
 from pathlib import Path
 
 from .config import SamplerConfig
+from .claims import assess_claim
 from .evaluation import (
     EvaluationError,
     audit_manifest,
     run_evaluation,
     score_reviews,
 )
+from .freeze import freeze_manifest, verify_freeze
 from .gateway import GatewayConfig
 from .interpreters import CodexExecInterpreter, InterpreterError
 from .observe import observe_video
@@ -98,6 +100,24 @@ def build_parser() -> argparse.ArgumentParser:
     )
     audit.add_argument("manifest", type=Path)
     audit.add_argument("--profile", choices=("pilot60",), default="pilot60")
+    freeze = subparsers.add_parser(
+        "freeze-manifest",
+        help="hash-lock a labeled manifest and every referenced video before evaluation",
+    )
+    freeze.add_argument("manifest", type=Path)
+    freeze.add_argument("--output", type=Path, required=True)
+    freeze.add_argument("--role", choices=("development", "held_out"), required=True)
+    verify = subparsers.add_parser(
+        "verify-freeze",
+        help="verify that a frozen manifest and its videos have not changed",
+    )
+    verify.add_argument("freeze", type=Path)
+    claim = subparsers.add_parser(
+        "assess-claim",
+        help="apply the frozen statistical and cost gate to a provider comparison",
+    )
+    claim.add_argument("comparison", type=Path)
+    claim.add_argument("--output", type=Path)
     return parser
 
 
@@ -111,6 +131,12 @@ def main(argv: list[str] | None = None) -> int:
         return _score_command(args)
     if args.command == "audit-manifest":
         return _audit_manifest_command(args)
+    if args.command == "freeze-manifest":
+        return _freeze_manifest_command(args)
+    if args.command == "verify-freeze":
+        return _verify_freeze_command(args)
+    if args.command == "assess-claim":
+        return _assess_claim_command(args)
     return _analyze_command(args)
 
 
@@ -247,3 +273,58 @@ def _audit_manifest_command(args: argparse.Namespace) -> int:
         return 2
     print(json.dumps(result, sort_keys=True))
     return 0
+
+
+def _freeze_manifest_command(args: argparse.Namespace) -> int:
+    try:
+        result = freeze_manifest(args.manifest, args.output, role=args.role)
+    except EvaluationError as error:
+        print(f"signum: error: {error}", file=sys.stderr)
+        return 2
+    print(
+        json.dumps(
+            {
+                "output": str(args.output.resolve()),
+                "freeze_id": result["freeze_id"],
+                "role": result["role"],
+                "profile_complete": result["audit"]["profile_complete"],
+            },
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
+def _verify_freeze_command(args: argparse.Namespace) -> int:
+    try:
+        result = verify_freeze(args.freeze)
+    except EvaluationError as error:
+        print(f"signum: error: {error}", file=sys.stderr)
+        return 2
+    print(json.dumps(result, sort_keys=True))
+    return 0 if result["valid"] else 1
+
+
+def _assess_claim_command(args: argparse.Namespace) -> int:
+    try:
+        result = assess_claim(args.comparison)
+    except EvaluationError as error:
+        print(f"signum: error: {error}", file=sys.stderr)
+        return 2
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(
+            json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+    print(
+        json.dumps(
+            {
+                "claim_supported": result["claim_supported"],
+                "claimable_baselines": result["claimable_baselines"],
+                "output": str(args.output.resolve()) if args.output else None,
+            },
+            sort_keys=True,
+        )
+    )
+    return 0 if result["claim_supported"] else 1

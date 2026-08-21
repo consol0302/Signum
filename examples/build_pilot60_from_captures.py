@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from collections import Counter
 from pathlib import Path
@@ -28,6 +29,14 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         required=True,
         help="directory containing the five Selenium dynamic-page captures",
+    )
+    parser.add_argument(
+        "--completion-captures",
+        type=Path,
+        help=(
+            "optional fixed Pilot completion captures containing four real rejected "
+            "actions and one successful action"
+        ),
     )
     parser.add_argument("--output", type=Path, default=Path("pilot60-output"))
     return parser.parse_args()
@@ -75,6 +84,127 @@ def action(
         "real_world_eligible": eligible,
         "notes": notes,
     }
+
+
+COMPLETION_CAPTURE_HASHES = {
+    "login-invalid/after-rejected.png": "fb8a90b6f5568bca76b741b45e3a17acb3b461c957054bba457eb59b7cfd3e1a",
+    "login-invalid/before-submit.png": "fc0435e9cd936f3cc37b2ed684c40c94a51e58e239d808b165ab7ba5704c3017",
+    "login-success/after-success.png": "4a873c2d684769d1a40d813a498dcddd3c3b3eb3c26b1867055a36242eb8cd15",
+    "login-success/before-submit.png": "2eaa12bca78c682b6cc5ff1d44f8e77df0aba6b9a4711c52214eb0f428e5bd9c",
+    "login-wrong-password/after-rejected.png": "ea69ddf2db403c68076823e14c02c8ecf5a9d47bf65de84abd4e541e3cbcce58",
+    "login-wrong-password/before-submit.png": "27731db89a131ce9d49b56a33a4272f6c16b7ac3153fb05b220fcbc590c22142",
+    "number-input-letters/after-rejected.png": "340b4d0a111ac327e62ef3eb39ba67644014c3ef18fc434cc5a93d62b7330841",
+    "number-input-letters/before-attempt.png": "340b4d0a111ac327e62ef3eb39ba67644014c3ef18fc434cc5a93d62b7330841",
+    "selenium-readonly/after-rejected.png": "c331e6f642c7c3f67cfe2c39d9a24dfc1c83270e2acdd65a34d845b3148a3556",
+    "selenium-readonly/before-attempt.png": "c331e6f642c7c3f67cfe2c39d9a24dfc1c83270e2acdd65a34d845b3148a3556",
+}
+
+
+def verify_completion_captures(root: Path) -> None:
+    for relative, expected in COMPLETION_CAPTURE_HASHES.items():
+        path = root / relative
+        if not path.is_file():
+            raise RuntimeError(f"missing fixed Pilot completion capture: {path}")
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if actual != expected:
+            raise RuntimeError(
+                f"Pilot completion capture hash changed: {relative}; "
+                f"expected {expected}, got {actual}"
+            )
+
+
+def completion_case_specs(root: Path) -> list[dict[str, Any]]:
+    failure_specs = (
+        (
+            "login-invalid-username",
+            "login-invalid",
+            "before-submit.png",
+            "after-rejected.png",
+            "submitted an invalid username and password",
+            "the secure area opens",
+            "username_invalid_error_visible",
+            "The public login form visibly rejects the invalid username.",
+            "https://the-internet.herokuapp.com/login",
+        ),
+        (
+            "login-wrong-password",
+            "login-wrong-password",
+            "before-submit.png",
+            "after-rejected.png",
+            "submitted the documented username with a wrong password",
+            "the secure area opens",
+            "password_invalid_error_visible",
+            "The public login form visibly rejects the wrong password.",
+            "https://the-internet.herokuapp.com/login",
+        ),
+        (
+            "selenium-readonly-rejected",
+            "selenium-readonly",
+            "before-attempt.png",
+            "after-rejected.png",
+            "attempted to replace the readonly input value",
+            "the readonly value changes",
+            "readonly_value_unchanged",
+            "The browser rejects the fill and the captured pixels remain identical.",
+            "https://www.selenium.dev/selenium/web/web-form.html",
+        ),
+        (
+            "number-letters-rejected",
+            "number-input-letters",
+            "before-attempt.png",
+            "after-rejected.png",
+            "attempted to enter letters into the number input",
+            "the number input contains the supplied letters",
+            "number_input_unchanged",
+            "The browser rejects the invalid value and the captured pixels remain identical.",
+            "https://the-internet.herokuapp.com/inputs",
+        ),
+    )
+    specs: list[dict[str, Any]] = []
+    for case_id, directory, before, after, verb, expected, state, notes, url in failure_specs:
+        specs.append(
+            {
+                "id": case_id,
+                "url": url,
+                "root": root / directory,
+                "goal": "Verify a real rejected browser action without claiming success.",
+                "states": [before, after],
+                "events": [
+                    action(
+                        case_id,
+                        1,
+                        "action_failure",
+                        verb,
+                        expected,
+                        state,
+                        notes,
+                        risk="high",
+                    )
+                ],
+            }
+        )
+    specs.append(
+        {
+            "id": "login-success-independent",
+            "url": "https://the-internet.herokuapp.com/login",
+            "root": root / "login-success",
+            "goal": "Verify that valid public test credentials open the secure area.",
+            "states": ["before-submit.png", "after-success.png"],
+            "events": [
+                action(
+                    "login-success-independent",
+                    1,
+                    "action_success",
+                    "submitted the documented valid credentials",
+                    "the secure area opens",
+                    "secure_area_visible",
+                    "The secure-area heading and success notification are visible.",
+                    risk="high",
+                )
+            ],
+        }
+    )
+    return specs
 
 
 def case_specs(captures: Path, selenium: Path) -> list[dict[str, Any]]:
@@ -334,6 +464,12 @@ def materialize_event(case_id: str, raw: dict[str, Any]) -> dict[str, Any]:
 def main() -> None:
     args = parse_args()
     specs = case_specs(args.captures.resolve(), args.selenium_frames.resolve())
+    completion_root = (
+        args.completion_captures.resolve() if args.completion_captures else None
+    )
+    if completion_root is not None:
+        verify_completion_captures(completion_root)
+        specs.extend(completion_case_specs(completion_root))
     args.output.mkdir(parents=True, exist_ok=True)
     manifest_cases = []
     category_counts: Counter[str] = Counter()
@@ -387,6 +523,21 @@ def main() -> None:
             ],
         },
     }
+    if completion_root is not None:
+        manifest["provenance"]["completion_capture_sha256"] = dict(
+            sorted(COMPLETION_CAPTURE_HASHES.items())
+        )
+        manifest["provenance"]["limitations"] = [
+            item
+            for item in manifest["provenance"]["limitations"]
+            if item != "The suite has 60 labels but only 55 independent source transitions."
+        ]
+        manifest["provenance"]["limitations"].extend(
+            [
+                "The five Pilot completion transitions were collected after the original audit exposed its deficits.",
+                "The completed Pilot is a development benchmark, not the larger held-out provider-comparison suite.",
+            ]
+        )
     manifest_path = args.output / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(

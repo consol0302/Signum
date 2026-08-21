@@ -33,6 +33,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", required=True)
     parser.add_argument("--method", choices=("signum", "uniform"), default="signum")
     parser.add_argument("--per-category", type=int, default=2)
+    parser.add_argument(
+        "--case-id",
+        action="append",
+        default=[],
+        help="select all eligible triggered events from this case instead of stratifying",
+    )
     parser.add_argument("--timeout", type=float, default=240.0)
     return parser.parse_args()
 
@@ -71,7 +77,45 @@ def output_schema(count: int) -> dict[str, Any]:
     }
 
 
-def choose_samples(evaluation: dict[str, Any], method: str, per_category: int) -> list[dict[str, Any]]:
+def choose_samples(
+    evaluation: dict[str, Any],
+    method: str,
+    per_category: int,
+    case_ids: list[str] | None = None,
+) -> list[dict[str, Any]]:
+    if case_ids:
+        requested = set(case_ids)
+        known = {case["id"] for case in evaluation["cases"]}
+        missing = sorted(requested - known)
+        if missing:
+            raise RuntimeError(f"unknown requested cases: {missing}")
+        selected: list[dict[str, Any]] = []
+        used_transitions: set[str] = set()
+        for case_id in case_ids:
+            case = next(row for row in evaluation["cases"] if row["id"] == case_id)
+            events = {event["id"]: event for event in case["events"]}
+            for match in case["methods"][method]["matches"]:
+                event = events[match["event_id"]]
+                if not match["triggered"] or not event.get("real_world_eligible", True):
+                    continue
+                transition = event.get("source_transition_id") or (
+                    f"{case['id']}/{event['id']}"
+                )
+                if transition in used_transitions:
+                    continue
+                selected.append(
+                    {
+                        "sample_id": f"{case['id']}::{event['id']}",
+                        "case": case,
+                        "event": event,
+                        "match": match,
+                    }
+                )
+                used_transitions.add(transition)
+        if not selected:
+            raise RuntimeError("requested cases have no eligible triggered events")
+        return selected
+
     selected: list[dict[str, Any]] = []
     counts: defaultdict[str, int] = defaultdict(int)
     used_transitions: set[str] = set()
@@ -191,7 +235,12 @@ def main() -> None:
     evaluation_path = args.evaluation.resolve()
     root = evaluation_path.parent
     evaluation = json.loads(evaluation_path.read_text(encoding="utf-8"))
-    samples = choose_samples(evaluation, args.method, args.per_category)
+    samples = choose_samples(
+        evaluation,
+        args.method,
+        args.per_category,
+        case_ids=args.case_id,
+    )
     attachments: list[tuple[str, str]] = []
     image_paths: list[Path] = []
     for sample in samples:
@@ -268,7 +317,11 @@ def main() -> None:
         "schema_version": 1,
         "evaluation": str(evaluation_path),
         "method": args.method,
-        "selection": "two eligible independent transitions per Pilot60 category",
+        "selection": (
+            {"case_ids": args.case_id}
+            if args.case_id
+            else {"per_category": args.per_category, "categories": list(CATEGORIES)}
+        ),
         "model": args.model,
         "calls": 1,
         "events": len(samples),

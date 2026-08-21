@@ -15,9 +15,18 @@ Also record false calls per minute, Codex calls per minute, prepared image bytes
 
 ## Priority 0: establish a real screen-recording benchmark
 
-The labeled replay evaluator, equal-budget uniform baseline, saved review artifacts, and human-review scoring contract are implemented. A local 60-label development suite now covers dialogs or messages, progress completion, disabled/enabled controls, small text changes, cursor or hover changes, scrolling, loading, and repeated HUD-like values. It has only 55 independent transitions and four constructed failed actions, so it remains an incomplete pilot rather than a real benchmark.
+The labeled replay evaluator, equal-budget uniform baseline, saved review
+artifacts, and human-review scoring contract are implemented. Four real
+rejected actions and one independent successful transition now extend the
+original local suite to 65 labels. It has 60 independent transitions and eight
+real eligible failed actions, so the Pilot profile passes.
 
-The next collection must add at least four real failed actions and five independent transitions, then freeze a held-out suite before tuning. No broad detection-success claim should be made before that suite and its blind review exist.
+The completed Pilot is frozen as `development` because its missing categories
+were known before collection. The next collection is a separate held-out suite
+of at least 180 events, 30 distinct workflow recordings, and 20 real failed
+actions. It must be frozen before tuning. The claim gate, integrity lock,
+cluster-bootstrap thresholds, and cost requirements are defined in
+[Comparative claim protocol](CLAIM_PROTOCOL.md).
 
 ## Priority 1: validate and tune small-region recall
 
@@ -49,4 +58,7 @@ The streaming gateway now separates CPU detection from semantic inference, retai
 
 ## Deferred
 
-Desktop capture, action execution, audio, databases, servers, non-Codex providers, neural detectors, and GPU acceleration remain outside the current milestone. They should not be added to compensate for an unmeasured detector.
+Desktop action execution, audio, databases, servers, neural detectors, and GPU
+acceleration remain outside the current milestone. External provider runners
+are permitted only as isolated benchmark adapters; they remain outside the
+deterministic core.

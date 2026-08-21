@@ -38,8 +38,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--method", choices=("signum", "uniform"), default="signum")
     parser.add_argument("--per-category", type=int, default=2)
+    parser.add_argument(
+        "--case-id",
+        action="append",
+        default=[],
+        help="select all eligible triggered events from this case instead of stratifying",
+    )
     parser.add_argument("--timeout", type=float, default=240.0)
     parser.add_argument("--endpoint")
+    parser.add_argument("--input-usd-per-million", type=float)
+    parser.add_argument("--output-usd-per-million", type=float)
+    parser.add_argument("--cached-input-usd-per-million", type=float)
+    parser.add_argument("--cache-write-usd-per-million", type=float)
+    parser.add_argument("--pricing-source")
+    parser.add_argument("--pricing-accessed-at")
     return parser.parse_args()
 
 
@@ -47,7 +59,12 @@ def collect(args: argparse.Namespace) -> tuple[list[dict[str, Any]], list[tuple[
     evaluation_path = args.evaluation.resolve()
     root = evaluation_path.parent
     evaluation = json.loads(evaluation_path.read_text(encoding="utf-8"))
-    samples = choose_samples(evaluation, args.method, args.per_category)
+    samples = choose_samples(
+        evaluation,
+        args.method,
+        args.per_category,
+        case_ids=args.case_id,
+    )
     attachments: list[tuple[str, str]] = []
     images: list[Path] = []
     for sample in samples:
@@ -174,6 +191,60 @@ def parse_output(provider: str, response: dict[str, Any]) -> tuple[dict[str, Any
     return json.loads(text), normalized_usage
 
 
+def estimate_cost(args: argparse.Namespace, usage: dict[str, Any]) -> float | None:
+    rates = (
+        args.input_usd_per_million,
+        args.output_usd_per_million,
+        args.cached_input_usd_per_million,
+        args.cache_write_usd_per_million,
+    )
+    if any(rate is not None and rate < 0 for rate in rates):
+        raise RuntimeError("pricing rates must be non-negative")
+    if args.input_usd_per_million is None or args.output_usd_per_million is None:
+        return None
+    output_tokens = int(usage.get("output_tokens") or 0)
+    if args.provider == "openai":
+        input_tokens = int(usage.get("input_tokens") or 0)
+        cached_tokens = int(usage.get("cached_input_tokens") or 0)
+        if cached_tokens and args.cached_input_usd_per_million is None:
+            return None
+        cost = (
+            max(0, input_tokens - cached_tokens) * args.input_usd_per_million
+            + cached_tokens
+            * (
+                args.cached_input_usd_per_million
+                if args.cached_input_usd_per_million is not None
+                else args.input_usd_per_million
+            )
+            + output_tokens * args.output_usd_per_million
+        )
+    else:
+        input_tokens = int(usage.get("input_tokens") or 0)
+        cache_write_tokens = int(usage.get("cache_creation_input_tokens") or 0)
+        cache_read_tokens = int(usage.get("cache_read_input_tokens") or 0)
+        if cache_write_tokens and args.cache_write_usd_per_million is None:
+            return None
+        if cache_read_tokens and args.cached_input_usd_per_million is None:
+            return None
+        cost = (
+            input_tokens * args.input_usd_per_million
+            + cache_write_tokens
+            * (
+                args.cache_write_usd_per_million
+                if args.cache_write_usd_per_million is not None
+                else args.input_usd_per_million
+            )
+            + cache_read_tokens
+            * (
+                args.cached_input_usd_per_million
+                if args.cached_input_usd_per_million is not None
+                else args.input_usd_per_million
+            )
+            + output_tokens * args.output_usd_per_million
+        )
+    return cost / 1_000_000
+
+
 def main() -> None:
     args = parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
@@ -187,9 +258,11 @@ def main() -> None:
             "reason": f"{key_environment} is not set",
             "provider": args.provider,
             "model": args.model,
+            "comparison_mode": "controlled_vision",
             "evaluation": str(args.evaluation.resolve()),
             "method": args.method,
             "per_category": args.per_category,
+            "case_ids": args.case_id,
         }
         status_path.write_text(json.dumps(status, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         print(json.dumps(status, sort_keys=True))
@@ -212,6 +285,13 @@ def main() -> None:
         args.timeout,
     )
     output, usage = parse_output(args.provider, response)
+    estimated_cost = estimate_cost(args, usage)
+    if estimated_cost is not None and (
+        not args.pricing_source or not args.pricing_accessed_at
+    ):
+        raise RuntimeError(
+            "priced runs require --pricing-source and --pricing-accessed-at"
+        )
     observations = output.get("observations")
     expected = [sample["sample_id"] for sample in samples]
     actual = [row.get("sample_id") for row in observations or []]
@@ -222,15 +302,47 @@ def main() -> None:
         "status": "completed",
         "provider": args.provider,
         "model": args.model,
+        "comparison_mode": "controlled_vision",
         "evaluation": str(args.evaluation.resolve()),
         "method": args.method,
         "events": len(samples),
+        "selection": (
+            {"case_ids": args.case_id}
+            if args.case_id
+            else {"per_category": args.per_category}
+        ),
         "latency_seconds": time.perf_counter() - started,
         "usage": usage,
+        "estimated_cost_usd": estimated_cost,
+        "pricing": {
+            "basis": "published_api_price" if estimated_cost is not None else None,
+            "source": args.pricing_source,
+            "accessed_at": args.pricing_accessed_at,
+            "input_usd_per_million": args.input_usd_per_million,
+            "output_usd_per_million": args.output_usd_per_million,
+            "cached_input_usd_per_million": args.cached_input_usd_per_million,
+            "cache_write_usd_per_million": args.cache_write_usd_per_million,
+        },
         "observations": observations,
     }
     status_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps({key: report[key] for key in ("status", "provider", "model", "events", "latency_seconds", "usage")}, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                key: report[key]
+                for key in (
+                    "status",
+                    "provider",
+                    "model",
+                    "events",
+                    "latency_seconds",
+                    "usage",
+                    "estimated_cost_usd",
+                )
+            },
+            sort_keys=True,
+        )
+    )
 
 
 if __name__ == "__main__":

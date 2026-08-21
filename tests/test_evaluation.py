@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -17,6 +18,7 @@ from signum.evaluation import (
     score_reviews,
 )
 from signum.gateway import GatewayConfig, PerceptionEvent, SemanticResult
+from signum.freeze import freeze_manifest, verify_freeze
 from signum.synthetic import generate_suite
 
 
@@ -88,6 +90,28 @@ class EvaluationTests(unittest.TestCase):
             self.assertTrue(
                 (output / "cases" / "brief-flash" / method / "observations.json").is_file()
             )
+
+    def test_freeze_detects_changed_video(self) -> None:
+        video = self.root / "freeze-video.avi"
+        shutil.copyfile(self.flash_video, video)
+        manifest = self._manifest("freeze-case")
+        payload = json.loads(manifest.read_text(encoding="utf-8"))
+        payload["cases"][0]["video"] = str(video)
+        manifest.write_text(json.dumps(payload), encoding="utf-8")
+        lock_path = self.root / "freeze.json"
+
+        frozen = freeze_manifest(manifest, lock_path, role="development")
+        self.assertEqual("development", frozen["role"])
+        self.assertTrue(verify_freeze(lock_path)["valid"])
+
+        with video.open("ab") as handle:
+            handle.write(b"changed")
+        verified = verify_freeze(lock_path)
+        self.assertFalse(verified["valid"])
+        video_check = next(
+            row for row in verified["checks"] if row["kind"] == "video:freeze-case"
+        )
+        self.assertFalse(video_check["valid"])
 
     def test_human_review_produces_end_to_end_success_rate(self) -> None:
         output = self.root / "reviewed-evaluation"
