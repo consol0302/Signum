@@ -62,6 +62,14 @@ active-timeout, and smaller local-component experiments did not improve the
 tradeoff and were rejected. Because this suite was used to choose the setting,
 it is not the final held-out claim suite.
 
+The repository now includes a method-blind ground-truth workflow for the next
+fresh suite. `examples/build_ground_truth_review_packet.py` randomizes the
+frozen before/after evidence and keeps case identities in a coordinator-only
+mapping. Two independent reviewers complete every verdict before any method is
+run; `examples/compare_ground_truth_reviews.py` sends every disagreement or
+negative verdict to adjudication. This protects the labels from detector and
+provider-output leakage, but it does not itself establish a comparative claim.
+
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 
 ## Install

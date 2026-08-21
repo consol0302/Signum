@@ -6,11 +6,12 @@ Any workflow inspected while changing detector thresholds belongs in a new
 development set instead.
 
 The v2 lock bound the development-validated collector plus all 30 action files,
-but its one-shot collection produced only 19 valid captures. Those files and
-the failure summary remain tracked as chronological evidence and must not be
-rewritten. The next authoritative pre-collection lock is
-`benchmark-protocol/claim180-preregistration-v3.json`. It binds an ordered pool
-of 45 new candidates and requires the first 30 independently valid captures.
+but its one-shot collection produced only 19 valid captures. V3 plus its locked
+supplement produced an exact 180-event composite, which was then used to select
+the one-stable-frame detector setting. Both suites are now development or
+validation evidence and must not be rewritten or relabeled as final held-out
+evidence. A new authoritative pre-collection lock is required for the final
+claim suite.
 
 ## Fixed distribution
 
@@ -67,6 +68,18 @@ evidence/budget policies.
 - Do not run Signum, uniform, Codex, OpenAI, or Claude on the held-out videos
   until collection and labels are complete.
 - Document capture or labeling failures. Do not silently delete hard cases.
+
+Before any method run, generate a method-blind ground-truth review packet from
+the frozen before/after source frames. Give `packet.json`, its `evidence/`
+directory, and one reviewer HTML/JSON template to each of two independent
+reviewers. Keep `mapping.json` coordinator-only because it contains case and
+transition identities. Reviewers must complete every visibility, category,
+expected-state, and frame-order verdict without seeing detector or provider
+outputs. Compare their completed files with
+`examples/compare_ground_truth_reviews.py`; disagreements require adjudication
+and may not be silently accepted. If adjudication changes labels after a method
+output has been seen, the suite is development evidence and a new held-out
+collection is required.
 
 Then run:
 
