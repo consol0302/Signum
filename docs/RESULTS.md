@@ -216,3 +216,21 @@ evidence and observation-budget policies. Its acquisition lock id is
 `47b7d0f2f69164fe5362e345ddbf19821022147830314717e063235a0133b7c5`.
 The lock was recomputed independently from the published plan with an identical
 id. The one-shot supplement collection has not started yet.
+
+The locked one-shot supplement collection is now complete. All 52 planned
+cases were attempted once, in order, without replacement or retry. Independent
+verification found 48 valid captures, three invalid captures, one startup
+failure, no missing cases, and no unverified captures. The invalid cases were
+`s1-07-qa-dynamic-dropdown`, `s1-12-expand-hidden`, and
+`s1-52-qa-api-error-repeat`; each exceeded the frozen maximum frame gap. Case
+`s1-13-expand-rendered` failed during the initial page navigation timeout.
+
+The preregistered first-valid rule selected exactly 18 loading-completion and
+19 action-failure events. The selected loading cases skip invalid cases 7 and
+12 plus startup-failed case 13 and end at case 21. The first 19 failure cases,
+cases 27 through 45, were all independently valid. The collection summary is
+complete and has reproducible id
+`355c99a227b3a893d47ef4b3dfcffd769a0603f73fc2925c99552a4f42057390`.
+No model output was seen before or during selection. The result closes the
+mechanical 37-event deficit, but the combined 180-event manifest still requires
+human review before comparative runs can support a claim.

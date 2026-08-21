@@ -1,0 +1,1972 @@
+{
+  "cases": [
+    {
+      "capture_artifact": {
+        "bytes": 65109,
+        "path": "s1-01-qa-delayed-element/capture.json",
+        "sha256": "e384067e4acdb3c139504ec34250dadcf01a2818394fd64448ce15bf378f8e19"
+      },
+      "case_id": "s1-01-qa-delayed-element",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the delayed element becomes visible",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 3.5293775999999997,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1065246000000006
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 128136,
+        "path": "s1-01-qa-delayed-element/verification.json",
+        "sha256": "f1cdbb31c07ce27ffb040a138d738cdcc4d09eef248b26190f92a64138db71e4"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65235,
+        "path": "s1-02-qa-loaded-content/capture.json",
+        "sha256": "fb61bc2264ebf81081d5803e4c61e7ec3dcc619b40aef9375013f595b005fc12"
+      },
+      "case_id": "s1-02-qa-loaded-content",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the asynchronously loaded content appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 1.1122787000000025,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.104861100000002
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 128051,
+        "path": "s1-02-qa-loaded-content/verification.json",
+        "sha256": "c57b9ed5312a88de3fa7e9893fbf39a3a69941c874f3d6dbb6c12e3f846449d8"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65142,
+        "path": "s1-03-qa-spinner/capture.json",
+        "sha256": "c0b9355d1f870c8946831f98ecab2bdb0bf056490fca1ccdec04a1a9f04172da"
+      },
+      "case_id": "s1-03-qa-spinner",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the spinner is replaced by its loaded result",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 1.1069068000000006,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1038231000000014
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 126666,
+        "path": "s1-03-qa-spinner/verification.json",
+        "sha256": "e835bfc5c641f3b2030c46fce99ae91429e70559b7797f5bc1557745353cf003"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65139,
+        "path": "s1-04-qa-three-second-wait/capture.json",
+        "sha256": "9967074ffe9d99fbba3e4aaea96faea557d8ff91c7c681c7f0bc952a52b1a1e2"
+      },
+      "case_id": "s1-04-qa-three-second-wait",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the three-second delayed element becomes visible",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 4.495791799999999,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.0995168999999987
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 128513,
+        "path": "s1-04-qa-three-second-wait/verification.json",
+        "sha256": "06f1de70080523947b2179248fc9a10e04e9d937634ee72fc1a4d541707d0654"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65054,
+        "path": "s1-05-qa-progress/capture.json",
+        "sha256": "8aab3c8e6ead6b4f1f8a30fd05e49a6d01a30463663765afca17ad6df87ed560"
+      },
+      "case_id": "s1-05-qa-progress",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the progress display reaches 100% complete",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 5.0161361,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1016170999999995
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 126803,
+        "path": "s1-05-qa-progress/verification.json",
+        "sha256": "e6929103e247babcfe05caf44036249cfa2ba041dd47f2e1b9adbfb5bc358ee5"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65146,
+        "path": "s1-06-qa-delayed-text/capture.json",
+        "sha256": "0ef67892124b609afe4ec6be074fa6f0d3657bba0e145d61c730c4777f31cd4e"
+      },
+      "case_id": "s1-06-qa-delayed-text",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the delayed replacement text appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 3.552906000000003,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1036654000000017
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 127615,
+        "path": "s1-06-qa-delayed-text/verification.json",
+        "sha256": "976bf219959ed2a692f1f5891c12f81cf96c5c884a86ee0741a94f09f0a43e4f"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 45806,
+        "path": "s1-07-qa-dynamic-dropdown/capture.json",
+        "sha256": "6bf9e40feae74d0260007ec806e54276a471c02703667a5f6c7450980e4e8b8a"
+      },
+      "case_id": "s1-07-qa-dynamic-dropdown",
+      "category": "loading_completion",
+      "collection_status": "invalid",
+      "eligible_for_selection": false,
+      "expected_result": "the dynamic dropdown reports five loaded options",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "maximum frame gap exceeds the frozen capture limit"
+      ],
+      "policy_valid": false,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 3.735267499999998,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1012868999999992
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 89559,
+        "path": "s1-07-qa-dynamic-dropdown/verification.json",
+        "sha256": "5554e1413beb74b025f2aefd0d5717cddf18a6e673df21872ffc402395725294"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65163,
+        "path": "s1-08-qa-delayed-enable/capture.json",
+        "sha256": "f4a1e374182631c29bb6907d11af766c8cecce5973787a48929c7ac21a1a03a3"
+      },
+      "case_id": "s1-08-qa-delayed-enable",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the delayed button enablement confirmation appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 4.112652399999999,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1107092999999986
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 127978,
+        "path": "s1-08-qa-delayed-enable/verification.json",
+        "sha256": "b0115e6f2dc0595b91f76a00983b30e2b6860578c50e7df98c323e6d9beec3f3"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65163,
+        "path": "s1-09-qa-api-fast/capture.json",
+        "sha256": "4a98599eb365eed699f31ebb9f8e15896801709c8d46a19b09070545923ff663"
+      },
+      "case_id": "s1-09-qa-api-fast",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the fast API success response appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 1.942596300000001,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1062162000000026
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 126886,
+        "path": "s1-09-qa-api-fast/verification.json",
+        "sha256": "f5f37059ff4d1704723528aab33a18ed91d6d7521b64635b195e0f344d613fdf"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65153,
+        "path": "s1-10-qa-api-medium/capture.json",
+        "sha256": "a78cbd4b13b333e90cf4b19d8d35c4d5cb7de562ddb642377ce60257396ac48f"
+      },
+      "case_id": "s1-10-qa-api-medium",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the medium API success response appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 3.5353619,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.113403199999997
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 127230,
+        "path": "s1-10-qa-api-medium/verification.json",
+        "sha256": "bbf0678088c536cffee57b7c41192045a29c613127fd40ae792ed79a6eb10fb7"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 75530,
+        "path": "s1-11-qa-api-slow/capture.json",
+        "sha256": "d7a47d13bb1e09244fe6c034b1890104c2dad718e7099581898a80b7a3c8e5af"
+      },
+      "case_id": "s1-11-qa-api-slow",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the slow API success response appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 6.1312492999999995,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1138848999999973
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 147499,
+        "path": "s1-11-qa-api-slow/verification.json",
+        "sha256": "2443471070e568dd70b434076dc5d057b3b745f68bacac05c3a302f315bee6cf"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65242,
+        "path": "s1-12-expand-hidden/capture.json",
+        "sha256": "8e61459efb39c57033290a44bd0514a82b9b2fa6ee717a4ba08942fa9727e5ae"
+      },
+      "case_id": "s1-12-expand-hidden",
+      "category": "loading_completion",
+      "collection_status": "invalid",
+      "eligible_for_selection": false,
+      "expected_result": "the previously hidden Hello World result becomes visible",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "maximum frame gap exceeds the frozen capture limit"
+      ],
+      "policy_valid": false,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 6.249420900000001,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.2125084000000024
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 127357,
+        "path": "s1-12-expand-hidden/verification.json",
+        "sha256": "7191ad74dcbb7c8ddf652c0fcf10aecee6ac32a76b4d83fd65dcc5beb00297d3"
+      }
+    },
+    {
+      "case_id": "s1-13-expand-rendered",
+      "category": "loading_completion",
+      "collection_status": "startup_failed",
+      "eligible_for_selection": false,
+      "failure": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://practice.expandtesting.com/dynamic-loading/2\", waiting until \"domcontentloaded\"\u001b[22m\n",
+      "failure_artifact": {
+        "bytes": 1093,
+        "path": "s1-13-expand-rendered/failure.json",
+        "sha256": "33c4052406b5fd9cd8c3a3ad619557883ec50e675acdebe383cfe266d43bcb66"
+      },
+      "target_action_id": "completion"
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65239,
+        "path": "s1-14-expand-remove/capture.json",
+        "sha256": "a7888bece3e1c568c0584814c72bbaccd062b87fb9e6607c8f990859b26bef74"
+      },
+      "case_id": "s1-14-expand-remove",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the removal confirmation appears after the checkbox disappears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 4.523094199999999,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.099572400000001
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 127218,
+        "path": "s1-14-expand-remove/verification.json",
+        "sha256": "1a051d9f93fae71a67c10fe4064fbd0578772856e95dab9c76562a8652f6c9da"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65232,
+        "path": "s1-15-expand-enable/capture.json",
+        "sha256": "6951f3d79f62302f495843281cc7b595dc346e683e6d28f411f8802e05ca6330"
+      },
+      "case_id": "s1-15-expand-enable",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the input-enabled confirmation appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 4.487313999999999,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1006506999999983
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 127246,
+        "path": "s1-15-expand-enable/verification.json",
+        "sha256": "5515ab250f85f0a5c899791f4b134ea574e155a77b7c8434a10eee95d7375b15"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 44396,
+        "path": "s1-16-selenium-add/capture.json",
+        "sha256": "6400087bc1071f29fe60ae29587b1c8771a4b2c3bc82d0e27a5b748be7412927"
+      },
+      "case_id": "s1-16-selenium-add",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the delayed red box is added to the page",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 2.429801300000003,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1025106000000013
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 85498,
+        "path": "s1-16-selenium-add/verification.json",
+        "sha256": "e2173749d86f292868372e97c9613b05db383947dc9e801ab715bfd2686bc39e"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 44385,
+        "path": "s1-17-selenium-reveal/capture.json",
+        "sha256": "a6cbe7e3a508f7ff870bea847c1a107c02b456730c8fb88fbf207516c814198b"
+      },
+      "case_id": "s1-17-selenium-reveal",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the delayed input becomes visible",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 2.4381669,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1054547999999995
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 85885,
+        "path": "s1-17-selenium-reveal/verification.json",
+        "sha256": "8fbfd3a1c1d83d37f58461ccb888529429765ce6c84f620f8b89aec1a7c546dd"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 86549,
+        "path": "s1-18-practice-liftoff/capture.json",
+        "sha256": "2f7524a028115b67984be4e9c586e86847f243abae1af56fbfe013a93d32501e"
+      },
+      "case_id": "s1-18-practice-liftoff",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the countdown finishes with Liftoff",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 11.151025100000002,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1071630000000006
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 170451,
+        "path": "s1-18-practice-liftoff/verification.json",
+        "sha256": "eb3af4a212fe59b4afb84a51305a181c05a38d8e254546ad5aa9779f49b3d69a"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 86045,
+        "path": "s1-19-demoqa-progress/capture.json",
+        "sha256": "0be274c993e23182c983712c32d8fd991c184199c152114924d4f351aaf71514"
+      },
+      "case_id": "s1-19-demoqa-progress",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the progress bar reaches 100% and exposes Reset",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 11.185817600000002,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1084228999999977
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 169220,
+        "path": "s1-19-demoqa-progress/verification.json",
+        "sha256": "409d41dc2439f6018b6262b2ff39ea3479ab98bca32ff9e96a7c24070d7cc24d"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 54399,
+        "path": "s1-20-demoqa-visible/capture.json",
+        "sha256": "f297e6676979f5fa70f35898a1ceec4629f6c00882a1ef5e5af2d4e0a8e159ec"
+      },
+      "case_id": "s1-20-demoqa-visible",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the Visible After control appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 4.9148665000000005,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 0.5,
+        "started_at_seconds": 0.5057222000000001
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 106697,
+        "path": "s1-20-demoqa-visible/verification.json",
+        "sha256": "f98316a8af092ff47ca21dc3d7e0533c4ce28931fa0a7c54bb5a6407b881d060"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65132,
+        "path": "s1-21-qa-delayed-element-repeat/capture.json",
+        "sha256": "8e648c702ce0c6ac8cebecbc77a6a6e85b9b04e216130b88257937ae29739e76"
+      },
+      "case_id": "s1-21-qa-delayed-element-repeat",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the delayed element becomes visible",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 3.514535100000001,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1033384000000006
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 129433,
+        "path": "s1-21-qa-delayed-element-repeat/verification.json",
+        "sha256": "9457bf299ecc7e953a7cdc731392a688b639909368d6f8374aff89c257623dc5"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65213,
+        "path": "s1-22-qa-spinner-repeat/capture.json",
+        "sha256": "1c7a119dac191b2a3bbf33e810747ccafa2bbd480baa3186be1192c193ff7ced"
+      },
+      "case_id": "s1-22-qa-spinner-repeat",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the spinner is replaced by its loaded result",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 1.1094020999999994,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1053891999999979
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 127993,
+        "path": "s1-22-qa-spinner-repeat/verification.json",
+        "sha256": "b3aa6493041fa518d133e3e1a01316283258d2393c2fe5e477930a73a42d0cc8"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65186,
+        "path": "s1-23-qa-progress-repeat/capture.json",
+        "sha256": "df004f8e95e8432fd9c962f526f906e7a020d07993765c6aae1fc2470368e441"
+      },
+      "case_id": "s1-23-qa-progress-repeat",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the progress display reaches 100% complete",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 5.722939900000001,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.101252800000002
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 128165,
+        "path": "s1-23-qa-progress-repeat/verification.json",
+        "sha256": "19d5b7eab8c39674fc4b9165d7af67e05ea5e0923bb1b3ed2bed93fbd98a6b09"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 44453,
+        "path": "s1-24-selenium-add-repeat/capture.json",
+        "sha256": "ec258213d0c623aae28795b5a66704825804739f93eb6c57fb105b9339612705"
+      },
+      "case_id": "s1-24-selenium-add-repeat",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the delayed red box is added to the page",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 2.431357499999998,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.104513799999997
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 86381,
+        "path": "s1-24-selenium-add-repeat/verification.json",
+        "sha256": "109eb82f3de458d7d58bb7e400004ead529b6d5003fe8ed81e71486757098db3"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 86017,
+        "path": "s1-25-demoqa-progress-repeat/capture.json",
+        "sha256": "ce26c314df45da80cb13246ccd29590f7117bf9b549e63d4ac31ae6a7808f18f"
+      },
+      "case_id": "s1-25-demoqa-progress-repeat",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the progress bar reaches 100% and exposes Reset",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 11.122782700000004,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1068251000000018
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 170882,
+        "path": "s1-25-demoqa-progress-repeat/verification.json",
+        "sha256": "dd5fa840aeaade07342dac9c7d71c9c2bb6193ce355f6da093a92d7c030cd5cd"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 65278,
+        "path": "s1-26-expand-hidden-repeat/capture.json",
+        "sha256": "1cba919626e26f7eae832873e28d8e1b63285366d4eb3ef7a47cedeacdca23d0"
+      },
+      "case_id": "s1-26-expand-hidden-repeat",
+      "category": "loading_completion",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the previously hidden Hello World result becomes visible",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "completion",
+      "target_anchor": {
+        "completed_at_seconds": 6.476665000000001,
+        "expected_outcome": "success",
+        "scheduled_at_seconds": 1.1,
+        "started_at_seconds": 1.1002064000000027
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 128500,
+        "path": "s1-26-expand-hidden-repeat/verification.json",
+        "sha256": "31a08ec9ea3588f40b51093440b5fa3c93c2597db77c8f03695ca9eba28e062c"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49560,
+        "path": "s1-27-sauce-missing-username/capture.json",
+        "sha256": "ec8964081d4f9d7ae9d2ec386a929119f47f3337cdb6a47b91cfeb8375f185ad"
+      },
+      "case_id": "s1-27-sauce-missing-username",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the Username is required error appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.051347600000001,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0090315000000007
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 97395,
+        "path": "s1-27-sauce-missing-username/verification.json",
+        "sha256": "a0799d32850f10475c2aa54da89352a9980ad4de71783875b09fcf2d2fc844c7"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49602,
+        "path": "s1-28-sauce-missing-password/capture.json",
+        "sha256": "7ef29cf30e8bcc45d0682d188632565d2be2115b7a268c92e77cb9a76ab4e7d9"
+      },
+      "case_id": "s1-28-sauce-missing-password",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the Password is required error appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.046462299999999,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0067181999999995
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 97441,
+        "path": "s1-28-sauce-missing-password/verification.json",
+        "sha256": "d9609ee8f8abb522e4a2edb44677fd906b05d5026cbea9b711e020e41bcac640"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50059,
+        "path": "s1-29-sauce-bad-username/capture.json",
+        "sha256": "8e3de812268f8707528629b469fb4c5de16db7b7a73e4db6fc9444b8be2fbc34"
+      },
+      "case_id": "s1-29-sauce-bad-username",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the username/password mismatch error appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0434402999999985,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0034389999999984
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 96930,
+        "path": "s1-29-sauce-bad-username/verification.json",
+        "sha256": "0382f3f25c02a1155ff6d5f1466f68cf5ef0d035c183f3cd45f97f3ca9d327cc"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50095,
+        "path": "s1-30-sauce-bad-password/capture.json",
+        "sha256": "88457ba45324a5e463f04b6e24802d80976eb73a53411df4e1434ea47fdf6145"
+      },
+      "case_id": "s1-30-sauce-bad-password",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the username/password mismatch error appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0624456999999965,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.011639799999997
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 96963,
+        "path": "s1-30-sauce-bad-password/verification.json",
+        "sha256": "205d253651d15424238a12f857cf4b5239ee6d2168aced0ee0c0fcaf93de3f83"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49711,
+        "path": "s1-31-sauce-locked-user/capture.json",
+        "sha256": "4059693c7ebdf548d52caf310a9bb15a7289896319bec414c7a2129bf3624fa2"
+      },
+      "case_id": "s1-31-sauce-locked-user",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the locked-out user error appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.045952699999998,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0026621999999987
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 96089,
+        "path": "s1-31-sauce-locked-user/verification.json",
+        "sha256": "0429f903d6ae51ac3e9286e94bfdd832bc7aa7e7584aef2e71cd48c6e55ab61b"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49188,
+        "path": "s1-32-sauce-empty/capture.json",
+        "sha256": "318b95e5b9743da7bab0a0c69bc29f366a8f9264daa3d8b77ef824d7579b1873"
+      },
+      "case_id": "s1-32-sauce-empty",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the Username is required error appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.062927800000001,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0030910000000004
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 95858,
+        "path": "s1-32-sauce-empty/verification.json",
+        "sha256": "7e61ef4f9fdf49a0edd625fca91716f0c00fca88b53df3c15ca3dc4ce7ce3e37"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49131,
+        "path": "s1-33-qa-empty/capture.json",
+        "sha256": "9dcd32c6b737e52f278c25b860438142e65df2d0a003bc07ce0dcdd11f9fcf3d"
+      },
+      "case_id": "s1-33-qa-empty",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0981697999999995,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0145782999999975
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 95393,
+        "path": "s1-33-qa-empty/verification.json",
+        "sha256": "8a3ef1fcfbfe6d0f15660815162a51dad8e42b324cfc172b485746a56d388d26"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49603,
+        "path": "s1-34-qa-missing-password/capture.json",
+        "sha256": "9ea6454df1f742cb24d229c9c21e6543f14161807d9b5d33c9931e252e0c729c"
+      },
+      "case_id": "s1-34-qa-missing-password",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0640026,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0128443999999983
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 97008,
+        "path": "s1-34-qa-missing-password/verification.json",
+        "sha256": "d4bf325f7cfa894365aead6b055de0d48317ee759884242ea159a34a887e6feb"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49555,
+        "path": "s1-35-qa-missing-username/capture.json",
+        "sha256": "73c1d017cdeb900f040cd0b9c440b74f3db504b168976d83429998e558ddaf70"
+      },
+      "case_id": "s1-35-qa-missing-username",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0607550000000012,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0048575999999994
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 96965,
+        "path": "s1-35-qa-missing-username/verification.json",
+        "sha256": "7c198052cb61c03072dd439f241b8bbe62ce3bec20d939502f45f5afd757a130"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50039,
+        "path": "s1-36-qa-bad-both/capture.json",
+        "sha256": "1b255f26156157229fc61abb1232ce2f038bda1edf2543137ce11e89b59c8972"
+      },
+      "case_id": "s1-36-qa-bad-both",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.058998599999999,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.000368599999998
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 95924,
+        "path": "s1-36-qa-bad-both/verification.json",
+        "sha256": "b21548c5012113ebc9c70bab1111ca624bd7364e1f612f5b8fb139218a6c2216"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50089,
+        "path": "s1-37-qa-bad-username/capture.json",
+        "sha256": "4649aa8089c1f42f69ddeb29db71ca06dfb5a293c9f4c6c3fbb1f2deb0fa7521"
+      },
+      "case_id": "s1-37-qa-bad-username",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0681192999999984,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.013510699999999
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 96523,
+        "path": "s1-37-qa-bad-username/verification.json",
+        "sha256": "4af3e90a5ec0e1f3c7ec03fee6600dc21b8cb8f3beb825f4850ffc88844e1c04"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50051,
+        "path": "s1-38-qa-bad-password/capture.json",
+        "sha256": "a0e013d21621e50395405f51f7c66faca4d72c80e7bdddd01d5c37f206a68b52"
+      },
+      "case_id": "s1-38-qa-bad-password",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0850555999999996,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0158676000000013
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 96492,
+        "path": "s1-38-qa-bad-password/verification.json",
+        "sha256": "e4db84344466faf87b4f636bc2991c45ef305a00d6ea83decd5653efff29184c"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 59944,
+        "path": "s1-39-qa-api-error/capture.json",
+        "sha256": "0e4eefd81ce9303dafccfc70f2b6b149bdcaf472f5de50febff1b324a1b9e482"
+      },
+      "case_id": "s1-39-qa-api-error",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the simulated API exposes its visible 500 error",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.917508099999999,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0011516999999985
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 116697,
+        "path": "s1-39-qa-api-error/verification.json",
+        "sha256": "3e775f1671eb954e230f3430cd64a0270923c5fcb3361f0ae5bb8d91c36016f7"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49299,
+        "path": "s1-40-expand-form-empty/capture.json",
+        "sha256": "dba74da68a2c46a4204b663bfa49df93374b9e2ab9c656857f878dcf1a1bdc0f"
+      },
+      "case_id": "s1-40-expand-form-empty",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "required-field errors are visible and registration is rejected",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0735590000000013,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0021977000000004
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 96758,
+        "path": "s1-40-expand-form-empty/verification.json",
+        "sha256": "db86ae1993d2c113b90cfabdbc55317ccc473b4ed1bf5593cde91ef1631cc695"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50186,
+        "path": "s1-41-expand-form-phone/capture.json",
+        "sha256": "e9cc3f0b54e48c280e18122ab5df5da1a947d11415d0e7cb9d8c8cae55cb3125"
+      },
+      "case_id": "s1-41-expand-form-phone",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the invalid contact-number state remains visible",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0675643999999993,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0042958
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 96968,
+        "path": "s1-41-expand-form-phone/verification.json",
+        "sha256": "be5ae81cc9e18aced613e2bf97d14ca465fb006df59c13979c894472a673a9a2"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50511,
+        "path": "s1-42-expand-form-date/capture.json",
+        "sha256": "72387db0998101986c3bfcdecb8618a38382a38d2dfd234fa5b1d4f60278070d"
+      },
+      "case_id": "s1-42-expand-form-date",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the missing pickup-date error remains visible",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.3108863000000017,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2.25,
+        "started_at_seconds": 2.263890599999999
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 96650,
+        "path": "s1-42-expand-form-date/verification.json",
+        "sha256": "c6ef33c82089b50f189636793e32452753ccf4187efc6efc3d5c63f290fd464c"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50548,
+        "path": "s1-43-expand-form-payment/capture.json",
+        "sha256": "2f675b3ad6bc2155e1c58af6e924d7563a861c5df7890eaf8689c1268222a5f5"
+      },
+      "case_id": "s1-43-expand-form-payment",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the missing payment-method error remains visible",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.312461599999999,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2.25,
+        "started_at_seconds": 2.2639201999999967
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 97099,
+        "path": "s1-43-expand-form-payment/verification.json",
+        "sha256": "aab26caa7d57f2e750051e77d7e34fb96e80b440be96f0c43296f1f0972ca13b"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 54373,
+        "path": "s1-44-demoqa-required/capture.json",
+        "sha256": "6a424b3b2782e890f16f2dfc874fee3ec81926e24f18776fa3137dd52eea25b4"
+      },
+      "case_id": "s1-44-demoqa-required",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the required fields are marked invalid and no submission dialog opens",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.084350300000002,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0116113000000007
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 106751,
+        "path": "s1-44-demoqa-required/verification.json",
+        "sha256": "c8be097f99aaa67841d45d174ee011e3a748d32652832d6101bfe0a3852128e5"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 60512,
+        "path": "s1-45-practice-login-password/capture.json",
+        "sha256": "0f1107a59810d1d5e0c248ce0c6dd98d64af6e7d2685b0ad4a1cef5d33ab4ae1"
+      },
+      "case_id": "s1-45-practice-login-password",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the Your password is invalid error is visible",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0426728999999977,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0049475999999995
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 118573,
+        "path": "s1-45-practice-login-password/verification.json",
+        "sha256": "c50ac87f28631c8483d53a7ae0d2aee6a72c038549d61f00230860d0a33cc694"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50342,
+        "path": "s1-46-sauce-whitespace-username/capture.json",
+        "sha256": "77dc7f2a8649d87e86f667ee2591533051139571e8f515c77fd4582defae722c"
+      },
+      "case_id": "s1-46-sauce-whitespace-username",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the username/password mismatch error appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.060008600000001,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0072525999999997
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 98574,
+        "path": "s1-46-sauce-whitespace-username/verification.json",
+        "sha256": "f6333974bfe5b8898ec6af6d6c47358738dee2d2bdd233fd634e4aa67bc1bb53"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49401,
+        "path": "s1-47-qa-uppercase-username/capture.json",
+        "sha256": "ed002ae34242bce30e3b979e550dec2e1d6d985eaef26cd3e8abad7bd1f67252"
+      },
+      "case_id": "s1-47-qa-uppercase-username",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.054534599999999,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.001703600000001
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 95978,
+        "path": "s1-47-qa-uppercase-username/verification.json",
+        "sha256": "4e81bb7c2bb2a5276c406cb3175f729899bcf3f2788e6b7d6e18bdc41388eb89"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50063,
+        "path": "s1-48-sauce-uppercase-username/capture.json",
+        "sha256": "821a6d4f29cc13a0ba4aaf88dc6c1c1b387786b02d793a61445ebbd1c191b511"
+      },
+      "case_id": "s1-48-sauce-uppercase-username",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the username/password mismatch error appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.049113300000001,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0057561000000024
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 97778,
+        "path": "s1-48-sauce-uppercase-username/verification.json",
+        "sha256": "bd3ac256b87239dd51d08b2c3e3ca9abdd168208feb4dfc7eb0440dff283d105"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49956,
+        "path": "s1-49-qa-whitespace-username/capture.json",
+        "sha256": "3b12c6f1da5f328e0ff0b6a4cf8bd961a94a4c108abb79ca26c69f677ebaca38"
+      },
+      "case_id": "s1-49-qa-whitespace-username",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0692959999999982,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.004935300000001
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 97391,
+        "path": "s1-49-qa-whitespace-username/verification.json",
+        "sha256": "c55e9c49a5eaedd4fca4773af88bdc5cb726f7e8d23f5ffc057b874f348e8f4f"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 50010,
+        "path": "s1-50-sauce-bad-username-repeat/capture.json",
+        "sha256": "8e10891453ec5a34d49e92ec12775b782c82ebf136e16e2bb7c1919923620e01"
+      },
+      "case_id": "s1-50-sauce-bad-username-repeat",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the username/password mismatch error appears",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.205678,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.012079599999997
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 97905,
+        "path": "s1-50-sauce-bad-username-repeat/verification.json",
+        "sha256": "e1b549448c3e9058122bd48d3f330fb38eec4a6de6db20aa2e7aea40b5f4c0bc"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 49988,
+        "path": "s1-51-qa-bad-credentials-repeat/capture.json",
+        "sha256": "351670e4ef63846fac5bd14c6ed0e6b42a1fcaac31cb3e76ac0553c251faa06e"
+      },
+      "case_id": "s1-51-qa-bad-credentials-repeat",
+      "category": "action_failure",
+      "collection_status": "valid",
+      "eligible_for_selection": true,
+      "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+      "integrity_valid": true,
+      "policy_reasons": [],
+      "policy_valid": true,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 2.0588585999999998,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.002286400000001
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 97828,
+        "path": "s1-51-qa-bad-credentials-repeat/verification.json",
+        "sha256": "11eff8c42bb24037f46e8c55c03652bbaec817e886236d2fbf7c5914fdbe3d13"
+      }
+    },
+    {
+      "capture_artifact": {
+        "bytes": 48475,
+        "path": "s1-52-qa-api-error-repeat/capture.json",
+        "sha256": "f68890dc3152f909ba38800c18c8db7b959d915806fa6f17070275193d33f6ed"
+      },
+      "case_id": "s1-52-qa-api-error-repeat",
+      "category": "action_failure",
+      "collection_status": "invalid",
+      "eligible_for_selection": false,
+      "expected_result": "the simulated API exposes its visible 500 error",
+      "integrity_valid": true,
+      "policy_reasons": [
+        "maximum frame gap exceeds the frozen capture limit"
+      ],
+      "policy_valid": false,
+      "target_action_id": "failure",
+      "target_anchor": {
+        "completed_at_seconds": 3.569564000000002,
+        "expected_outcome": "failure",
+        "scheduled_at_seconds": 2,
+        "started_at_seconds": 2.0098111000000025
+      },
+      "target_anchor_valid": true,
+      "verification_artifact": {
+        "bytes": 95025,
+        "path": "s1-52-qa-api-error-repeat/verification.json",
+        "sha256": "57ce707dd16d288fbe83221135b2f6f5882b3b100dcce42538698b44600168b3"
+      }
+    }
+  ],
+  "claim180_supplement_complete": true,
+  "collection_id": "355c99a227b3a893d47ef4b3dfcffd769a0603f73fc2925c99552a4f42057390",
+  "counts": {
+    "invalid": 3,
+    "missing": 0,
+    "startup_failed": 1,
+    "unverified": 0,
+    "valid": 48
+  },
+  "generated_at_utc": "2026-08-21T13:04:27.878643+00:00",
+  "kind": "signum_claim180_supplement_collection_summary",
+  "model_outputs_seen": false,
+  "plan": {
+    "bytes": 26044,
+    "path": "claim180-supplement-plan.json",
+    "sha256": "0db82a0e564cee9880b48e184f29278c7f6ccc225430d10f02a94de659d274d9"
+  },
+  "preregistration": {
+    "bytes": 26453,
+    "path": "claim180-supplement-preregistration.json",
+    "sha256": "7afb21a9a17d1d31a117f32d851199ae3ec78407e567c9349b55a7cfc2ab32a1"
+  },
+  "preregistration_id": "47b7d0f2f69164fe5362e345ddbf19821022147830314717e063235a0133b7c5",
+  "schema_version": 1,
+  "selection": {
+    "category_targets": {
+      "action_failure": 19,
+      "loading_completion": 18
+    },
+    "mode": "first_valid_target_event_by_category_in_plan_order",
+    "selected_case_ids_by_category": {
+      "action_failure": [
+        "s1-27-sauce-missing-username",
+        "s1-28-sauce-missing-password",
+        "s1-29-sauce-bad-username",
+        "s1-30-sauce-bad-password",
+        "s1-31-sauce-locked-user",
+        "s1-32-sauce-empty",
+        "s1-33-qa-empty",
+        "s1-34-qa-missing-password",
+        "s1-35-qa-missing-username",
+        "s1-36-qa-bad-both",
+        "s1-37-qa-bad-username",
+        "s1-38-qa-bad-password",
+        "s1-39-qa-api-error",
+        "s1-40-expand-form-empty",
+        "s1-41-expand-form-phone",
+        "s1-42-expand-form-date",
+        "s1-43-expand-form-payment",
+        "s1-44-demoqa-required",
+        "s1-45-practice-login-password"
+      ],
+      "loading_completion": [
+        "s1-01-qa-delayed-element",
+        "s1-02-qa-loaded-content",
+        "s1-03-qa-spinner",
+        "s1-04-qa-three-second-wait",
+        "s1-05-qa-progress",
+        "s1-06-qa-delayed-text",
+        "s1-08-qa-delayed-enable",
+        "s1-09-qa-api-fast",
+        "s1-10-qa-api-medium",
+        "s1-11-qa-api-slow",
+        "s1-14-expand-remove",
+        "s1-15-expand-enable",
+        "s1-16-selenium-add",
+        "s1-17-selenium-reveal",
+        "s1-18-practice-liftoff",
+        "s1-19-demoqa-progress",
+        "s1-20-demoqa-visible",
+        "s1-21-qa-delayed-element-repeat"
+      ]
+    },
+    "selected_target_events": [
+      {
+        "case_id": "s1-01-qa-delayed-element",
+        "category": "loading_completion",
+        "expected_result": "the delayed element becomes visible",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 3.5293775999999997,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1065246000000006
+        }
+      },
+      {
+        "case_id": "s1-02-qa-loaded-content",
+        "category": "loading_completion",
+        "expected_result": "the asynchronously loaded content appears",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 1.1122787000000025,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.104861100000002
+        }
+      },
+      {
+        "case_id": "s1-03-qa-spinner",
+        "category": "loading_completion",
+        "expected_result": "the spinner is replaced by its loaded result",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 1.1069068000000006,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1038231000000014
+        }
+      },
+      {
+        "case_id": "s1-04-qa-three-second-wait",
+        "category": "loading_completion",
+        "expected_result": "the three-second delayed element becomes visible",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 4.495791799999999,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.0995168999999987
+        }
+      },
+      {
+        "case_id": "s1-05-qa-progress",
+        "category": "loading_completion",
+        "expected_result": "the progress display reaches 100% complete",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 5.0161361,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1016170999999995
+        }
+      },
+      {
+        "case_id": "s1-06-qa-delayed-text",
+        "category": "loading_completion",
+        "expected_result": "the delayed replacement text appears",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 3.552906000000003,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1036654000000017
+        }
+      },
+      {
+        "case_id": "s1-08-qa-delayed-enable",
+        "category": "loading_completion",
+        "expected_result": "the delayed button enablement confirmation appears",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 4.112652399999999,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1107092999999986
+        }
+      },
+      {
+        "case_id": "s1-09-qa-api-fast",
+        "category": "loading_completion",
+        "expected_result": "the fast API success response appears",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 1.942596300000001,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1062162000000026
+        }
+      },
+      {
+        "case_id": "s1-10-qa-api-medium",
+        "category": "loading_completion",
+        "expected_result": "the medium API success response appears",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 3.5353619,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.113403199999997
+        }
+      },
+      {
+        "case_id": "s1-11-qa-api-slow",
+        "category": "loading_completion",
+        "expected_result": "the slow API success response appears",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 6.1312492999999995,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1138848999999973
+        }
+      },
+      {
+        "case_id": "s1-14-expand-remove",
+        "category": "loading_completion",
+        "expected_result": "the removal confirmation appears after the checkbox disappears",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 4.523094199999999,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.099572400000001
+        }
+      },
+      {
+        "case_id": "s1-15-expand-enable",
+        "category": "loading_completion",
+        "expected_result": "the input-enabled confirmation appears",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 4.487313999999999,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1006506999999983
+        }
+      },
+      {
+        "case_id": "s1-16-selenium-add",
+        "category": "loading_completion",
+        "expected_result": "the delayed red box is added to the page",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 2.429801300000003,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1025106000000013
+        }
+      },
+      {
+        "case_id": "s1-17-selenium-reveal",
+        "category": "loading_completion",
+        "expected_result": "the delayed input becomes visible",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 2.4381669,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1054547999999995
+        }
+      },
+      {
+        "case_id": "s1-18-practice-liftoff",
+        "category": "loading_completion",
+        "expected_result": "the countdown finishes with Liftoff",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 11.151025100000002,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1071630000000006
+        }
+      },
+      {
+        "case_id": "s1-19-demoqa-progress",
+        "category": "loading_completion",
+        "expected_result": "the progress bar reaches 100% and exposes Reset",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 11.185817600000002,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1084228999999977
+        }
+      },
+      {
+        "case_id": "s1-20-demoqa-visible",
+        "category": "loading_completion",
+        "expected_result": "the Visible After control appears",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 4.9148665000000005,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 0.5,
+          "started_at_seconds": 0.5057222000000001
+        }
+      },
+      {
+        "case_id": "s1-21-qa-delayed-element-repeat",
+        "category": "loading_completion",
+        "expected_result": "the delayed element becomes visible",
+        "target_action_id": "completion",
+        "target_anchor": {
+          "completed_at_seconds": 3.514535100000001,
+          "expected_outcome": "success",
+          "scheduled_at_seconds": 1.1,
+          "started_at_seconds": 1.1033384000000006
+        }
+      },
+      {
+        "case_id": "s1-27-sauce-missing-username",
+        "category": "action_failure",
+        "expected_result": "the Username is required error appears",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.051347600000001,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0090315000000007
+        }
+      },
+      {
+        "case_id": "s1-28-sauce-missing-password",
+        "category": "action_failure",
+        "expected_result": "the Password is required error appears",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.046462299999999,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0067181999999995
+        }
+      },
+      {
+        "case_id": "s1-29-sauce-bad-username",
+        "category": "action_failure",
+        "expected_result": "the username/password mismatch error appears",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.0434402999999985,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0034389999999984
+        }
+      },
+      {
+        "case_id": "s1-30-sauce-bad-password",
+        "category": "action_failure",
+        "expected_result": "the username/password mismatch error appears",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.0624456999999965,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.011639799999997
+        }
+      },
+      {
+        "case_id": "s1-31-sauce-locked-user",
+        "category": "action_failure",
+        "expected_result": "the locked-out user error appears",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.045952699999998,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0026621999999987
+        }
+      },
+      {
+        "case_id": "s1-32-sauce-empty",
+        "category": "action_failure",
+        "expected_result": "the Username is required error appears",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.062927800000001,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0030910000000004
+        }
+      },
+      {
+        "case_id": "s1-33-qa-empty",
+        "category": "action_failure",
+        "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.0981697999999995,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0145782999999975
+        }
+      },
+      {
+        "case_id": "s1-34-qa-missing-password",
+        "category": "action_failure",
+        "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.0640026,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0128443999999983
+        }
+      },
+      {
+        "case_id": "s1-35-qa-missing-username",
+        "category": "action_failure",
+        "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.0607550000000012,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0048575999999994
+        }
+      },
+      {
+        "case_id": "s1-36-qa-bad-both",
+        "category": "action_failure",
+        "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.058998599999999,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.000368599999998
+        }
+      },
+      {
+        "case_id": "s1-37-qa-bad-username",
+        "category": "action_failure",
+        "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.0681192999999984,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.013510699999999
+        }
+      },
+      {
+        "case_id": "s1-38-qa-bad-password",
+        "category": "action_failure",
+        "expected_result": "the invalid-credentials error is visible and no dashboard is entered",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.0850555999999996,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0158676000000013
+        }
+      },
+      {
+        "case_id": "s1-39-qa-api-error",
+        "category": "action_failure",
+        "expected_result": "the simulated API exposes its visible 500 error",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.917508099999999,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0011516999999985
+        }
+      },
+      {
+        "case_id": "s1-40-expand-form-empty",
+        "category": "action_failure",
+        "expected_result": "required-field errors are visible and registration is rejected",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.0735590000000013,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0021977000000004
+        }
+      },
+      {
+        "case_id": "s1-41-expand-form-phone",
+        "category": "action_failure",
+        "expected_result": "the invalid contact-number state remains visible",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.0675643999999993,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0042958
+        }
+      },
+      {
+        "case_id": "s1-42-expand-form-date",
+        "category": "action_failure",
+        "expected_result": "the missing pickup-date error remains visible",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.3108863000000017,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2.25,
+          "started_at_seconds": 2.263890599999999
+        }
+      },
+      {
+        "case_id": "s1-43-expand-form-payment",
+        "category": "action_failure",
+        "expected_result": "the missing payment-method error remains visible",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.312461599999999,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2.25,
+          "started_at_seconds": 2.2639201999999967
+        }
+      },
+      {
+        "case_id": "s1-44-demoqa-required",
+        "category": "action_failure",
+        "expected_result": "the required fields are marked invalid and no submission dialog opens",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.084350300000002,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0116113000000007
+        }
+      },
+      {
+        "case_id": "s1-45-practice-login-password",
+        "category": "action_failure",
+        "expected_result": "the Your password is invalid error is visible",
+        "target_action_id": "failure",
+        "target_anchor": {
+          "completed_at_seconds": 2.0426728999999977,
+          "expected_outcome": "failure",
+          "scheduled_at_seconds": 2,
+          "started_at_seconds": 2.0049475999999995
+        }
+      }
+    ]
+  },
+  "unexpected_case_directories": []
+}
