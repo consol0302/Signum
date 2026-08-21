@@ -64,16 +64,44 @@ try {
     JSON.stringify({
       schema_version: 1,
       case_id: "case-a",
+      source_url: "https://example.test/case-a",
+      goal: "exercise the action spec",
+      duration_seconds: 3,
+      capture_policy: {
+        requested_fps: 15,
+        width: 1280,
+        height: 720,
+        minimum_average_fps: 10,
+        maximum_gap_seconds: 0.25,
+      },
       actions: [
         { id: "first", at_seconds: 1, type: "reload" },
         { id: "second", at_seconds: 2, type: "scroll", y: 100 },
       ],
     }),
   );
-  const loaded = readActionSpec(actionPath, "case-a", 3);
+  const options = {
+    caseId: "case-a",
+    url: "https://example.test/case-a",
+    goal: "exercise the action spec",
+    durationSeconds: 3,
+    fps: 15,
+    width: 1280,
+    height: 720,
+    minimumAverageFps: 10,
+    maximumGapSeconds: 0.25,
+  };
+  const loaded = readActionSpec(actionPath, options);
   assert.strictEqual(loaded.payload.actions.length, 2);
   assert.strictEqual(loaded.sha256.length, 64);
-  assert.throws(() => readActionSpec(actionPath, "wrong-case", 3), CaptureError);
+  assert.throws(
+    () => readActionSpec(actionPath, { ...options, caseId: "wrong-case" }),
+    CaptureError,
+  );
+  assert.throws(
+    () => readActionSpec(actionPath, { ...options, fps: 10 }),
+    CaptureError,
+  );
 } finally {
   fs.rmSync(temporary, { recursive: true, force: true });
 }

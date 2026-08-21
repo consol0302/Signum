@@ -15,7 +15,7 @@ $env:SIGNUM_NODE_MODULES = "C:\path\to\node_modules"
 node examples/browser_capture.cjs `
   --url https://www.selenium.dev/selenium/web/dynamic.html `
   --case-id development-selenium-dynamic `
-  --goal "Validate timestamped browser capture." `
+  --goal "Validate timestamped browser capture without touching held-out workflows." `
   --output benchmark-output/capture-development `
   --actions examples/development-capture-actions.json `
   --browser-executable "C:\Program Files\Google\Chrome\Application\chrome.exe" `
@@ -30,7 +30,8 @@ node examples/browser_capture.cjs `
 `SIGNUM_NODE_MODULES` must contain Playwright. The output directory must be new
 or empty; the collector never overwrites an earlier run.
 
-The action file is data rather than executable JavaScript. It schedules typed
+The action file is data rather than executable JavaScript. It freezes the case
+id, source URL, goal, duration, viewport, frame-rate limits, and typed
 operations such as click, fill, key press, select, check, hover, scroll,
 reload, and wait-for. Each locator, expected result, expected outcome, timeout,
 and required/optional status is frozen in JSON. Before held-out capture, every
@@ -103,9 +104,9 @@ remains the authoritative capture; the AVI is a reproducible evaluation view.
 ## Development measurement
 
 The first complete development validation captured 105 lossless 1280×720
-frames over seven seconds. Independent verification measured 14.996 average
-fps, a 92.9ms maximum adjacent-frame gap, zero action failures, and no hash or
+frames over seven seconds. Independent verification measured 14.997 average
+fps, an 82.8ms maximum adjacent-frame gap, zero action failures, and no hash or
 dimension failures. The 30fps encoding contained 210 frames, referenced all 105
-source PNGs, and had a 68.2ms maximum source-frame age. This validates the
+source PNGs, and had an 82.3ms maximum source-frame age. This validates the
 capture mechanics only. It contains no held-out workflow and contributes no
 accuracy evidence.

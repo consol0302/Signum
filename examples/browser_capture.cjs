@@ -76,7 +76,7 @@ function parseArgs(argv) {
 }
 
 
-function readActionSpec(filename, expectedCaseId, durationSeconds) {
+function readActionSpec(filename, options) {
   const bytes = fs.readFileSync(filename);
   let payload;
   try {
@@ -84,8 +84,31 @@ function readActionSpec(filename, expectedCaseId, durationSeconds) {
   } catch (error) {
     throw new CaptureError(`action spec is invalid JSON: ${error.message}`);
   }
-  if (!payload || payload.schema_version !== 1 || payload.case_id !== expectedCaseId) {
+  if (!payload || payload.schema_version !== 1 || payload.case_id !== options.caseId) {
     throw new CaptureError("action spec schema_version or case_id does not match");
+  }
+  const frozenFields = [
+    ["source_url", payload.source_url, options.url],
+    ["goal", payload.goal, options.goal],
+    ["duration_seconds", payload.duration_seconds, options.durationSeconds],
+  ];
+  const capturePolicy = payload.capture_policy;
+  if (!capturePolicy || typeof capturePolicy !== "object") {
+    throw new CaptureError("action spec must contain capture_policy");
+  }
+  frozenFields.push(
+    ["capture_policy.requested_fps", capturePolicy.requested_fps, options.fps],
+    ["capture_policy.width", capturePolicy.width, options.width],
+    ["capture_policy.height", capturePolicy.height, options.height],
+    ["capture_policy.minimum_average_fps", capturePolicy.minimum_average_fps, options.minimumAverageFps],
+    ["capture_policy.maximum_gap_seconds", capturePolicy.maximum_gap_seconds, options.maximumGapSeconds],
+  );
+  for (const [name, frozen, requested] of frozenFields) {
+    if (frozen !== requested) {
+      throw new CaptureError(
+        `action spec ${name} does not match the requested capture: ${JSON.stringify(frozen)} != ${JSON.stringify(requested)}`,
+      );
+    }
   }
   if (!Array.isArray(payload.actions)) {
     throw new CaptureError("action spec must contain an actions array");
@@ -103,7 +126,7 @@ function readActionSpec(filename, expectedCaseId, durationSeconds) {
     if (!Number.isFinite(action.at_seconds) || action.at_seconds < previous) {
       throw new CaptureError("actions must use finite nondecreasing at_seconds");
     }
-    if (action.at_seconds >= durationSeconds) {
+    if (action.at_seconds >= options.durationSeconds) {
       throw new CaptureError(`action ${action.id} is scheduled after capture duration`);
     }
     previous = action.at_seconds;
@@ -389,8 +412,7 @@ async function main(argv) {
   const options = parseArgs(argv);
   const actionSpec = readActionSpec(
     path.resolve(options.actions),
-    options.caseId,
-    options.durationSeconds,
+    options,
   );
   const destination = prepareOutput(options.output);
   const inProgressPath = path.join(destination, ".capture-in-progress.json");
