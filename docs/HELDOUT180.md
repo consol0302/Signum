@@ -101,16 +101,26 @@ can be altered.
 ### Ordered candidate pools
 
 If public-site or capture failures could leave fewer than 30 valid workflows,
-the plan may preregister a larger ordered pool. The only accepted rule is
-`first_valid_in_plan_order`, with at least 30 required valid cases, validity
-determined by the independent capture verifier, every attempt retained, and no
-model output produced before selection. Candidate count, order, sources, action
-files, and the rule must all be pushed before collection.
+the plan may preregister a larger ordered pool. `first_valid_in_plan_order`
+selects the required number of globally ordered valid cases. Validity must come
+from the independent capture verifier, every attempt must be retained, and no
+model output may be produced before selection. Candidate count, order, sources,
+action files, and the rule must all be pushed before collection.
+
+For the final balanced suite, prefer
+`first_valid_per_slot_in_plan_order`. Define exactly 30 ordered slots with at
+least two ordered candidates per slot. Every candidate in a slot must bind the
+same six-event category template, and the 30 slot templates must sum exactly to
+the fixed 180-event distribution. Attempt every candidate once and retain every
+artifact. The selected case for each slot is its first independently valid
+candidate; candidates may never move between slots. The lock rejects missing,
+duplicated, reordered, or cross-slot candidate ids. This lets a broken public
+page be replaced without changing the preregistered category balance.
 
 After every candidate is attempted once, build the collection summary. The
-held-out manifest must contain exactly the first required number of valid cases
-in preregistered order. Freeze it with both the summary and the complete raw
-collection root:
+held-out manifest must contain exactly the cases chosen by the frozen global or
+per-slot rule. Freeze it with both the summary and the complete raw collection
+root:
 
 ```bash
 signum freeze-manifest held-out/manifest.json \

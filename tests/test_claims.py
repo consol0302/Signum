@@ -276,6 +276,156 @@ class ClaimAssessmentTests(unittest.TestCase):
                 case_ids[:30],
             )
 
+    def test_slot_pool_preserves_balance_when_primary_candidates_fail(self) -> None:
+        slots = [
+            {
+                "slot_id": f"slot-{index:02d}",
+                "candidate_ids": [
+                    f"slot-{index:02d}-primary",
+                    f"slot-{index:02d}-alternate",
+                ],
+            }
+            for index in range(30)
+        ]
+        case_ids = [
+            case_id for slot in slots for case_id in slot["candidate_ids"]
+        ]
+        selection = _validate_collection_selection(
+            {
+                "mode": "first_valid_per_slot_in_plan_order",
+                "validity_source": "independent_capture_verification",
+                "retain_all_attempts": True,
+                "model_outputs_forbidden_before_selection": True,
+                "required_valid_cases": 30,
+                "candidate_count": 60,
+                "slots": slots,
+            },
+            60,
+            case_ids,
+        )
+        self.assertIsNotNone(selection)
+        collection_root = self.root / "slot-captures"
+        collection_root.mkdir()
+        rows = []
+
+        def identity(path: Path) -> dict[str, object]:
+            return {
+                "path": path.relative_to(collection_root).as_posix(),
+                "bytes": path.stat().st_size,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            }
+
+        selected_by_slot = []
+        for index, slot in enumerate(slots):
+            chosen = slot["candidate_ids"][index % 2]
+            selected_by_slot.append(
+                {"slot_id": slot["slot_id"], "case_id": chosen}
+            )
+            for case_id in slot["candidate_ids"]:
+                case_root = collection_root / case_id
+                case_root.mkdir()
+                capture = case_root / "capture.json"
+                verification = case_root / "verification.json"
+                valid = case_id == chosen
+                capture.write_text(
+                    json.dumps({"case_id": case_id}), encoding="utf-8"
+                )
+                verification.write_text(
+                    json.dumps({"case_id": case_id, "valid": valid}),
+                    encoding="utf-8",
+                )
+                rows.append(
+                    {
+                        "case_id": case_id,
+                        "collection_status": "valid" if valid else "invalid",
+                        "eligible_for_claim": valid,
+                        "capture_artifact": identity(capture),
+                        "verification_artifact": identity(verification),
+                    }
+                )
+        selected = [row["case_id"] for row in selected_by_slot]
+        preregistration = {
+            "preregistration_id": "slot-preregistration",
+            "case_ids": case_ids,
+            "collection_selection": selection,
+        }
+        summary = {
+            "schema_version": 1,
+            "kind": "signum_claim180_collection_summary",
+            "generated_at_utc": "2026-08-21T00:00:00Z",
+            "preregistration_id": "slot-preregistration",
+            "counts": {
+                "valid": 30,
+                "invalid": 30,
+                "startup_failed": 0,
+                "missing": 0,
+            },
+            "selection": {
+                "mode": "first_valid_per_slot_in_plan_order",
+                "required_valid_cases": 30,
+                "selected_case_ids": selected,
+                "selected_by_slot": selected_by_slot,
+            },
+            "claim180_collection_complete": True,
+            "unexpected_case_directories": [],
+            "cases": rows,
+        }
+        summary["collection_id"] = hashlib.sha256(
+            json.dumps(
+                {
+                    key: value
+                    for key, value in summary.items()
+                    if key not in {"generated_at_utc", "collection_id"}
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+            ).encode("utf-8")
+        ).hexdigest()
+        summary_path = self.root / "slot-summary.json"
+        summary_path.write_text(json.dumps(summary), encoding="utf-8")
+
+        evidence = _validate_collection_evidence(
+            summary_path, collection_root, preregistration, selected
+        )
+
+        self.assertEqual(selected, evidence["selected_case_ids"])
+        self.assertEqual(120, len(evidence["artifacts"]))
+        with self.assertRaisesRegex(EvaluationError, "frozen rule"):
+            _validate_collection_evidence(
+                summary_path,
+                collection_root,
+                preregistration,
+                list(reversed(selected)),
+            )
+
+    def test_slot_pool_rejects_missing_duplicate_and_reordered_candidates(self) -> None:
+        case_ids = [f"candidate-{index:02d}" for index in range(60)]
+        slots = [
+            {
+                "slot_id": f"slot-{index:02d}",
+                "candidate_ids": case_ids[index * 2 : index * 2 + 2],
+            }
+            for index in range(30)
+        ]
+        raw = {
+            "mode": "first_valid_per_slot_in_plan_order",
+            "validity_source": "independent_capture_verification",
+            "retain_all_attempts": True,
+            "model_outputs_forbidden_before_selection": True,
+            "required_valid_cases": 30,
+            "candidate_count": 60,
+            "slots": slots,
+        }
+        reordered = json.loads(json.dumps(raw))
+        reordered["slots"][0]["candidate_ids"].reverse()
+        with self.assertRaisesRegex(EvaluationError, "order must match"):
+            _validate_collection_selection(reordered, 60, case_ids)
+        duplicate = json.loads(json.dumps(raw))
+        duplicate["slots"][1]["candidate_ids"][0] = case_ids[0]
+        with self.assertRaisesRegex(EvaluationError, "exactly once"):
+            _validate_collection_selection(duplicate, 60, case_ids)
+
     def test_claim_is_blocked_when_a_run_artifact_changes(self) -> None:
         manifest, events, preregistration = self._claim_manifest()
         held_out_lock = self.root / "artifact-freeze.json"

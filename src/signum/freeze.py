@@ -100,7 +100,7 @@ def preregister_heldout(
         case_ids,
     )
     collection_selection = _validate_collection_selection(
-        plan.get("collection_selection"), len(case_ids)
+        plan.get("collection_selection"), len(case_ids), case_ids
     )
 
     destination = Path(output_path).resolve()
@@ -633,7 +633,7 @@ def _verify_preregistration(path: Path) -> dict[str, Any]:
         case_ids,
     )
     collection_selection = _validate_collection_selection(
-        plan.get("collection_selection"), len(case_ids)
+        plan.get("collection_selection"), len(case_ids), case_ids
     )
     if lock.get("collection_selection") != collection_selection:
         raise EvaluationError("held-out collection selection lock does not match")
@@ -668,13 +668,22 @@ def _verify_preregistration(path: Path) -> dict[str, Any]:
 def _validate_collection_selection(
     raw: object,
     candidate_count: int,
+    candidate_ids: list[str] | None = None,
 ) -> dict[str, Any] | None:
     if raw is None:
         return None
     if not isinstance(raw, dict):
         raise EvaluationError("held-out collection_selection must be an object")
+    mode = raw.get("mode")
+    if mode not in {
+        "first_valid_in_plan_order",
+        "first_valid_per_slot_in_plan_order",
+    }:
+        raise EvaluationError(
+            "held-out collection_selection mode must use a supported frozen rule"
+        )
     expected = {
-        "mode": "first_valid_in_plan_order",
+        "mode": mode,
         "validity_source": "independent_capture_verification",
         "retain_all_attempts": True,
         "model_outputs_forbidden_before_selection": True,
@@ -698,11 +707,59 @@ def _validate_collection_selection(
         raise EvaluationError(
             "held-out collection_selection candidate_count must match case_ids"
         )
-    return {
+    result = {
         **expected,
         "required_valid_cases": required_valid_cases,
         "candidate_count": candidate_count,
     }
+    if mode == "first_valid_per_slot_in_plan_order":
+        slots = raw.get("slots")
+        if not isinstance(slots, list) or len(slots) != required_valid_cases:
+            raise EvaluationError(
+                "slot collection_selection must contain one slot per required valid case"
+            )
+        normalized_slots = []
+        slot_ids = set()
+        flattened = []
+        for slot in slots:
+            if not isinstance(slot, dict):
+                raise EvaluationError("held-out collection slots must be objects")
+            slot_id = _required_nonempty(
+                slot, "slot_id", "held-out collection slot"
+            )
+            candidates = slot.get("candidate_ids")
+            if (
+                slot_id in slot_ids
+                or not isinstance(candidates, list)
+                or len(candidates) < 2
+                or any(
+                    not isinstance(candidate_id, str) or not candidate_id
+                    for candidate_id in candidates
+                )
+                or len(candidates) != len(set(candidates))
+            ):
+                raise EvaluationError(
+                    "held-out collection slots need unique ids and at least two unique candidates"
+                )
+            slot_ids.add(slot_id)
+            flattened.extend(candidates)
+            normalized_slots.append(
+                {"slot_id": slot_id, "candidate_ids": candidates}
+            )
+        if len(flattened) != candidate_count or len(flattened) != len(set(flattened)):
+            raise EvaluationError(
+                "held-out collection slots must cover every candidate exactly once"
+            )
+        if candidate_ids is not None and flattened != candidate_ids:
+            raise EvaluationError(
+                "held-out collection slot candidates and order must match case_ids"
+            )
+        result["slots"] = normalized_slots
+    elif raw.get("slots") is not None:
+        raise EvaluationError(
+            "first-valid collection_selection cannot contain slot definitions"
+        )
+    return result
 
 
 def _validate_collection_evidence(
@@ -838,23 +895,54 @@ def _validate_collection_evidence(
     if summary.get("counts") != observed_counts:
         raise EvaluationError("held-out collection summary counts are invalid")
     required = selection["required_valid_cases"]
-    if len(valid_case_ids) < required:
-        raise EvaluationError(
-            f"held-out collection has {len(valid_case_ids)} valid candidates; {required} required"
-        )
-    selected = valid_case_ids[:required]
+    if selection["mode"] == "first_valid_per_slot_in_plan_order":
+        valid = set(valid_case_ids)
+        selected_by_slot = []
+        for slot in selection["slots"]:
+            selected_case_id = next(
+                (
+                    case_id
+                    for case_id in slot["candidate_ids"]
+                    if case_id in valid
+                ),
+                None,
+            )
+            if selected_case_id is None:
+                raise EvaluationError(
+                    f"held-out collection slot {slot['slot_id']!r} has no valid candidate"
+                )
+            selected_by_slot.append(
+                {"slot_id": slot["slot_id"], "case_id": selected_case_id}
+            )
+        selected = [row["case_id"] for row in selected_by_slot]
+        expected_selection = {
+            "mode": selection["mode"],
+            "required_valid_cases": required,
+            "selected_case_ids": selected,
+            "selected_by_slot": selected_by_slot,
+        }
+    else:
+        if len(valid_case_ids) < required:
+            raise EvaluationError(
+                f"held-out collection has {len(valid_case_ids)} valid candidates; {required} required"
+            )
+        selected = valid_case_ids[:required]
+        expected_selection = {
+            "mode": selection["mode"],
+            "required_valid_cases": required,
+            "selected_case_ids": selected,
+        }
     if summary.get("claim180_collection_complete") is not True:
         raise EvaluationError("held-out candidate collection is not complete")
-    if summary.get("selection") != {
-        "mode": selection["mode"],
-        "required_valid_cases": required,
-        "selected_case_ids": selected,
-    }:
+    if summary.get("selection") != expected_selection:
         raise EvaluationError("held-out collection summary selection is invalid")
     if manifest_case_ids != selected:
-        raise EvaluationError(
+        message = (
             "held-out manifest must use the first valid candidates in preregistered order"
+            if selection["mode"] == "first_valid_in_plan_order"
+            else "held-out manifest must use the candidates selected by the frozen rule"
         )
+        raise EvaluationError(message)
     return {
         "summary_path": summary_path,
         "summary_bytes": summary_path.stat().st_size,
