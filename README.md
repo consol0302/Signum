@@ -147,6 +147,14 @@ python examples/codex_live_web_probe.py `
   --model gpt-5.6-sol
 ```
 
+The same captures can be converted into a labeled equal-budget evaluation without committing generated media:
+
+```powershell
+python examples/build_live_web_pilot.py `
+  --frames-dir benchmark-output/live-web `
+  --output benchmark-output/live-web-pilot
+```
+
 ## How selection works
 
 Frames are decoded sequentially. Signum performs the regular analysis at 4 Hz by default and keeps a 16×9 grayscale signature for every decoded frame. That tiny per-frame check acts as a guard for abrupt changes which happen between scheduled candidates; it does not require a second decode pass.
@@ -198,6 +206,14 @@ signum score evaluation-output/evaluation.json \
   --reviews evaluation-output/completed-review.json
 ```
 
+New evaluation manifests use schema version 2 and label each event by category and risk. Audit the planned 60-event pilot distribution before running Codex:
+
+```bash
+signum audit-manifest real-evaluation.json
+```
+
+Evaluation and review reports include category breakdowns, two-sided 95% Wilson confidence intervals, exact action-verification accuracy, and a separate false-confirmation rate for failed-action cases. Action labels provide before/after timestamps and are forced equally for both methods outside the passive observation budget. See [Pilot 60 perception suite](docs/PILOT60.md) for the collection contract.
+
 Incomplete reviews remain `null`; detector misses count as failures. The manifest format, review rubric, and output fields are documented in [Real-world perception evaluation](docs/REAL_WORLD_EVALUATION.md).
 
 ## Development
@@ -208,7 +224,7 @@ Run the test suite:
 python -m unittest discover -s tests -v
 ```
 
-The project currently has twenty-five tests covering the CLI, budget handling, timestamps, duplicate handling, deterministic selection, between-sample flash recovery, small and thin UI changes, transient peak preservation, forced action verification, end-of-stream flushing, observation serialization, runtime usage accounting, labeled replay evaluation, equal-budget comparison, human review scoring, non-blocking streaming, overload visibility, requested detail, retries, and the isolated Codex command and verification contracts. Tests do not spend Codex subscription usage.
+The test suite covers the CLI, budget handling, timestamps, duplicate handling, deterministic selection, between-sample flash recovery, small and thin UI changes, transient peak preservation, forced action verification, end-of-stream flushing, observation serialization, runtime usage accounting, labeled replay evaluation, equal-budget comparison, confidence intervals, category coverage auditing, false-confirmation scoring, human review scoring, non-blocking streaming, overload visibility, requested detail, retries, and the isolated Codex command and verification contracts. Tests do not spend Codex subscription usage.
 
 The evaluator is ready for a small manually labeled screen-recording suite. The repository still contains no real recordings, so synthetic results alone cannot establish real computer-use detection success.
 
@@ -220,6 +236,7 @@ The evaluator is ready for a small manually labeled screen-recording suite. The 
 - [Initial results](docs/RESULTS.md)
 - [Codex-mode improvement roadmap](docs/ROADMAP.md)
 - [Real-world perception evaluation](docs/REAL_WORLD_EVALUATION.md)
+- [Pilot 60 perception suite](docs/PILOT60.md)
 - [Streaming perception runtime](docs/STREAMING.md)
 - [Measuring live Codex perception](docs/CODEX_LIVE_MEASUREMENT.md)
 

@@ -8,7 +8,14 @@ from io import StringIO
 from pathlib import Path
 
 from signum.cli import main
-from signum.evaluation import EvaluationError, load_manifest, run_evaluation, score_reviews
+from signum.evaluation import (
+    PILOT60_TARGETS,
+    EvaluationError,
+    audit_manifest,
+    load_manifest,
+    run_evaluation,
+    score_reviews,
+)
 from signum.gateway import GatewayConfig, PerceptionEvent, SemanticResult
 from signum.synthetic import generate_suite
 
@@ -96,6 +103,8 @@ class EvaluationTests(unittest.TestCase):
                 row["evidence_visible"] = True
                 row["semantic_correct"] = True
                 row["task_state_correct"] = True
+        review["reviewer"] = "reviewer-1"
+        review["review_method"] = "human_blind"
         completed_review = output / "completed-review.json"
         completed_review.write_text(json.dumps(review), encoding="utf-8")
 
@@ -105,6 +114,8 @@ class EvaluationTests(unittest.TestCase):
         )
 
         self.assertTrue(score["complete"])
+        self.assertEqual("reviewer-1", score["reviewer"])
+        self.assertEqual("human_blind", score["review_method"])
         self.assertEqual(
             1.0, score["methods"]["signum"]["end_to_end_success_rate"]
         )
@@ -166,6 +177,118 @@ class EvaluationTests(unittest.TestCase):
         with self.assertRaises(EvaluationError):
             load_manifest(manifest)
 
+    def test_schema_two_requires_category_and_audits_pilot_coverage(self) -> None:
+        manifest = self._manifest("audit-category")
+        payload = json.loads(manifest.read_text(encoding="utf-8"))
+        payload["schema_version"] = 2
+        with self.assertRaises(EvaluationError):
+            manifest.write_text(json.dumps(payload), encoding="utf-8")
+            load_manifest(manifest)
+
+        payload["cases"][0]["events"][0]["category"] = "action_failure"
+        payload["cases"][0]["events"][0]["risk"] = "high"
+        payload["cases"][0]["events"][0]["before_timestamp"] = 0.0
+        payload["cases"][0]["events"][0]["after_timestamp"] = payload["cases"][0][
+            "events"
+        ][0]["start"]
+        payload["cases"][0]["events"][0]["action"] = "clicked Submit"
+        payload["cases"][0]["events"][0]["expected_result"] = "a result appears"
+        manifest.write_text(json.dumps(payload), encoding="utf-8")
+        audit = audit_manifest(manifest)
+
+        self.assertEqual(1, audit["event_count"])
+        self.assertEqual(1, audit["category_counts"]["action_failure"])
+        self.assertEqual(1, audit["risk_counts"]["high"])
+        self.assertEqual(
+            PILOT60_TARGETS["action_failure"] - 1,
+            audit["deficits"]["action_failure"],
+        )
+        self.assertFalse(audit["profile_complete"])
+
+    def test_category_metrics_confidence_interval_and_false_confirmation(self) -> None:
+        class FalseConfirmingInterpreter:
+            def interpret(
+                self,
+                event: PerceptionEvent,
+                goal: str,
+                previous: SemanticResult | None,
+            ) -> SemanticResult:
+                return SemanticResult(
+                    state="unchanged",
+                    summary="The action succeeded.",
+                    relevant=True,
+                    confidence=1.0,
+                    recommended_action="Continue.",
+                    verification=(
+                        "confirmed"
+                        if event.reason == "action_verification"
+                        else "not_applicable"
+                    ),
+                    input_tokens=10,
+                    output_tokens=5,
+                )
+
+        manifest = self._manifest("failed-action")
+        payload = json.loads(manifest.read_text(encoding="utf-8"))
+        payload["schema_version"] = 2
+        payload["cases"][0]["events"][0]["category"] = "action_failure"
+        payload["cases"][0]["events"][0]["risk"] = "critical"
+        payload["cases"][0]["events"][0]["before_timestamp"] = 0.0
+        payload["cases"][0]["events"][0]["after_timestamp"] = payload["cases"][0][
+            "events"
+        ][0]["start"]
+        payload["cases"][0]["events"][0]["action"] = "clicked Submit"
+        payload["cases"][0]["events"][0]["expected_result"] = "a result appears"
+        manifest.write_text(json.dumps(payload), encoding="utf-8")
+        output = self.root / "failed-action-evaluation"
+        result = run_evaluation(
+            manifest,
+            output,
+            config=GatewayConfig(min_event_interval_seconds=0.0),
+            interpreter=FalseConfirmingInterpreter(),
+        )
+
+        interval = result["aggregate"]["signum"]["trigger_recall_ci95"]
+        self.assertIsNotNone(interval)
+        self.assertEqual(2, len(interval))
+        self.assertEqual(
+            1.0,
+            result["by_category"]["signum"]["action_failure"]["trigger_recall"],
+        )
+        self.assertEqual(1, result["cases"][0]["forced_action_verifications"])
+        self.assertEqual(
+            0.0, result["aggregate"]["signum"]["verification_accuracy"]
+        )
+        self.assertEqual(
+            1, result["aggregate"]["signum"]["automatic_false_confirmations"]
+        )
+        for method in ("signum", "uniform"):
+            match = result["cases"][0]["methods"][method]["matches"][0]
+            self.assertTrue(match["triggered"])
+            self.assertEqual("action_verification", match["matched_reason"])
+
+        review_path = output / "review-template.json"
+        review = json.loads(review_path.read_text(encoding="utf-8"))
+        for row in review["reviews"]:
+            if row["triggered"]:
+                row["evidence_visible"] = True
+                row["semantic_correct"] = False
+                row["task_state_correct"] = False
+                row["false_confirmation"] = row["method"] == "signum"
+        completed = output / "completed-review.json"
+        completed.write_text(json.dumps(review), encoding="utf-8")
+        score = score_reviews(output / "evaluation.json", completed)
+
+        self.assertTrue(score["complete"])
+        self.assertEqual(1.0, score["methods"]["signum"]["false_confirmation_rate"])
+        self.assertEqual(0.0, score["methods"]["uniform"]["false_confirmation_rate"])
+        self.assertEqual(
+            1.0,
+            score["by_category"]["signum"]["action_failure"][
+                "false_confirmation_rate"
+            ],
+        )
+
     def test_evaluate_cli_writes_machine_readable_summary(self) -> None:
         output = self.root / "cli-evaluation"
         stdout = StringIO()
@@ -185,6 +308,17 @@ class EvaluationTests(unittest.TestCase):
         summary = json.loads(stdout.getvalue())
         self.assertEqual(1.0, summary["signum_trigger_recall"])
         self.assertEqual(0.0, summary["uniform_trigger_recall"])
+
+    def test_audit_manifest_cli_reports_deficits(self) -> None:
+        manifest = self._manifest("audit-cli")
+        stdout = StringIO()
+        with redirect_stdout(stdout):
+            exit_code = main(["audit-manifest", str(manifest)])
+
+        self.assertEqual(0, exit_code)
+        summary = json.loads(stdout.getvalue())
+        self.assertEqual("pilot60", summary["profile"])
+        self.assertFalse(summary["profile_complete"])
 
 
 if __name__ == "__main__":

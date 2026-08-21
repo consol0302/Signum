@@ -93,6 +93,30 @@ Codex reported 75,128 input tokens and 667 output tokens, or 75,795 total report
 
 One additional negative action-verification case supplied the same red-box screen before and after a claimed click, while expecting a new input to appear. Codex correctly returned `not_confirmed`, cited the identical images and absent input, and did not claim success. That call took 6.12 seconds and reported 15,565 input plus 128 output tokens. Across the six targeted judgments, all six matched the visible fixture labels, but the cases still come from one simple page and do not support a production success-rate claim.
 
+## First labeled replay through the evaluator
+
+The three real Selenium page captures were converted into a six-second, 20 fps MJPEG replay with fixed two-second states. This preserves the captured browser pixels but does not preserve the original transition timing. The tracked builder records that limitation in the generated manifest.
+
+Four labels were evaluated: red-box appearance, small-input appearance, successful input reveal, and a forced failed-action check using two red-box-only frames. The two action labels were forced equally for both methods outside the passive observation budget. Each method therefore made five Codex calls: three passive observations and two action verifications.
+
+| Metric | Signum | Equal-budget uniform |
+| --- | ---: | ---: |
+| Triggered labels | 4/4 | 2/4 |
+| Provisional reviewed end-to-end success | 4/4 | 2/4 |
+| Action verification accuracy | 2/2 | 2/2 |
+| False confirmations on failed actions | 0/1 | 0/1 |
+| Reported input tokens | 75,723 | 75,991 |
+| Reported output tokens | 832 | 913 |
+| Reported total tokens | 76,555 | 76,904 |
+| Transmitted 32-pixel patches | 1,380 | 1,816 |
+| Total semantic latency | 36.52 s | 35.87 s |
+
+Signum captured both passive changes while uniform captured neither; both methods received the same forced action evidence. Signum transmitted 24.0% fewer unadjusted image patches, but reported total tokens were only 0.45% lower and semantic latency was 1.8% higher. This is direct evidence that ephemeral Codex context dominates the current image savings. It does not establish that Signum is cheaper.
+
+Codex described all four Signum labels correctly in a provisional AI-assisted visual review, including the complete 170×21 input and the unchanged failed-action evidence. The automatic exact-state-name diagnostic was 0/4 because free-form sentences such as “The red box is currently visible” do not equal manifest aliases such as `red_box_visible`. The explicit review result is therefore reported separately; it has not yet been independently or blindly reviewed by a person.
+
+The 95% Wilson interval for Signum's 4/4 trigger result is approximately 0.51–1.00. All labels come from one simple public page, so they are correlated and much weaker evidence than four independent workflows.
+
 ## Next experiment
 
-Expand the live probe into a labeled browser suite with repeated runs, negative cursor/focus cases, failed-action verification, rapid transitions, scroll, animation, and small text changes. The most important unresolved risk remains that pixel-level novelty may not correlate with semantic importance. Five easy positive observations establish end-to-end operation but are too few and too similar to estimate production accuracy.
+Expand the labeled browser suite from 4 to the documented 60-event pilot with independent recordings, negative cursor/focus cases, rapid transitions, scroll, animation, and more small text changes. The most important unresolved risk remains that pixel-level novelty may not correlate with semantic importance. The current page establishes evaluator operation but is too small and too correlated to estimate production accuracy.

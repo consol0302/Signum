@@ -20,6 +20,21 @@ Use a fixed 1280×720 browser viewport and save three lossless screenshots with 
 
 Keep the captures outside the source tree. Browser output and Codex result files belong in an ignored output directory.
 
+Convert those captures into the first labeled replay and audit its coverage:
+
+```powershell
+python examples/build_live_web_pilot.py `
+  --frames-dir benchmark-output/live-web `
+  --output benchmark-output/live-web-pilot
+
+signum audit-manifest benchmark-output/live-web-pilot/manifest.json
+signum evaluate benchmark-output/live-web-pilot/manifest.json `
+  --output benchmark-output/live-web-pilot-evaluation `
+  --min-event-interval 0
+```
+
+The builder repeats each captured state for two seconds. It is a deterministic replay of real browser pixels, not an original-timing recording. Its generated manifest records the source frames and this limitation.
+
 ## Run the replay
 
 Install the project and confirm that Codex uses the intended ChatGPT account:

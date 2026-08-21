@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "cases": [
     {
       "id": "export-finished",
@@ -21,6 +21,8 @@
             "export_complete",
             "completion_toast_visible"
           ],
+          "category": "popup_notification",
+          "risk": "normal",
           "notes": "The completion message and file name must be legible."
         }
       ]

@@ -6,7 +6,12 @@ import sys
 from pathlib import Path
 
 from .config import SamplerConfig
-from .evaluation import EvaluationError, run_evaluation, score_reviews
+from .evaluation import (
+    EvaluationError,
+    audit_manifest,
+    run_evaluation,
+    score_reviews,
+)
 from .gateway import GatewayConfig
 from .interpreters import CodexExecInterpreter, InterpreterError
 from .observe import observe_video
@@ -87,6 +92,12 @@ def build_parser() -> argparse.ArgumentParser:
     score.add_argument("evaluation", type=Path)
     score.add_argument("--reviews", type=Path, required=True)
     score.add_argument("--output", type=Path)
+    audit = subparsers.add_parser(
+        "audit-manifest",
+        help="check labeled-suite coverage before running an evaluation",
+    )
+    audit.add_argument("manifest", type=Path)
+    audit.add_argument("--profile", choices=("pilot60",), default="pilot60")
     return parser
 
 
@@ -98,6 +109,8 @@ def main(argv: list[str] | None = None) -> int:
         return _evaluate_command(args)
     if args.command == "score":
         return _score_command(args)
+    if args.command == "audit-manifest":
+        return _audit_manifest_command(args)
     return _analyze_command(args)
 
 
@@ -223,4 +236,14 @@ def _score_command(args: argparse.Namespace) -> int:
         ],
     }
     print(json.dumps(summary, sort_keys=True))
+    return 0
+
+
+def _audit_manifest_command(args: argparse.Namespace) -> int:
+    try:
+        result = audit_manifest(args.manifest, profile=args.profile)
+    except EvaluationError as error:
+        print(f"signum: error: {error}", file=sys.stderr)
+        return 2
+    print(json.dumps(result, sort_keys=True))
     return 0
