@@ -171,13 +171,20 @@ failure recording. They have not made a paid request because the required API
 keys are absent. Until a new collection, labels, review, and provider execution
 finish, Signum cannot support an accuracy or cost claim against either provider.
 
-A conservative label-capacity audit then found that the selected recordings
-contain 146 preregistered browser actions, so they are at least 34 independent
-action-anchored transitions short of the 180-event target. Only five actions
-were preregistered as expected failures, 19 short of the required 24 failed
-actions. The audit id is
-`853a831e8f8d3bc83810460ab6351628a33256fd9717a73908e91a46eda4615b`.
-Signum does not credit repeated descriptions of one transition or inferred
-unobserved failures, so v3 will not be inflated into a Claim 180 manifest. A
-successor collection must preregister the event/category allocation and enough
-independent transitions before capture.
+A conservative label-capacity audit first found 146 preregistered browser
+actions, at least 34 short of the 180-event target. The action-anchored event
+inventory then excluded three pointer-only or repeated actions with no
+independently visible state transition. It therefore retains 143 eligible
+events: 30 small-UI, 24 action-success, five action-failure, 18 popup, 15
+scroll/navigation, 15 cursor/focus, 18 animation/dynamic-UI, and 18 transient
+events. Loading-completion contributes zero. The inventory id is
+`488b0a0658cbd44507089ea794d117f53db135e869834ac0e88f30833ada4c63`.
+
+The inventory is mechanically anchored to source frame sequences and remains
+explicitly marked `pending_human_review`; it is not a final ground-truth
+manifest. No Signum, uniform, OpenAI, or Claude model output has been produced
+for the v3 collection. The exact remaining deficit is 18 loading-completion
+events plus 19 action-failure events. Those 37 transitions must come from a
+separately preregistered supplement whose selection rule is frozen before
+capture. Repeated descriptions, inferred failures, and post-model label changes
+will not be credited.

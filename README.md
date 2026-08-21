@@ -35,6 +35,8 @@ The latest local development Pilot has 65 labels, 60 independent source transiti
 
 A final stratified Codex batch described 18/18 sampled states consistently with the saved evidence and returned the expected verdict for four action checks, with zero provisional false confirmations across two failed actions. Those judgments are not yet independently human-reviewed. OpenAI and Anthropic paid API comparisons were not run because no API keys were available.
 
+The one-shot public-web v3 collection retained all 45 attempts and selected the first 30 independently valid recordings in preregistered order. A conservative action-anchored inventory found 143 eligible visible transitions, not 180. It assigns no label to three pointer-only or repeated actions without independent visible evidence and is explicitly marked as pending human review. The remaining frozen deficit is 18 loading-completion events and 19 action-failure events. No model has been run on this collection, and the deficit will be filled only by a separately preregistered supplement.
+
 See [Pilot 60 local measurement](docs/PILOT60_RESULTS.md) for the exact counts, confidence intervals, token measurements, label corrections, and blockers. No claim that Signum is more accurate or cheaper than OpenAI or Claude computer use is currently supported.
 
 ## Install
