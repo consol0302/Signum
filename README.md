@@ -91,6 +91,28 @@ Useful controls include `--candidate-hz`, `--analysis-width`,
 `--min-distance`, `--coverage-fraction`, `--no-spike-guard`, and
 `--strategy uniform` for the baseline.
 
+## Inspect a side-by-side comparison
+
+```bash
+signum compare input.mp4 --budget 32 --output output/comparison
+```
+
+Open `output/comparison/index.html` to inspect both sets of source frames,
+timestamps, and frame indices. The baseline chooses uniformly spaced source
+frames independently of Signum scores. Both methods export the same actual
+number of observations, even when the requested budget exceeds the available
+Signum candidates. JSON timelines and export reports remain alongside the HTML.
+
+To try every existing synthetic fixture without supplying a video:
+
+```bash
+python examples/compare_synthetic.py
+```
+
+Open `output/showcase/index.html`. These offline reports use no model calls or
+web server. They help inspect preserved and missed visual evidence; they do not
+measure real-world semantic accuracy, token savings, or billing savings.
+
 ## Observe screen changes with Codex
 
 The optional observation path separates deterministic detection from semantic
