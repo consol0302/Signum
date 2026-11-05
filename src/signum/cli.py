@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .config import SamplerConfig
 from .claims import assess_claim
+from .comparison import compare_video
 from .evaluation import (
     EvaluationError,
     audit_manifest,
@@ -47,6 +48,12 @@ def build_parser() -> argparse.ArgumentParser:
     analyze.add_argument(
         "--strategy", choices=("hybrid", "score_only", "uniform"), default="hybrid"
     )
+    compare = subparsers.add_parser(
+        "compare", help="export an offline visual comparison at equal frame counts"
+    )
+    compare.add_argument("input", type=Path)
+    compare.add_argument("--budget", type=int, default=32)
+    compare.add_argument("--output", type=Path, default=Path("output/comparison"))
     observe = subparsers.add_parser(
         "observe",
         help="gate semantic screen observations for a computer-use workflow",
@@ -157,6 +164,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "compare":
+        return _compare_command(args)
     if args.command == "observe":
         return _observe_command(args)
     if args.command == "evaluate":
@@ -176,6 +185,24 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "assess-claim":
         return _assess_claim_command(args)
     return _analyze_command(args)
+
+
+def _compare_command(args: argparse.Namespace) -> int:
+    try:
+        result = compare_video(
+            args.input, args.output, SamplerConfig(budget=args.budget)
+        )
+    except (ValueError, VideoError) as error:
+        print(f"signum: error: {error}", file=sys.stderr)
+        return 2
+    print(json.dumps({
+        "output": str(args.output.resolve()),
+        "html_report": str((args.output / "index.html").resolve()),
+        "requested_budget": result["requested_budget"],
+        "selected_per_method": result["effective_budget"],
+        "equal_observation_count": result["equal_observation_count"],
+    }, sort_keys=True))
+    return 0
 
 
 def _analyze_command(args: argparse.Namespace) -> int:
